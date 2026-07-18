@@ -24,7 +24,7 @@
   :root[data-theme="dark"]{ --ground:#14201A; --ground2:#1B291F; --card:#1C2620; --ink:#E9F0EA; --ink-soft:#93A69A; --hair:#2C3A30; --coral:#FF7A4D; --did:#39C489; --did-soft:#123020; --dont:#C08FB4; --dont-soft:#2E2230; --gold:#E4B45A; --gold-soft:#322813; }
   *{box-sizing:border-box;} html,body{margin:0;}
   body{ font-family:var(--font); color:var(--ink); background:radial-gradient(120% 46% at 50% -6%, var(--ground2), transparent 62%), var(--ground); -webkit-font-smoothing:antialiased; min-height:100dvh; }
-  .wrap{ max-width:440px; margin:0 auto; padding:28px 22px calc(44px + env(safe-area-inset-bottom)); }
+  .wrap{ max-width:440px; margin:0 auto; padding:28px 22px calc(92px + env(safe-area-inset-bottom)); }
   .top{display:flex; align-items:center; justify-content:space-between; gap:8px;}
   .wm{font-size:15px; font-weight:800; letter-spacing:-.02em;} .wm b{color:var(--coral);}
   .topr{display:flex; align-items:center; gap:8px;}
@@ -179,6 +179,22 @@
   .tacc.bow{ top:6px; transform:translateX(-50%); font-size:22px; }
   .tacc.spark{ left:auto; right:20px; top:10px; font-size:18px; }
   .tacc.spark2{ left:20px; right:auto; top:22px; font-size:15px; }
+  .view{ display:none; } .view.on{ display:block; animation:viewin .3s ease both; }
+  @keyframes viewin{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;} }
+  .tabbar{ position:fixed; left:0; right:0; bottom:0; z-index:90; display:flex; max-width:440px; margin:0 auto; background:color-mix(in srgb, var(--card) 92%, transparent); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border-top:1px solid var(--hair); padding:6px 8px calc(6px + env(safe-area-inset-bottom)); }
+  .tab{ flex:1; background:none; border:none; font-family:inherit; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:2px; padding:6px 0; color:var(--ink-soft); }
+  .tab .ti{ font-size:20px; line-height:1; filter:grayscale(.35) opacity(.8); }
+  .tab .tl{ font-size:11px; font-weight:700; }
+  .tab.on{ color:var(--coral); } .tab.on .ti{ filter:none; transform:translateY(-1px); }
+  .cal-page{ margin-top:6px; }
+  .cal-note{ font-size:12px; color:var(--ink-soft); text-align:center; margin-top:16px; line-height:1.6; }
+  .about-hero{ text-align:center; padding:14px 0 6px; }
+  .about-flame{ width:96px; height:96px; }
+  .about-hero h2{ font-size:20px; font-weight:900; letter-spacing:-.02em; margin-top:8px; line-height:1.35; } .about-hero h2 b{ color:var(--coral); }
+  .about-hero p{ font-size:13.5px; color:var(--ink-soft); line-height:1.6; margin-top:9px; }
+  .about-card{ display:flex; gap:12px; align-items:flex-start; background:var(--card); border:1px solid var(--hair); border-radius:15px; padding:14px; margin-top:11px; }
+  .about-card>span{ font-size:22px; flex:none; line-height:1.2; }
+  .about-card b{ font-size:14.5px; } .about-card p{ font-size:12.5px; color:var(--ink-soft); line-height:1.55; margin-top:3px; }
 </style>
 </head>
 <body>
@@ -224,49 +240,74 @@
     </div>
   </div>
 
-  <div class="hero">
-    <div class="mascbox">
-      <svg id="masc" viewBox="0 0 100 100" aria-label="Ember">
-        <defs><radialGradient id="fg" cx="50%" cy="72%" r="70%"><stop offset="0" stop-color="#FFDF6B"/><stop offset="45%" stop-color="#FF9A3C"/><stop offset="100%" stop-color="#F0492A"/></radialGradient></defs>
-        <path d="M50 12 C62 26 78 34 78 56 A28 22 0 0 1 22 56 C22 36 36 30 41 20 C45 30 43 40 50 40 C57 40 55 24 50 12 Z" fill="url(#fg)"/>
-        <g id="face"></g>
-      </svg>
+  <!-- 🏠 홈 -->
+  <div class="view on" id="viewHome">
+    <div class="hero">
+      <div class="mascbox">
+        <svg id="masc" viewBox="0 0 100 100" aria-label="Ember">
+          <defs><radialGradient id="fg" cx="50%" cy="72%" r="70%"><stop offset="0" stop-color="#FFDF6B"/><stop offset="45%" stop-color="#FF9A3C"/><stop offset="100%" stop-color="#F0492A"/></radialGradient></defs>
+          <path d="M50 12 C62 26 78 34 78 56 A28 22 0 0 1 22 56 C22 36 36 30 41 20 C45 30 43 40 50 40 C57 40 55 24 50 12 Z" fill="url(#fg)"/>
+          <g id="face"></g>
+        </svg>
+      </div>
+      <div class="lvrow" id="lvrow" title="불꽃이 여정 보기"><span class="lvnum" id="lvNum">Lv.1</span><span class="lvname" id="lvName"></span><span class="lvcards">🃏</span></div>
+      <div class="xpwrap"><div class="xpbar"><div class="xpfill" id="xpFill"></div></div><div class="xptxt" id="xpTxt"></div></div>
+      <div class="streak2" id="streakBox">🔥 <b id="streakN">0</b></div>
     </div>
-    <div class="lvrow" id="lvrow" title="불꽃이 여정 보기"><span class="lvnum" id="lvNum">Lv.1</span><span class="lvname" id="lvName"></span><span class="lvcards">🃏</span></div>
-    <div class="xpwrap"><div class="xpbar"><div class="xpfill" id="xpFill"></div></div><div class="xptxt" id="xpTxt"></div></div>
-    <div class="streak2" id="streakBox">🔥 <b id="streakN">0</b></div>
-  </div>
 
-  <div class="sec did">
-    <div class="sec-h"><span id="didHdr"></span> <span class="tag" id="didTag"></span><span class="cnt" id="didCnt">0/0</span></div>
-    <div id="didList"></div>
-    <button class="add" id="addDid" type="button"></button>
-  </div>
-
-  <div class="sec dont">
-    <div class="sec-h"><span id="dontHdr"></span> <span class="tag" id="dontTag"></span></div>
-    <div id="dontList"></div>
-    <button class="add" id="addDont" type="button"></button>
-
-    <div class="saved" id="savedBox">
-      <div class="sh" id="savedTitle"></div>
-      <div class="srow" id="srow"></div>
-      <div class="track"><div class="fill" id="pigFill"></div></div>
-      <div class="goal"><span id="pigNow"></span><span id="pigGoal"></span></div>
-      <button class="gift" id="gift" type="button"></button>
+    <div class="sec did">
+      <div class="sec-h"><span id="didHdr"></span> <span class="tag" id="didTag"></span><span class="cnt" id="didCnt">0/0</span></div>
+      <div id="didList"></div>
+      <button class="add" id="addDid" type="button"></button>
     </div>
+
+    <div class="sec dont">
+      <div class="sec-h"><span id="dontHdr"></span> <span class="tag" id="dontTag"></span></div>
+      <div id="dontList"></div>
+      <button class="add" id="addDont" type="button"></button>
+
+      <div class="saved" id="savedBox">
+        <div class="sh" id="savedTitle"></div>
+        <div class="srow" id="srow"></div>
+        <div class="track"><div class="fill" id="pigFill"></div></div>
+        <div class="goal"><span id="pigNow"></span><span id="pigGoal"></span></div>
+        <button class="gift" id="gift" type="button"></button>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;"><button class="sharebtn" id="shareBtn" type="button"></button></div>
+    <div class="rest"><button class="restbtn" id="restBtn" type="button"></button></div>
   </div>
 
-  <div class="cal">
-    <div class="cal-h" id="calH"></div>
-    <div class="cal-grid" id="calGrid"></div>
+  <!-- 📅 달력 -->
+  <div class="view" id="viewCal">
+    <div class="cal cal-page">
+      <div class="cal-h" id="calH"></div>
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
+    <p class="cal-note" id="calNote"></p>
   </div>
 
-  <div style="margin-top:16px;"><button class="sharebtn" id="shareBtn" type="button"></button></div>
-
-  <div class="rest"><button class="restbtn" id="restBtn" type="button"></button></div>
-  <div class="foot" id="footTxt"></div>
+  <!-- ℹ️ 소개 -->
+  <div class="view" id="viewAbout">
+    <div class="about-hero">
+      <svg class="about-flame" viewBox="0 0 100 100"><path d="M50 12 C62 26 78 34 78 56 A28 22 0 0 1 22 56 C22 36 36 30 41 20 C45 30 43 40 50 40 C57 40 55 24 50 12 Z" fill="url(#fg)"/><ellipse cx="42" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><ellipse cx="58" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><circle cx="44" cy="54" r="2" fill="#fff"/><circle cx="60" cy="54" r="2" fill="#fff"/><path d="M43 64 Q50 73 57 64 Z" fill="#7A2A18"/></svg>
+      <h2 id="aboutTitle"></h2>
+      <p id="aboutLead"></p>
+    </div>
+    <div class="about-card"><span>✅</span><div><b id="aboutC1t"></b><p id="aboutC1d"></p></div></div>
+    <div class="about-card"><span>🛡</span><div><b id="aboutC2t"></b><p id="aboutC2d"></p></div></div>
+    <div class="about-card"><span>🔥</span><div><b id="aboutC3t"></b><p id="aboutC3d"></p></div></div>
+    <div class="about-card"><span>☁️</span><div><b id="aboutC4t"></b><p id="aboutC4d"></p></div></div>
+    <div class="foot" id="footTxt"></div>
+  </div>
 </div>
+
+<nav class="tabbar" id="tabbar">
+  <button class="tab on" data-view="Home" type="button"><span class="ti">🏠</span><span class="tl" id="tabHome"></span></button>
+  <button class="tab" data-view="Cal" type="button"><span class="ti">📅</span><span class="tl" id="tabCal"></span></button>
+  <button class="tab" data-view="About" type="button"><span class="ti">ℹ️</span><span class="tl" id="tabAbout"></span></button>
+</nav>
 
 <div class="sheet" id="sheet">
   <div class="sheetbox">
@@ -344,6 +385,12 @@
       msgBackingup:'백업 만드는 중…', msgBackupOk:'✅ 백업 완료! 코드를 꼭 적어두세요.', msgRestoring:'복원 중…', msgRestoreOk:'✅ 복원 완료! 새로고침할게요.',
       msgRestoreFail:'코드가 틀렸거나 만료됐어요.', msgFail:'실패: ', msgCopied:'📋 복사됨!', msgSyncing:'저장 중…', msgSynced:'✅ 새 내용 받아왔어요!', msgSyncClean:'✅ 이미 최신이에요', unlinkAsk:'백업을 해제할까요?\n(기록은 이 폰에 그대로 남아요)',
       galTitle:'🔥 불꽃이 여정', galHint:'꾸준히 실천하면 불꽃이가 이렇게 진화해요. 카드를 모아보세요!', galDone:'✓ 달성', galLeft:'🔒 {n}일 남음', galNow:'지금 여기',
+      tabHome:'홈', tabCal:'달력', tabAbout:'소개', calNote:'승리한 날에 불이 켜져요 🔥 꾸준함이 곧 실력!',
+      aboutTitle:'해냈다 + 참았다,<br>둘 다 <b>승리</b>예요 🔥', aboutLead:'좋은 습관은 해내고, 나쁜 습관은 참아요. 불꽃이를 키우며 매일 조금씩.',
+      aboutC1t:'✅ 해냈다', aboutC1d:'하고 싶은 좋은 습관을 완료하면 포인트가 쌓여요.',
+      aboutC2t:'🛡 참았다', aboutC2d:'참을 것을 하루 참으면 아낀 돈·시간·칼로리가 저금통에 모여요.',
+      aboutC3t:'🔥 불꽃이 성장', aboutC3d:'꾸준히 할수록 불씨가 봉황불로 진화해요. 레벨 배지(🃏)를 눌러 여정을 봐요.',
+      aboutC4t:'☁️ 백업', aboutC4d:'폰을 바꿔도 기록이 안 사라지게, 위쪽 ☁️ 버튼으로 백업하세요.',
       didEx:['물 8잔 마시기','30분 운동하기','계단 오르기 (심박 130+)','정해진 시간에 일어나기','숙제·할 일 하기','책 10쪽 읽기','명상 10분','스트레칭 5분','산책 20분','비타민 챙기기','일기 쓰기','영어 단어 10개'],
       dontEx:[{t:'케이크·야식 참기',u:'kcal',a:1500},{t:'군것질 참기',u:'money',a:4500},{t:'배달음식 참기',u:'money',a:12000},{t:'누워있기 참기',u:'time',a:30},{t:'폰 오래 보기 참기',u:'time',a:30},{t:'늦잠 참기',u:'time',a:30},{t:'담배 참기',u:'money',a:4500},{t:'술 참기',u:'money',a:15000},{t:'충동구매 참기',u:'money',a:10000},{t:'단 음료 참기',u:'kcal',a:200}]
     },
@@ -381,6 +428,12 @@
       msgBackingup:'Backing up…', msgBackupOk:'✅ Backed up! Be sure to save your code.', msgRestoring:'Restoring…', msgRestoreOk:'✅ Restored! Reloading.',
       msgRestoreFail:'Wrong or expired code.', msgFail:'Failed: ', msgCopied:'📋 Copied!', msgSyncing:'Saving…', msgSynced:'✅ Got new updates!', msgSyncClean:'✅ Already up to date', unlinkAsk:'Turn off backup?\n(Your data stays on this phone)',
       galTitle:"🔥 Ember's Journey", galHint:'Keep going and your Ember evolves like this. Collect them all!', galDone:'✓ Unlocked', galLeft:'🔒 {n} days left', galNow:'you are here',
+      tabHome:'Home', tabCal:'Calendar', tabAbout:'About', calNote:'Winning days light up 🔥 Consistency is the skill!',
+      aboutTitle:'Doing & resisting,<br>both are <b>wins</b> 🔥', aboutLead:'Do the good, resist the bad. Grow your flame a little every day.',
+      aboutC1t:'✅ Did it', aboutC1d:'Complete a good habit to earn points.',
+      aboutC2t:'🛡 Resisted', aboutC2d:'Resist for a day and the money, time & calories you saved pile up.',
+      aboutC3t:'🔥 Flame grows', aboutC3d:'Keep going and your ember evolves to a phoenix. Tap the level badge (🃏) for the journey.',
+      aboutC4t:'☁️ Backup', aboutC4d:'Back up with the ☁️ button so a phone change never wipes your progress.',
       didEx:['Drink 8 glasses of water','30 min workout','Climb stairs (HR 130+)','Wake up on time','Do homework / tasks','Read 10 pages','Meditate 10 min','Stretch 5 min','20 min walk','Take vitamins','Write a journal','10 new words'],
       dontEx:[{t:'No cake / late-night snack',u:'kcal',a:1500},{t:'No junk food',u:'money',a:4500},{t:'No food delivery',u:'money',a:12000},{t:'No lying around',u:'time',a:30},{t:'Under 30 min on phone',u:'time',a:30},{t:'No sleeping in',u:'time',a:30},{t:'No smoking',u:'money',a:4500},{t:'No drinking',u:'money',a:15000},{t:'No impulse buying',u:'money',a:10000},{t:'No sugary drinks',u:'kcal',a:200}]
     }
@@ -547,6 +600,10 @@
     document.getElementById('savedTitle').textContent=t('savedTitle'); document.getElementById('gift').textContent=t('gift');
     document.getElementById('restBtn').textContent=t('rest'); document.getElementById('footTxt').innerHTML=t('foot');
     document.getElementById('sheetAddBtn').textContent=t('sheetAdd'); document.getElementById('sheetLbl').textContent=t('sheetLbl'); document.getElementById('sheetCloseBtn').textContent=t('sheetDone');
+    document.getElementById('tabHome').textContent=t('tabHome'); document.getElementById('tabCal').textContent=t('tabCal'); document.getElementById('tabAbout').textContent=t('tabAbout');
+    document.getElementById('calNote').textContent=t('calNote');
+    document.getElementById('aboutTitle').innerHTML=t('aboutTitle'); document.getElementById('aboutLead').textContent=t('aboutLead');
+    ['1','2','3','4'].forEach(function(n){ document.getElementById('aboutC'+n+'t').textContent=t('aboutC'+n+'t'); document.getElementById('aboutC'+n+'d').textContent=t('aboutC'+n+'d'); });
     // 언어 선택
     var sel=document.getElementById('langSel'); sel.innerHTML='';
     Object.keys(I18N).forEach(function(code){ var o=document.createElement('option'); o.value=code; o.textContent=I18N[code].name; if(code===LANG)o.selected=true; sel.appendChild(o); });
@@ -654,6 +711,17 @@
     if(lv) lv.addEventListener('click',function(){ renderGallery(); gs.classList.add('on'); });
     document.getElementById('galleryClose').addEventListener('click',function(){ gs.classList.remove('on'); });
     gs.addEventListener('click',function(e){ if(e.target===gs) gs.classList.remove('on'); });
+  })();
+
+  /* 하단 탭 (홈/달력/소개) */
+  (function(){
+    var tabs=document.querySelectorAll('.tab');
+    tabs.forEach(function(tb){ tb.addEventListener('click',function(){
+      var v=tb.getAttribute('data-view');
+      document.querySelectorAll('.view').forEach(function(el){ el.classList.toggle('on', el.id==='view'+v); });
+      tabs.forEach(function(x){ x.classList.toggle('on', x===tb); });
+      try{ window.scrollTo(0,0); }catch(e){}
+    }); });
   })();
 
   applyStatic(); renderDid(); renderDont(); refreshAll(); save();
