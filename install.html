@@ -40,6 +40,12 @@
   .spark{ position:absolute; font-size:20px; opacity:0; animation:spark 2.4s ease-in-out infinite; }
   .spark.s1{ top:24px; left:30px; animation-delay:.1s; } .spark.s2{ top:40px; right:24px; animation-delay:.7s; } .spark.s3{ bottom:44px; left:40px; animation-delay:1.3s; }
   @keyframes spark{ 0%,100%{opacity:0; transform:scale(.5);} 40%{opacity:1; transform:scale(1.1);} }
+  .acc{ position:absolute; left:50%; pointer-events:none; z-index:3; }
+  .acc.crown{ top:2px; transform:translateX(-50%); font-size:44px; animation:accbob 3s ease-in-out infinite; }
+  .acc.star{ left:auto; right:38px; top:12px; font-size:28px; animation:twinkle 1.8s ease-in-out infinite; }
+  .glow{ position:absolute; left:50%; top:50%; width:170px; height:170px; margin:-85px 0 0 -85px; border-radius:50%; background:radial-gradient(circle, rgba(255,150,60,.45), transparent 62%); z-index:0; animation:twinkle 2.8s ease-in-out infinite; }
+  @keyframes accbob{ 0%,100%{transform:translateX(-50%) translateY(0);} 50%{transform:translateX(-50%) translateY(-3px);} }
+  @keyframes twinkle{ 0%,100%{opacity:.5;} 50%{opacity:1;} }
   .xp{ width:190px; height:12px; border-radius:999px; background:var(--hair); overflow:hidden; margin:2px auto 14px; }
   .xp i{ display:block; height:100%; border-radius:999px; background:linear-gradient(90deg,#FFB24D,var(--coral)); animation:xpfill 3.6s ease-in-out infinite; }
   @keyframes xpfill{ 0%{width:6%;} 54%{width:100%;} 100%{width:100%;} }
@@ -93,6 +99,7 @@
   <section class="slide" data-i="1">
     <div class="art">
       <svg class="flame grow" viewBox="0 0 100 100"><path d="M50 12 C62 26 78 34 78 56 A28 22 0 0 1 22 56 C22 36 36 30 41 20 C45 30 43 40 50 40 C57 40 55 24 50 12 Z" fill="url(#fg)"/><ellipse cx="42" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><ellipse cx="58" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><circle cx="44" cy="54" r="2" fill="#fff"/><circle cx="60" cy="54" r="2" fill="#fff"/><path d="M43 64 Q50 72 57 64 Z" fill="#7A2A18"/></svg>
+      <span class="acc star">⭐</span>
       <span class="chk" id="s1chk"></span>
     </div>
     <div class="xp"><i></i></div>
@@ -115,6 +122,9 @@
   <!-- 4) 설치/시작 -->
   <section class="slide" data-i="3">
     <div class="art" style="height:150px;">
+      <span class="glow"></span>
+      <span class="spark s1">✨</span><span class="spark s2">⭐</span><span class="spark s3">✨</span>
+      <span class="acc crown">👑</span>
       <svg class="flame idle" viewBox="0 0 100 100" style="width:104px;height:104px;"><path d="M50 12 C62 26 78 34 78 56 A28 22 0 0 1 22 56 C22 36 36 30 41 20 C45 30 43 40 50 40 C57 40 55 24 50 12 Z" fill="url(#fg)"/><ellipse cx="42" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><ellipse cx="58" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><circle cx="44" cy="54" r="2" fill="#fff"/><circle cx="60" cy="54" r="2" fill="#fff"/><path d="M43 64 Q50 73 57 64 Z" fill="#7A2A18"/></svg>
     </div>
     <h2 class="t" id="s3title"></h2>
