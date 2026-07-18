@@ -195,15 +195,15 @@
   .about-card{ display:flex; gap:12px; align-items:flex-start; background:var(--card); border:1px solid var(--hair); border-radius:15px; padding:14px; margin-top:11px; }
   .about-card>span{ font-size:22px; flex:none; line-height:1.2; }
   .about-card b{ font-size:14.5px; } .about-card p{ font-size:12.5px; color:var(--ink-soft); line-height:1.55; margin-top:3px; }
-  .qflow{ display:flex; align-items:center; justify-content:center; gap:1px; margin:10px auto 6px; max-width:330px; }
-  .qfcard{ flex:1; text-align:center; opacity:0; animation:qfin .5s ease forwards; }
-  .qfarrow{ color:var(--coral); font-weight:900; font-size:14px; flex:none; padding-bottom:20px; opacity:0; animation:qfin .5s ease forwards; }
-  @keyframes qfin{ from{opacity:0; transform:translateY(8px) scale(.9);} to{opacity:1; transform:none;} }
-  .qfflame{ position:relative; height:54px; display:flex; align-items:flex-end; justify-content:center; }
-  .qfflame svg{ width:42px; height:42px; }
-  .qfacc{ position:absolute; top:-4px; left:50%; transform:translateX(-50%); font-size:17px; }
-  .qflvl{ font-size:9px; font-weight:900; color:var(--coral); margin-top:3px; letter-spacing:.02em; }
-  .qfday{ font-size:10.5px; font-weight:800; color:var(--ink-soft); margin-top:1px; }
+  @keyframes qfin{ from{opacity:0; transform:translateY(10px) scale(.92);} to{opacity:1; transform:none;} }
+  #qflow.qgrid{ display:grid; grid-template-columns:1fr 1fr; gap:11px; width:100%; max-width:342px; margin:8px auto 2px; }
+  .qtc{ border-radius:16px; padding:11px 9px 13px; text-align:center; position:relative; background:linear-gradient(165deg,#2b2444,#1a1530); color:#F3E9D8; border:2px solid #C9A24B; box-shadow:0 10px 22px -10px rgba(0,0,0,.55); opacity:0; animation:qfin .5s ease forwards; }
+  .qtc .num{ font-family:Georgia,'Times New Roman',serif; font-size:11px; letter-spacing:2px; color:#E9C877; font-weight:800; }
+  .qtc .fw{ height:78px; display:flex; align-items:center; justify-content:center; position:relative; margin:3px 0 4px; }
+  .qtc .fw svg{ width:64px; height:64px; }
+  .qtc .nm{ font-size:12.5px; font-weight:800; letter-spacing:-.01em; }
+  .qtc .dy{ font-size:10px; opacity:.82; margin-top:3px; font-weight:700; }
+  .qtc .tacc.crown{ font-size:25px; top:-2px; } .qtc .tacc.hat{ font-size:22px; top:2px; } .qtc .tacc.bow{ font-size:18px; top:4px; } .qtc .tacc.spark{ font-size:13px; right:14px; top:8px; } .qtc .tacc.spark2{ font-size:11px; left:14px; top:18px; }
 </style>
 </head>
 <body>
@@ -695,13 +695,13 @@
   }
   function renderQuestFlow(){
     var box=document.getElementById('qflow'); if(!box) return;
-    var days=tl('qfDays')||['3주','2개월','8개월','2년'];
+    box.className='qgrid';
+    var days=tl('qfDays')||['3주','2개월','8개월','2년'], levels=tl('levels'), ROMAN=['I','II','III','IV','V'];
     box.innerHTML='';
     [1,2,3,4].forEach(function(stage,i){
-      var c=document.createElement('div'); c.className='qfcard'; c.style.animationDelay=(i*0.28)+'s';
-      c.innerHTML=questFlameMini(stage)+'<div class="qflvl">Lv.'+(stage+1)+'</div><div class="qfday">'+days[i]+'</div>';
+      var c=document.createElement('div'); c.className='qtc'; c.style.animationDelay=(i*0.22)+'s';
+      c.innerHTML='<div class="num">'+ROMAN[stage]+'</div>'+cardFlame(stage)+'<div class="nm">'+levels[stage]+'</div><div class="dy">'+days[i]+'</div>';
       box.appendChild(c);
-      if(i<3){ var a=document.createElement('div'); a.className='qfarrow'; a.textContent='›'; a.style.animationDelay=(i*0.28+0.14)+'s'; box.appendChild(a); }
     });
   }
   function renderGallery(){
