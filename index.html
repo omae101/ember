@@ -195,6 +195,15 @@
   .about-card{ display:flex; gap:12px; align-items:flex-start; background:var(--card); border:1px solid var(--hair); border-radius:15px; padding:14px; margin-top:11px; }
   .about-card>span{ font-size:22px; flex:none; line-height:1.2; }
   .about-card b{ font-size:14.5px; } .about-card p{ font-size:12.5px; color:var(--ink-soft); line-height:1.55; margin-top:3px; }
+  .qflow{ display:flex; align-items:center; justify-content:center; gap:1px; margin:10px auto 6px; max-width:330px; }
+  .qfcard{ flex:1; text-align:center; opacity:0; animation:qfin .5s ease forwards; }
+  .qfarrow{ color:var(--coral); font-weight:900; font-size:14px; flex:none; padding-bottom:20px; opacity:0; animation:qfin .5s ease forwards; }
+  @keyframes qfin{ from{opacity:0; transform:translateY(8px) scale(.9);} to{opacity:1; transform:none;} }
+  .qfflame{ position:relative; height:54px; display:flex; align-items:flex-end; justify-content:center; }
+  .qfflame svg{ width:42px; height:42px; }
+  .qfacc{ position:absolute; top:-4px; left:50%; transform:translateX(-50%); font-size:17px; }
+  .qflvl{ font-size:9px; font-weight:900; color:var(--coral); margin-top:3px; letter-spacing:.02em; }
+  .qfday{ font-size:10.5px; font-weight:800; color:var(--ink-soft); margin-top:1px; }
 </style>
 </head>
 <body>
@@ -220,8 +229,7 @@
     <div class="ititle" id="it1"></div><div class="idesc" id="id1"></div>
   </div>
   <div class="islide" data-i="2">
-    <div class="idemo"><span class="hat">🎩</span><svg class="dflame g2" viewBox="0 0 100 100"><path d="M50 12 C62 26 78 34 78 56 A28 22 0 0 1 22 56 C22 36 36 30 41 20 C45 30 43 40 50 40 C57 40 55 24 50 12 Z" fill="url(#fg)"/><ellipse cx="42" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><ellipse cx="58" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><circle cx="44" cy="54" r="2" fill="#fff"/><circle cx="60" cy="54" r="2" fill="#fff"/><circle cx="33.5" cy="63" r="3" fill="#FF7A5A" opacity=".45"/><circle cx="66.5" cy="63" r="3" fill="#FF7A5A" opacity=".45"/><path d="M43 65 Q50 71 57 65" stroke="#7A2A18" stroke-width="2.6" fill="none" stroke-linecap="round"/></svg></div>
-    <div class="ixp"><i></i></div>
+    <div class="qflow" id="qflow"></div>
     <div class="ititle" id="it2"></div><div class="idesc" id="id2"></div>
   </div>
   <div class="idots" id="idots"><i class="on"></i><i></i><i></i></div>
@@ -371,7 +379,7 @@
       quests:['','3주 · 습관의 시작','약 2개월 · 습관 정착','약 8개월 · 몸에 배는 중','약 2년 · 완전 체화 🏆'],
       intro:[['해낸 것도, 참아낸 것도<br><b>오늘의 승리</b> 🔥','불꽃이와 함께 좋은 습관은 해내고,<br>나쁜 습관은 참아요. 둘 다 승리예요.'],
              ['① 해낼수록 <b>불씨가 커져요</b>','할 일을 하나씩 완료할 때마다<br>불꽃이가 쑥쑥 자라요.'],
-             ['② 21일 키우면 <b>퀘스트 클리어!</b>','꾸준히 채우면 다음 불꽃으로 진화하고,<br>모자·아이템으로 불꽃이를 꾸며요 🎩']],
+             ['③ <b>퀘스트</b> 깨며 진화해요','3주 → 2개월 → 8개월 → 2년,<br>불씨가 <b>봉황불</b>까지 자라요 👑']],
       introChk:'✓ 완료 +10', iNext:'다음', iStart:'시작하기 🔥', iSkip:'건너뛰기',
       cloudTitle:'☁️ 백업 / 복원', cloudDesc:'폰을 바꿔도 불꽃이와 기록이 사라지지 않게 백업해요.',
       cloudBackup:'이 기기 백업하기', cloudOr:'또는 — 새 폰이라면 코드로 복원', cloudCodePh:'8자리 코드', cloudRestore:'복원',
@@ -379,7 +387,7 @@
       cloudCopy:'📋 코드 복사', cloudSync:'🔄 지금 저장', cloudUnlink:'백업 해제',
       msgBackingup:'백업 만드는 중…', msgBackupOk:'✅ 백업 완료! 코드를 꼭 적어두세요.', msgRestoring:'복원 중…', msgRestoreOk:'✅ 복원 완료! 새로고침할게요.',
       msgRestoreFail:'코드가 틀렸거나 만료됐어요.', msgFail:'실패: ', msgCopied:'📋 복사됨!', msgSyncing:'저장 중…', msgSynced:'✅ 새 내용 받아왔어요!', msgSyncClean:'✅ 이미 최신이에요', unlinkAsk:'백업을 해제할까요?\n(기록은 이 폰에 그대로 남아요)',
-      galTitle:'🔥 불꽃이 여정', galHint:'꾸준히 실천하면 불꽃이가 이렇게 진화해요. 카드를 모아보세요!', galDone:'✓ 달성', galLeft:'🔒 {n}일 남음', galNow:'지금 여기',
+      galTitle:'🔥 불꽃이 여정', galHint:'꾸준히 실천하면 불꽃이가 이렇게 진화해요. 카드를 모아보세요!', galDone:'✓ 달성', galLeft:'🔒 {n}일 남음', galNow:'지금 여기', qfDays:['3주','2개월','8개월','2년'],
       tabHome:'홈', tabCal:'달력', tabAbout:'소개', calNote:'승리한 날에 불이 켜져요 🔥 꾸준함이 곧 실력!',
       aboutTitle:'해냈다 + 참았다,<br>둘 다 <b>승리</b>예요 🔥', aboutLead:'좋은 습관은 해내고, 나쁜 습관은 참아요. 불꽃이를 키우며 매일 조금씩.',
       aboutC1t:'✅ 해냈다', aboutC1d:'하고 싶은 좋은 습관을 완료하면 포인트가 쌓여요.',
@@ -414,7 +422,7 @@
       quests:['','3 weeks · Habit forming','~2 months · Habit set','~8 months · Sinking in','~2 years · Fully mastered 🏆'],
       intro:[['Doing it, and resisting it —<br>both are <b>today\'s wins</b> 🔥','With Ember, build good habits and resist the bad ones. Both count as wins.'],
              ['① The more you do, <b>the bigger it grows</b>','Every time you finish a task,<br>your Ember grows a little more.'],
-             ['② Keep it 21 days, <b>clear the quest!</b>','Stay consistent to evolve to the next flame,<br>and dress up Ember with hats & items 🎩']],
+             ['③ Clear <b>quests</b> & evolve','3 weeks → 2 → 8 months → 2 years,<br>from ember to <b>phoenix fire</b> 👑']],
       introChk:'✓ Done +10', iNext:'Next', iStart:'Get started 🔥', iSkip:'Skip',
       cloudTitle:'☁️ Backup / Restore', cloudDesc:'Back up so your flame & progress survive a phone change.',
       cloudBackup:'Back up this device', cloudOr:'or — new phone? restore with a code', cloudCodePh:'8-char code', cloudRestore:'Restore',
@@ -422,7 +430,7 @@
       cloudCopy:'📋 Copy code', cloudSync:'🔄 Save now', cloudUnlink:'Turn off backup',
       msgBackingup:'Backing up…', msgBackupOk:'✅ Backed up! Be sure to save your code.', msgRestoring:'Restoring…', msgRestoreOk:'✅ Restored! Reloading.',
       msgRestoreFail:'Wrong or expired code.', msgFail:'Failed: ', msgCopied:'📋 Copied!', msgSyncing:'Saving…', msgSynced:'✅ Got new updates!', msgSyncClean:'✅ Already up to date', unlinkAsk:'Turn off backup?\n(Your data stays on this phone)',
-      galTitle:"🔥 Ember's Journey", galHint:'Keep going and your Ember evolves like this. Collect them all!', galDone:'✓ Unlocked', galLeft:'🔒 {n} days left', galNow:'you are here',
+      galTitle:"🔥 Ember's Journey", galHint:'Keep going and your Ember evolves like this. Collect them all!', galDone:'✓ Unlocked', galLeft:'🔒 {n} days left', galNow:'you are here', qfDays:['3wk','2mo','8mo','2yr'],
       tabHome:'Home', tabCal:'Calendar', tabAbout:'About', calNote:'Winning days light up 🔥 Consistency is the skill!',
       aboutTitle:'Doing & resisting,<br>both are <b>wins</b> 🔥', aboutLead:'Do the good, resist the bad. Grow your flame a little every day.',
       aboutC1t:'✅ Did it', aboutC1d:'Complete a good habit to earn points.',
@@ -612,6 +620,7 @@
   /* 온보딩 (첫 실행 + ? 버튼 다시보기) */
   function startIntro(){
     var intro=document.getElementById('intro'); intro.classList.remove('hide');
+    renderQuestFlow();
     var ci=0, slides=intro.querySelectorAll('.islide'), dots=document.getElementById('idots').children, ibtn=document.getElementById('ibtn');
     function show(i){ ci=i; for(var k=0;k<slides.length;k++){ slides[k].classList.toggle('on',k===i); dots[k].classList.toggle('on',k===i);} ibtn.textContent=(i===slides.length-1)?t('iStart'):t('iNext'); }
     function finish(){ try{localStorage.setItem('ember_onboarded','1');}catch(e){} intro.classList.add('hide'); }
@@ -678,6 +687,22 @@
     if(stage>=4) acc+='<span class="tacc crown">👑</span><span class="tacc spark2">✨</span>';
     var sc=[0.66,0.82,0.94,1.0,1.06][stage]||1;
     return '<div class="fw">'+acc+'<svg viewBox="0 0 100 100" style="transform:scale('+sc+')"><path d="M50 12 C62 26 78 34 78 56 A28 22 0 0 1 22 56 C22 36 36 30 41 20 C45 30 43 40 50 40 C57 40 55 24 50 12 Z" fill="url(#fg)"/><ellipse cx="42" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><ellipse cx="58" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><circle cx="44" cy="54" r="2" fill="#fff"/><circle cx="60" cy="54" r="2" fill="#fff"/><path d="M43 64 Q50 72 57 64 Z" fill="#7A2A18"/></svg></div>';
+  }
+  function questFlameMini(stage){
+    var acc = stage===1?'⭐':stage===2?'🎀':stage===3?'🎩':stage===4?'👑':'';
+    var sc=[0,0.78,0.9,1.02,1.12][stage]||1;
+    return '<div class="qfflame">'+(acc?'<span class="qfacc">'+acc+'</span>':'')+'<svg viewBox="0 0 100 100" style="transform:scale('+sc+')"><path d="M50 12 C62 26 78 34 78 56 A28 22 0 0 1 22 56 C22 36 36 30 41 20 C45 30 43 40 50 40 C57 40 55 24 50 12 Z" fill="url(#fg)"/><ellipse cx="42" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><ellipse cx="58" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><path d="M44 64 Q50 70 56 64 Z" fill="#7A2A18"/></svg></div>';
+  }
+  function renderQuestFlow(){
+    var box=document.getElementById('qflow'); if(!box) return;
+    var days=tl('qfDays')||['3주','2개월','8개월','2년'];
+    box.innerHTML='';
+    [1,2,3,4].forEach(function(stage,i){
+      var c=document.createElement('div'); c.className='qfcard'; c.style.animationDelay=(i*0.28)+'s';
+      c.innerHTML=questFlameMini(stage)+'<div class="qflvl">Lv.'+(stage+1)+'</div><div class="qfday">'+days[i]+'</div>';
+      box.appendChild(c);
+      if(i<3){ var a=document.createElement('div'); a.className='qfarrow'; a.textContent='›'; a.style.animationDelay=(i*0.28+0.14)+'s'; box.appendChild(a); }
+    });
   }
   function renderGallery(){
     var box=document.getElementById('galleryBox'); if(!box)return;
