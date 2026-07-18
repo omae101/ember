@@ -197,13 +197,13 @@
   .about-card b{ font-size:14.5px; } .about-card p{ font-size:12.5px; color:var(--ink-soft); line-height:1.55; margin-top:3px; }
   @keyframes qfin{ from{opacity:0; transform:translateY(10px) scale(.92);} to{opacity:1; transform:none;} }
   #qflow.qgrid{ display:grid; grid-template-columns:1fr 1fr; gap:11px; width:100%; max-width:342px; margin:8px auto 2px; }
-  .qtc{ border-radius:16px; padding:11px 9px 13px; text-align:center; position:relative; background:linear-gradient(165deg,#2b2444,#1a1530); color:#F3E9D8; border:2px solid #C9A24B; box-shadow:0 10px 22px -10px rgba(0,0,0,.55); opacity:0; animation:qfin .5s ease forwards; }
-  .qtc .num{ font-family:Georgia,'Times New Roman',serif; font-size:11px; letter-spacing:2px; color:#E9C877; font-weight:800; }
-  .qtc .fw{ height:78px; display:flex; align-items:center; justify-content:center; position:relative; margin:3px 0 4px; }
-  .qtc .fw svg{ width:64px; height:64px; }
-  .qtc .nm{ font-size:12.5px; font-weight:800; letter-spacing:-.01em; }
-  .qtc .dy{ font-size:10px; opacity:.82; margin-top:3px; font-weight:700; }
-  .qtc .tacc.crown{ font-size:25px; top:-2px; } .qtc .tacc.hat{ font-size:22px; top:2px; } .qtc .tacc.bow{ font-size:18px; top:4px; } .qtc .tacc.spark{ font-size:13px; right:14px; top:8px; } .qtc .tacc.spark2{ font-size:11px; left:14px; top:18px; }
+  .qtc{ border-radius:16px; padding:9px 8px 10px; text-align:center; position:relative; overflow:hidden; background:linear-gradient(165deg,#2b2444,#1a1530); color:#F3E9D8; border:2px solid #C9A24B; box-shadow:0 10px 22px -10px rgba(0,0,0,.55); opacity:0; animation:qfin .5s ease forwards; }
+  .qtc .num{ font-family:Georgia,'Times New Roman',serif; font-size:12px; letter-spacing:2px; color:#E9C877; font-weight:800; }
+  .qtc .fw{ height:98px; display:flex; align-items:center; justify-content:center; position:relative; margin:2px 0 3px; }
+  .qtc .fw::before{ content:''; position:absolute; width:86px; height:86px; border-radius:50%; background:radial-gradient(circle, rgba(255,140,50,.55), transparent 62%); z-index:0; }
+  .qtc .fw svg{ width:80px; height:80px; position:relative; z-index:1; filter:drop-shadow(0 4px 10px rgba(255,120,60,.4)); }
+  .qtc .dy{ font-size:11px; opacity:.92; margin-top:2px; font-weight:800; color:#F3E9D8; }
+  .qtc .tacc.crown{ font-size:30px; top:-5px; z-index:2; } .qtc .tacc.hat{ font-size:26px; top:-1px; z-index:2; } .qtc .tacc.bow{ font-size:21px; top:2px; z-index:2; } .qtc .tacc.spark{ font-size:16px; right:11px; top:5px; z-index:2; } .qtc .tacc.spark2{ font-size:13px; left:11px; top:16px; z-index:2; }
 </style>
 </head>
 <body>
@@ -700,7 +700,7 @@
     box.innerHTML='';
     [1,2,3,4].forEach(function(stage,i){
       var c=document.createElement('div'); c.className='qtc'; c.style.animationDelay=(i*0.22)+'s';
-      c.innerHTML='<div class="num">'+ROMAN[stage]+'</div>'+cardFlame(stage)+'<div class="nm">'+levels[stage]+'</div><div class="dy">'+days[i]+'</div>';
+      c.innerHTML='<div class="num">'+ROMAN[stage]+'</div>'+cardFlame(stage)+'<div class="dy">'+days[i]+'</div>';
       box.appendChild(c);
     });
   }
