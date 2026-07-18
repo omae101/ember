@@ -24,7 +24,7 @@
   :root[data-theme="dark"]{ --ground:#14201A; --ground2:#1B291F; --card:#1C2620; --ink:#E9F0EA; --ink-soft:#93A69A; --hair:#2C3A30; --coral:#FF7A4D; --did:#39C489; --did-soft:#123020; --dont:#C08FB4; --dont-soft:#2E2230; --gold:#E4B45A; --gold-soft:#322813; }
   *{box-sizing:border-box;} html,body{margin:0;}
   body{ font-family:var(--font); color:var(--ink); background:radial-gradient(120% 46% at 50% -6%, var(--ground2), transparent 62%), var(--ground); -webkit-font-smoothing:antialiased; min-height:100dvh; }
-  .wrap{ max-width:440px; margin:0 auto; padding:28px 22px calc(92px + env(safe-area-inset-bottom)); }
+  .wrap{ max-width:440px; margin:0 auto; padding:28px 22px calc(44px + env(safe-area-inset-bottom)); }
   .top{display:flex; align-items:center; justify-content:space-between; gap:8px;}
   .wm{font-size:15px; font-weight:800; letter-spacing:-.02em;} .wm b{color:var(--coral);}
   .topr{display:flex; align-items:center; gap:8px;}
@@ -233,8 +233,9 @@
   <div class="top">
     <div class="wm">Ember · <span id="appsub">Today's Wins</span></div>
     <div class="topr">
+      <button class="helpbtn" id="calBtn" type="button" title="달력 / Calendar">📅</button>
+      <button class="helpbtn" id="helpBtn" type="button" title="소개 / About">ℹ️</button>
       <button class="helpbtn" id="cloudBtn" type="button" title="백업 / Backup">☁️</button>
-      <button class="helpbtn" id="helpBtn" type="button" title="앱 소개">?</button>
       <select class="langsel" id="langSel"></select>
       <div class="pts">⭐ <span class="n" id="ptsN">0</span> P</div>
     </div>
@@ -302,12 +303,6 @@
     <div class="foot" id="footTxt"></div>
   </div>
 </div>
-
-<nav class="tabbar" id="tabbar">
-  <button class="tab on" data-view="Home" type="button"><span class="ti">🏠</span><span class="tl" id="tabHome"></span></button>
-  <button class="tab" data-view="Cal" type="button"><span class="ti">📅</span><span class="tl" id="tabCal"></span></button>
-  <button class="tab" data-view="About" type="button"><span class="ti">ℹ️</span><span class="tl" id="tabAbout"></span></button>
-</nav>
 
 <div class="sheet" id="sheet">
   <div class="sheetbox">
@@ -600,7 +595,6 @@
     document.getElementById('savedTitle').textContent=t('savedTitle'); document.getElementById('gift').textContent=t('gift');
     document.getElementById('restBtn').textContent=t('rest'); document.getElementById('footTxt').innerHTML=t('foot');
     document.getElementById('sheetAddBtn').textContent=t('sheetAdd'); document.getElementById('sheetLbl').textContent=t('sheetLbl'); document.getElementById('sheetCloseBtn').textContent=t('sheetDone');
-    document.getElementById('tabHome').textContent=t('tabHome'); document.getElementById('tabCal').textContent=t('tabCal'); document.getElementById('tabAbout').textContent=t('tabAbout');
     document.getElementById('calNote').textContent=t('calNote');
     document.getElementById('aboutTitle').innerHTML=t('aboutTitle'); document.getElementById('aboutLead').textContent=t('aboutLead');
     ['1','2','3','4'].forEach(function(n){ document.getElementById('aboutC'+n+'t').textContent=t('aboutC'+n+'t'); document.getElementById('aboutC'+n+'d').textContent=t('aboutC'+n+'d'); });
@@ -713,15 +707,15 @@
     gs.addEventListener('click',function(e){ if(e.target===gs) gs.classList.remove('on'); });
   })();
 
-  /* 하단 탭 (홈/달력/소개) */
+  /* 상단 📅 달력 아이콘 (홈 ↔ 달력 전환) */
   (function(){
-    var tabs=document.querySelectorAll('.tab');
-    tabs.forEach(function(tb){ tb.addEventListener('click',function(){
-      var v=tb.getAttribute('data-view');
-      document.querySelectorAll('.view').forEach(function(el){ el.classList.toggle('on', el.id==='view'+v); });
-      tabs.forEach(function(x){ x.classList.toggle('on', x===tb); });
+    var calBtn=document.getElementById('calBtn'), home=document.getElementById('viewHome'), cal=document.getElementById('viewCal');
+    if(calBtn) calBtn.addEventListener('click',function(){
+      var onCal=cal.classList.contains('on');
+      cal.classList.toggle('on', !onCal); home.classList.toggle('on', onCal);
+      calBtn.style.color = !onCal ? 'var(--coral)' : '';
       try{ window.scrollTo(0,0); }catch(e){}
-    }); });
+    });
   })();
 
   applyStatic(); renderDid(); renderDont(); refreshAll(); save();
