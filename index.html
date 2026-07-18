@@ -140,6 +140,17 @@
   .exchip{background:var(--ground); border:1px solid var(--hair); border-radius:999px; padding:8px 13px; font-family:inherit; font-size:13px; font-weight:600; color:var(--ink); cursor:pointer; transition:transform .1s;}
   .exchip:active{transform:scale(.95);} .exchip.added{background:var(--did); border-color:var(--did); color:#fff;}
   .sheet-x{margin-top:18px; width:100%; padding:12px; border:none; background:var(--ground); color:var(--ink-soft); border-radius:12px; font-family:inherit; font-weight:700; font-size:14px; cursor:pointer;}
+  .cloud-desc{ font-size:13px; color:var(--ink-soft); line-height:1.6; margin-bottom:16px; }
+  .cbtn{ width:100%; padding:14px; border-radius:13px; border:none; font-family:inherit; font-size:14.5px; font-weight:800; cursor:pointer; background:var(--coral); color:#fff; margin-bottom:9px; }
+  .cbtn:active{ transform:scale(.99); }
+  .cbtn.ghost{ background:var(--ground); color:var(--ink); }
+  .cbtn.warn{ background:transparent; color:var(--dont); font-size:13px; font-weight:700; margin-top:2px; }
+  .cor{ text-align:center; color:var(--ink-soft); font-size:12px; margin:16px 0 10px; }
+  .codebox{ text-align:center; background:var(--ground); border:1.5px dashed var(--coral); border-radius:14px; padding:18px; margin:2px 0 14px; }
+  .codebox .c{ font-size:30px; font-weight:900; letter-spacing:6px; color:var(--coral); font-family:var(--num); }
+  .codebox .t{ font-size:12px; color:var(--ink-soft); margin-top:8px; font-weight:700; line-height:1.5; }
+  .cloudmsg{ font-size:13px; font-weight:700; margin-top:6px; min-height:18px; text-align:center; }
+  .cloudmsg.ok{ color:var(--did); } .cloudmsg.err{ color:var(--dont); }
 </style>
 </head>
 <body>
@@ -166,6 +177,7 @@
   <div class="top">
     <div class="wm">Ember · <span id="appsub">Today's Wins</span></div>
     <div class="topr">
+      <button class="helpbtn" id="cloudBtn" type="button" title="백업 / Backup">☁️</button>
       <button class="helpbtn" id="helpBtn" type="button" title="앱 소개">?</button>
       <select class="langsel" id="langSel"></select>
       <div class="pts">⭐ <span class="n" id="ptsN">0</span> P</div>
@@ -226,6 +238,26 @@
   </div>
 </div>
 
+<div class="sheet" id="cloudSheet">
+  <div class="sheetbox">
+    <div class="sheet-h" id="cloudTitle"></div>
+    <p class="cloud-desc" id="cloudDesc"></p>
+    <div id="cloudNew">
+      <button class="cbtn" id="cloudBackupBtn" type="button"></button>
+      <div class="cor" id="cloudOr"></div>
+      <div class="sheet-in"><input id="cloudCodeIn" maxlength="8" autocomplete="off" style="text-transform:uppercase;letter-spacing:3px;text-align:center;font-weight:800;"><button id="cloudRestoreBtn" type="button"></button></div>
+    </div>
+    <div id="cloudDone" style="display:none;">
+      <div class="codebox"><div class="c" id="cloudCode">········</div><div class="t" id="cloudCodeHint"></div></div>
+      <button class="cbtn ghost" id="cloudCopyBtn" type="button"></button>
+      <button class="cbtn ghost" id="cloudSyncBtn" type="button"></button>
+      <button class="cbtn warn" id="cloudUnlinkBtn" type="button"></button>
+    </div>
+    <div class="cloudmsg" id="cloudMsg"></div>
+    <button class="sheet-x" id="cloudCloseBtn" type="button"></button>
+  </div>
+</div>
+
 <script>
   /* ================= i18n ================= */
   var I18N={
@@ -256,6 +288,12 @@
              ['① 해낼수록 <b>불씨가 커져요</b>','할 일을 하나씩 완료할 때마다<br>불꽃이가 쑥쑥 자라요.'],
              ['② 21일 키우면 <b>퀘스트 클리어!</b>','꾸준히 채우면 다음 불꽃으로 진화하고,<br>모자·아이템으로 불꽃이를 꾸며요 🎩']],
       introChk:'✓ 완료 +10', iNext:'다음', iStart:'시작하기 🔥', iSkip:'건너뛰기',
+      cloudTitle:'☁️ 백업 / 복원', cloudDesc:'폰을 바꿔도 불꽃이와 기록이 사라지지 않게 백업해요.',
+      cloudBackup:'이 기기 백업하기', cloudOr:'또는 — 새 폰이라면 코드로 복원', cloudCodePh:'8자리 코드', cloudRestore:'복원',
+      cloudDoneDesc:'이 기기는 백업 중이에요 ✓ 새 폰에서 아래 코드로 복원하세요.', cloudCodeHint:'새 폰 백업 화면에 이 코드를 입력',
+      cloudCopy:'📋 코드 복사', cloudSync:'🔄 지금 저장', cloudUnlink:'백업 해제',
+      msgBackingup:'백업 만드는 중…', msgBackupOk:'✅ 백업 완료! 코드를 꼭 적어두세요.', msgRestoring:'복원 중…', msgRestoreOk:'✅ 복원 완료! 새로고침할게요.',
+      msgRestoreFail:'코드가 틀렸거나 만료됐어요.', msgFail:'실패: ', msgCopied:'📋 복사됨!', msgSyncing:'저장 중…', msgSynced:'✅ 새 내용 받아왔어요!', msgSyncClean:'✅ 이미 최신이에요', unlinkAsk:'백업을 해제할까요?\n(기록은 이 폰에 그대로 남아요)',
       didEx:['물 8잔 마시기','30분 운동하기','계단 오르기 (심박 130+)','정해진 시간에 일어나기','숙제·할 일 하기','책 10쪽 읽기','명상 10분','스트레칭 5분','산책 20분','비타민 챙기기','일기 쓰기','영어 단어 10개'],
       dontEx:[{t:'케이크·야식 참기',u:'kcal',a:1500},{t:'군것질 참기',u:'money',a:4500},{t:'배달음식 참기',u:'money',a:12000},{t:'누워있기 참기',u:'time',a:30},{t:'폰 오래 보기 참기',u:'time',a:30},{t:'늦잠 참기',u:'time',a:30},{t:'담배 참기',u:'money',a:4500},{t:'술 참기',u:'money',a:15000},{t:'충동구매 참기',u:'money',a:10000},{t:'단 음료 참기',u:'kcal',a:200}]
     },
@@ -286,6 +324,12 @@
              ['① The more you do, <b>the bigger it grows</b>','Every time you finish a task,<br>your Ember grows a little more.'],
              ['② Keep it 21 days, <b>clear the quest!</b>','Stay consistent to evolve to the next flame,<br>and dress up Ember with hats & items 🎩']],
       introChk:'✓ Done +10', iNext:'Next', iStart:'Get started 🔥', iSkip:'Skip',
+      cloudTitle:'☁️ Backup / Restore', cloudDesc:'Back up so your flame & progress survive a phone change.',
+      cloudBackup:'Back up this device', cloudOr:'or — new phone? restore with a code', cloudCodePh:'8-char code', cloudRestore:'Restore',
+      cloudDoneDesc:'This device is backed up ✓ Restore on a new phone with the code below.', cloudCodeHint:'Enter this code on your new phone',
+      cloudCopy:'📋 Copy code', cloudSync:'🔄 Save now', cloudUnlink:'Turn off backup',
+      msgBackingup:'Backing up…', msgBackupOk:'✅ Backed up! Be sure to save your code.', msgRestoring:'Restoring…', msgRestoreOk:'✅ Restored! Reloading.',
+      msgRestoreFail:'Wrong or expired code.', msgFail:'Failed: ', msgCopied:'📋 Copied!', msgSyncing:'Saving…', msgSynced:'✅ Got new updates!', msgSyncClean:'✅ Already up to date', unlinkAsk:'Turn off backup?\n(Your data stays on this phone)',
       didEx:['Drink 8 glasses of water','30 min workout','Climb stairs (HR 130+)','Wake up on time','Do homework / tasks','Read 10 pages','Meditate 10 min','Stretch 5 min','20 min walk','Take vitamins','Write a journal','10 new words'],
       dontEx:[{t:'No cake / late-night snack',u:'kcal',a:1500},{t:'No junk food',u:'money',a:4500},{t:'No food delivery',u:'money',a:12000},{t:'No lying around',u:'time',a:30},{t:'Under 30 min on phone',u:'time',a:30},{t:'No sleeping in',u:'time',a:30},{t:'No smoking',u:'money',a:4500},{t:'No drinking',u:'money',a:15000},{t:'No impulse buying',u:'money',a:10000},{t:'No sugary drinks',u:'kcal',a:200}]
     }
@@ -476,8 +520,56 @@
   if(!localStorage.getItem('ember_onboarded')) startIntro(); else document.getElementById('intro').classList.add('hide');
   document.getElementById('helpBtn').addEventListener('click', startIntro);
 
+  /* ☁️ 백업/복원 */
+  (function(){
+    var sheet=document.getElementById('cloudSheet');
+    function cmsg(cls,txt){ var e=document.getElementById('cloudMsg'); e.className='cloudmsg'+(cls?' '+cls:''); e.textContent=txt; }
+    function renderCloud(){
+      var backed=window.EmberSync&&EmberSync.isBackedUp();
+      document.getElementById('cloudTitle').textContent=t('cloudTitle');
+      document.getElementById('cloudDesc').textContent=backed?t('cloudDoneDesc'):t('cloudDesc');
+      document.getElementById('cloudNew').style.display=backed?'none':'block';
+      document.getElementById('cloudDone').style.display=backed?'block':'none';
+      document.getElementById('cloudCloseBtn').textContent=t('sheetDone');
+      cmsg('','');
+      if(backed){
+        document.getElementById('cloudCode').textContent=(EmberSync.code()||'········');
+        document.getElementById('cloudCodeHint').textContent=t('cloudCodeHint');
+        document.getElementById('cloudCopyBtn').textContent=t('cloudCopy');
+        document.getElementById('cloudSyncBtn').textContent=t('cloudSync');
+        document.getElementById('cloudUnlinkBtn').textContent=t('cloudUnlink');
+      } else {
+        document.getElementById('cloudBackupBtn').textContent=t('cloudBackup');
+        document.getElementById('cloudOr').textContent=t('cloudOr');
+        document.getElementById('cloudCodeIn').placeholder=t('cloudCodePh');
+        document.getElementById('cloudRestoreBtn').textContent=t('cloudRestore');
+      }
+    }
+    document.getElementById('cloudBtn').addEventListener('click',function(){ renderCloud(); sheet.classList.add('on'); });
+    document.getElementById('cloudCloseBtn').addEventListener('click',function(){ sheet.classList.remove('on'); });
+    sheet.addEventListener('click',function(e){ if(e.target===sheet) sheet.classList.remove('on'); });
+    document.getElementById('cloudBackupBtn').addEventListener('click',function(){
+      if(!window.EmberSync)return; var b=this; b.disabled=true; cmsg('',t('msgBackingup'));
+      EmberSync.backup(function(err,code){ b.disabled=false; if(err){ cmsg('err',t('msgFail')+(err.message||'')); return; } renderCloud(); cmsg('ok',t('msgBackupOk')); });
+    });
+    document.getElementById('cloudRestoreBtn').addEventListener('click',function(){
+      if(!window.EmberSync)return; var code=(document.getElementById('cloudCodeIn').value||'').trim().toUpperCase();
+      if(code.length<6){ cmsg('err',t('cloudCodePh')); return; }
+      var b=this; b.disabled=true; cmsg('',t('msgRestoring'));
+      EmberSync.restore(code,function(err){ if(err){ b.disabled=false; var m=err.message||''; cmsg('err', /invalid|expired/i.test(m)?t('msgRestoreFail'):(t('msgFail')+m)); return; } cmsg('ok',t('msgRestoreOk')); setTimeout(function(){ location.reload(); },900); });
+    });
+    document.getElementById('cloudCopyBtn').addEventListener('click',function(){
+      var c=(window.EmberSync&&EmberSync.code())||''; if(navigator.clipboard&&c) navigator.clipboard.writeText(c).then(function(){ cmsg('ok',t('msgCopied')); },function(){}); });
+    document.getElementById('cloudSyncBtn').addEventListener('click',function(){
+      if(!window.EmberSync)return; var b=this; b.disabled=true; cmsg('',t('msgSyncing'));
+      EmberSync.syncNow(function(err,changed){ b.disabled=false; if(err){ cmsg('err',t('msgFail')+(err.message||'')); return; } cmsg('ok',changed?t('msgSynced'):t('msgSyncClean')); }); });
+    document.getElementById('cloudUnlinkBtn').addEventListener('click',function(){
+      if(!window.EmberSync)return; if(!confirm(t('unlinkAsk')))return; EmberSync.unlink(); renderCloud(); });
+  })();
+
   applyStatic(); renderDid(); renderDont(); refreshAll(); save();
   if('serviceWorker' in navigator){ navigator.serviceWorker.register('/sw.js').catch(function(){}); }
 </script>
+<script src="/ember-sync.js"></script>
 </body>
 </html>
