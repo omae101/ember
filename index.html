@@ -101,6 +101,13 @@
   @keyframes floatUp{0%{opacity:0; transform:translateY(0) scale(.7);}20%{opacity:1;}100%{opacity:0; transform:translateY(-46px) scale(1.1);}}
   @media (prefers-reduced-motion:reduce){ *{animation:none !important; transition:none !important;} .float{display:none;} }
 
+  .splash{ position:fixed; inset:0; z-index:300; display:flex; align-items:center; justify-content:center; flex-direction:column; background:radial-gradient(120% 60% at 50% 32%, var(--ground2), var(--ground)); transition:opacity .55s ease; }
+  .splash.gone{ opacity:0; pointer-events:none; }
+  .splash-flame{ width:150px; height:150px; animation:splbob 2.2s ease-in-out infinite; filter:drop-shadow(0 10px 30px rgba(255,120,60,.42)); }
+  @keyframes splbob{ 0%,100%{transform:scale(1) translateY(0);} 50%{transform:scale(1.06) translateY(-6px);} }
+  .splash-brand{ font-size:34px; font-weight:900; letter-spacing:-.03em; color:var(--ink); margin-top:10px; animation:splfade .8s ease both .25s; } .splash-brand b{ color:var(--coral); }
+  .splash-tag{ font-size:14px; color:var(--ink-soft); font-weight:700; margin-top:6px; animation:splfade .8s ease both .45s; }
+  @keyframes splfade{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;} }
   .intro{position:fixed; inset:0; z-index:200; background:radial-gradient(120% 60% at 50% 0%, var(--ground2), var(--ground)); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px 26px calc(30px + env(safe-area-inset-bottom)); text-align:center;}
   .intro.hide{display:none;}
   .islide{display:none; flex-direction:column; align-items:center; max-width:340px;}
@@ -175,6 +182,18 @@
 </style>
 </head>
 <body>
+<div class="splash" id="splash">
+  <svg class="splash-flame" viewBox="0 0 100 100" aria-label="Ember">
+    <defs><radialGradient id="sfg" cx="50%" cy="72%" r="70%"><stop offset="0" stop-color="#FFDF6B"/><stop offset="45%" stop-color="#FF9A3C"/><stop offset="100%" stop-color="#F0492A"/></radialGradient></defs>
+    <path d="M50 12 C62 26 78 34 78 56 A28 22 0 0 1 22 56 C22 36 36 30 41 20 C45 30 43 40 50 40 C57 40 55 24 50 12 Z" fill="url(#sfg)"/>
+    <ellipse cx="42" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><ellipse cx="58" cy="57" rx="4.8" ry="6" fill="#2E1A12"/>
+    <circle cx="44" cy="54" r="2" fill="#fff"/><circle cx="60" cy="54" r="2" fill="#fff"/>
+    <circle cx="33.5" cy="63" r="3" fill="#FF7A5A" opacity=".45"/><circle cx="66.5" cy="63" r="3" fill="#FF7A5A" opacity=".45"/>
+    <path d="M43 64 Q50 73 57 64 Z" fill="#7A2A18"/>
+  </svg>
+  <div class="splash-brand"><b>Ember</b></div>
+  <div class="splash-tag" id="splashTag"></div>
+</div>
 <div class="intro hide" id="intro">
   <div class="islide on" data-i="0">
     <div class="idemo"><svg class="dflame" viewBox="0 0 100 100" style="animation:ogrow2 4s ease-in-out infinite"><path d="M50 12 C62 26 78 34 78 56 A28 22 0 0 1 22 56 C22 36 36 30 41 20 C45 30 43 40 50 40 C57 40 55 24 50 12 Z" fill="url(#fg)"/><ellipse cx="42" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><ellipse cx="58" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><circle cx="44" cy="54" r="2" fill="#fff"/><circle cx="60" cy="54" r="2" fill="#fff"/><circle cx="33.5" cy="63" r="3" fill="#FF7A5A" opacity=".45"/><circle cx="66.5" cy="63" r="3" fill="#FF7A5A" opacity=".45"/><path d="M43 65 Q50 71 57 65" stroke="#7A2A18" stroke-width="2.6" fill="none" stroke-linecap="round"/></svg></div>
@@ -638,6 +657,15 @@
   })();
 
   applyStatic(); renderDid(); renderDont(); refreshAll(); save();
+
+  /* 스플래시(맨 앞 인트로 화면) */
+  (function(){
+    var sp=document.getElementById('splash'); if(!sp) return;
+    try{ document.getElementById('splashTag').textContent=t('appsub'); }catch(e){}
+    function hide(){ sp.classList.add('gone'); setTimeout(function(){ sp.style.display='none'; },600); }
+    setTimeout(hide,1600); sp.addEventListener('click',hide);
+  })();
+
   if('serviceWorker' in navigator){ navigator.serviceWorker.register('/sw.js').catch(function(){}); }
 </script>
 <script src="/ember-sync.js"></script>
