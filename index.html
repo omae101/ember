@@ -151,6 +151,27 @@
   .codebox .t{ font-size:12px; color:var(--ink-soft); margin-top:8px; font-weight:700; line-height:1.5; }
   .cloudmsg{ font-size:13px; font-weight:700; margin-top:6px; min-height:18px; text-align:center; }
   .cloudmsg.ok{ color:var(--did); } .cloudmsg.err{ color:var(--dont); }
+  .lvrow{ cursor:pointer; } .lvcards{ font-size:12px; opacity:.55; margin-left:2px; }
+  .galhint{ font-size:13px; color:var(--ink-soft); line-height:1.6; margin-bottom:14px; }
+  .gallery{ display:flex; gap:13px; overflow-x:auto; padding:6px 2px 12px; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; }
+  .gallery::-webkit-scrollbar{ height:0; }
+  .tcard{ flex:none; width:146px; scroll-snap-align:center; border-radius:16px; padding:13px 11px 15px; text-align:center; position:relative; background:linear-gradient(165deg,#2b2444,#1a1530); color:#F3E9D8; border:2px solid #C9A24B; box-shadow:0 10px 24px -12px rgba(0,0,0,.55); }
+  .tcard .num{ font-family:Georgia,'Times New Roman',serif; font-size:13px; letter-spacing:3px; color:#E9C877; font-weight:800; }
+  .tcard .fw{ height:104px; display:flex; align-items:center; justify-content:center; position:relative; margin:4px 0 6px; }
+  .tcard .fw svg{ width:82px; height:82px; }
+  .tcard .nm{ font-size:14.5px; font-weight:800; letter-spacing:-.01em; }
+  .tcard .req{ font-size:11px; opacity:.82; margin-top:4px; min-height:15px; }
+  .tcard.locked{ filter:grayscale(.75) brightness(.72); }
+  .tcard.cur{ border-color:#FFD86B; box-shadow:0 0 0 2px #FFD86B, 0 12px 30px -8px rgba(255,180,60,.5); }
+  .tcard .badge{ position:absolute; top:8px; right:9px; font-size:10.5px; font-weight:800; background:#C9A24B; color:#1a1530; padding:2px 7px; border-radius:999px; }
+  .tcard.locked .badge{ background:rgba(255,255,255,.16); color:#F3E9D8; }
+  .tcard .nowtag{ position:absolute; top:-9px; left:50%; transform:translateX(-50%); font-size:10px; font-weight:800; background:#FFD86B; color:#3a2a10; padding:2px 9px; border-radius:999px; white-space:nowrap; }
+  .tacc{ position:absolute; left:50%; pointer-events:none; z-index:2; }
+  .tacc.crown{ top:0; transform:translateX(-50%); font-size:30px; }
+  .tacc.hat{ top:4px; transform:translateX(-50%); font-size:27px; }
+  .tacc.bow{ top:6px; transform:translateX(-50%); font-size:22px; }
+  .tacc.spark{ left:auto; right:20px; top:10px; font-size:18px; }
+  .tacc.spark2{ left:20px; right:auto; top:22px; font-size:15px; }
 </style>
 </head>
 <body>
@@ -192,7 +213,7 @@
         <g id="face"></g>
       </svg>
     </div>
-    <div class="lvrow"><span class="lvnum" id="lvNum">Lv.1</span><span class="lvname" id="lvName"></span></div>
+    <div class="lvrow" id="lvrow" title="불꽃이 여정 보기"><span class="lvnum" id="lvNum">Lv.1</span><span class="lvname" id="lvName"></span><span class="lvcards">🃏</span></div>
     <div class="xpwrap"><div class="xpbar"><div class="xpfill" id="xpFill"></div></div><div class="xptxt" id="xpTxt"></div></div>
     <div class="streak2" id="streakBox">🔥 <b id="streakN">0</b></div>
   </div>
@@ -258,6 +279,15 @@
   </div>
 </div>
 
+<div class="sheet" id="gallerySheet">
+  <div class="sheetbox">
+    <div class="sheet-h" id="galTitle"></div>
+    <p class="galhint" id="galHint"></p>
+    <div class="gallery" id="galleryBox"></div>
+    <button class="sheet-x" id="galleryClose" type="button"></button>
+  </div>
+</div>
+
 <script>
   /* ================= i18n ================= */
   var I18N={
@@ -294,6 +324,7 @@
       cloudCopy:'📋 코드 복사', cloudSync:'🔄 지금 저장', cloudUnlink:'백업 해제',
       msgBackingup:'백업 만드는 중…', msgBackupOk:'✅ 백업 완료! 코드를 꼭 적어두세요.', msgRestoring:'복원 중…', msgRestoreOk:'✅ 복원 완료! 새로고침할게요.',
       msgRestoreFail:'코드가 틀렸거나 만료됐어요.', msgFail:'실패: ', msgCopied:'📋 복사됨!', msgSyncing:'저장 중…', msgSynced:'✅ 새 내용 받아왔어요!', msgSyncClean:'✅ 이미 최신이에요', unlinkAsk:'백업을 해제할까요?\n(기록은 이 폰에 그대로 남아요)',
+      galTitle:'🔥 불꽃이 여정', galHint:'꾸준히 실천하면 불꽃이가 이렇게 진화해요. 카드를 모아보세요!', galDone:'✓ 달성', galLeft:'🔒 {n}일 남음', galNow:'지금 여기',
       didEx:['물 8잔 마시기','30분 운동하기','계단 오르기 (심박 130+)','정해진 시간에 일어나기','숙제·할 일 하기','책 10쪽 읽기','명상 10분','스트레칭 5분','산책 20분','비타민 챙기기','일기 쓰기','영어 단어 10개'],
       dontEx:[{t:'케이크·야식 참기',u:'kcal',a:1500},{t:'군것질 참기',u:'money',a:4500},{t:'배달음식 참기',u:'money',a:12000},{t:'누워있기 참기',u:'time',a:30},{t:'폰 오래 보기 참기',u:'time',a:30},{t:'늦잠 참기',u:'time',a:30},{t:'담배 참기',u:'money',a:4500},{t:'술 참기',u:'money',a:15000},{t:'충동구매 참기',u:'money',a:10000},{t:'단 음료 참기',u:'kcal',a:200}]
     },
@@ -330,6 +361,7 @@
       cloudCopy:'📋 Copy code', cloudSync:'🔄 Save now', cloudUnlink:'Turn off backup',
       msgBackingup:'Backing up…', msgBackupOk:'✅ Backed up! Be sure to save your code.', msgRestoring:'Restoring…', msgRestoreOk:'✅ Restored! Reloading.',
       msgRestoreFail:'Wrong or expired code.', msgFail:'Failed: ', msgCopied:'📋 Copied!', msgSyncing:'Saving…', msgSynced:'✅ Got new updates!', msgSyncClean:'✅ Already up to date', unlinkAsk:'Turn off backup?\n(Your data stays on this phone)',
+      galTitle:"🔥 Ember's Journey", galHint:'Keep going and your Ember evolves like this. Collect them all!', galDone:'✓ Unlocked', galLeft:'🔒 {n} days left', galNow:'you are here',
       didEx:['Drink 8 glasses of water','30 min workout','Climb stairs (HR 130+)','Wake up on time','Do homework / tasks','Read 10 pages','Meditate 10 min','Stretch 5 min','20 min walk','Take vitamins','Write a journal','10 new words'],
       dontEx:[{t:'No cake / late-night snack',u:'kcal',a:1500},{t:'No junk food',u:'money',a:4500},{t:'No food delivery',u:'money',a:12000},{t:'No lying around',u:'time',a:30},{t:'Under 30 min on phone',u:'time',a:30},{t:'No sleeping in',u:'time',a:30},{t:'No smoking',u:'money',a:4500},{t:'No drinking',u:'money',a:15000},{t:'No impulse buying',u:'money',a:10000},{t:'No sugary drinks',u:'kcal',a:200}]
     }
@@ -565,6 +597,44 @@
       EmberSync.syncNow(function(err,changed){ b.disabled=false; if(err){ cmsg('err',t('msgFail')+(err.message||'')); return; } cmsg('ok',changed?t('msgSynced'):t('msgSyncClean')); }); });
     document.getElementById('cloudUnlinkBtn').addEventListener('click',function(){
       if(!window.EmberSync)return; if(!confirm(t('unlinkAsk')))return; EmberSync.unlink(); renderCloud(); });
+  })();
+
+  /* 🎴 불꽃이 여정 (타로카드 진화 미리보기) */
+  function cardFlame(stage){
+    var acc='';
+    if(stage>=1) acc+='<span class="tacc spark">✨</span>';
+    if(stage===2) acc+='<span class="tacc bow">🎀</span>';
+    if(stage===3) acc+='<span class="tacc hat">🎩</span>';
+    if(stage>=4) acc+='<span class="tacc crown">👑</span><span class="tacc spark2">✨</span>';
+    var sc=[0.66,0.82,0.94,1.0,1.06][stage]||1;
+    return '<div class="fw">'+acc+'<svg viewBox="0 0 100 100" style="transform:scale('+sc+')"><path d="M50 12 C62 26 78 34 78 56 A28 22 0 0 1 22 56 C22 36 36 30 41 20 C45 30 43 40 50 40 C57 40 55 24 50 12 Z" fill="url(#fg)"/><ellipse cx="42" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><ellipse cx="58" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><circle cx="44" cy="54" r="2" fill="#fff"/><circle cx="60" cy="54" r="2" fill="#fff"/><path d="M43 64 Q50 72 57 64 Z" fill="#7A2A18"/></svg></div>';
+  }
+  function renderGallery(){
+    var box=document.getElementById('galleryBox'); if(!box)return;
+    document.getElementById('galTitle').textContent=t('galTitle');
+    document.getElementById('galHint').textContent=t('galHint');
+    document.getElementById('galleryClose').textContent=t('sheetDone');
+    var d=S.activeDays||0, levels=tl('levels'), ROMAN=['I','II','III','IV','V'], curi=0;
+    for(var k=0;k<QUESTS.length;k++){ if(d>=QUESTS[k].d) curi=k; }
+    box.innerHTML='';
+    QUESTS.forEach(function(q,i){
+      var unlocked=d>=q.d, isCur=(i===curi);
+      var card=document.createElement('div');
+      card.className='tcard'+(unlocked?'':' locked')+(isCur?' cur':'');
+      var status= unlocked? t('galDone') : t('galLeft',{n:(q.d-d)});
+      card.innerHTML=(isCur?'<div class="nowtag">'+t('galNow')+'</div>':'')
+        +'<div class="num">'+ROMAN[i]+'</div>'+cardFlame(i)
+        +'<div class="nm">'+levels[i]+'</div><div class="req">'+status+'</div>'
+        +'<div class="badge">'+(unlocked?'✓':'🔒')+'</div>';
+      box.appendChild(card);
+    });
+    var cur=box.querySelector('.tcard.cur'); if(cur){ try{ box.scrollLeft=cur.offsetLeft-(box.clientWidth-cur.clientWidth)/2; }catch(e){} }
+  }
+  (function(){
+    var gs=document.getElementById('gallerySheet'), lv=document.getElementById('lvrow');
+    if(lv) lv.addEventListener('click',function(){ renderGallery(); gs.classList.add('on'); });
+    document.getElementById('galleryClose').addEventListener('click',function(){ gs.classList.remove('on'); });
+    gs.addEventListener('click',function(e){ if(e.target===gs) gs.classList.remove('on'); });
   })();
 
   applyStatic(); renderDid(); renderDont(); refreshAll(); save();
