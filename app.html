@@ -696,7 +696,7 @@
     document.getElementById('iskip').onclick=finish;
     show(0);
   }
-  if(!localStorage.getItem('ember_onboarded')) startIntro(); else document.getElementById('intro').classList.add('hide');
+  if(!localStorage.getItem('ember_onboarded') || /[?&]intro/.test(location.search)) startIntro(); else document.getElementById('intro').classList.add('hide');
   document.getElementById('helpBtn').addEventListener('click', startIntro);
 
   /* 🎩 옷방(꾸미기) */
@@ -855,7 +855,7 @@
     var sp=document.getElementById('splash'); if(!sp) return;
     try{ document.getElementById('splashTag').textContent=t('appsub'); }catch(e){}
     function hide(){ sp.classList.add('gone'); setTimeout(function(){ sp.style.display='none'; },600); }
-    setTimeout(hide,1600); sp.addEventListener('click',hide);
+    setTimeout(hide, /[?&]intro/.test(location.search)?250:1600); sp.addEventListener('click',hide);
   })();
 
   if(/[?&]cel/.test(location.search)) setTimeout(function(){ try{ celebrate(tl('levels')[1], true); }catch(e){} }, 1600);
