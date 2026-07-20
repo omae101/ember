@@ -55,7 +55,8 @@
 <script>
   var T={
     ko:{ name:'한국어', lead:'습관을 <b>게임처럼</b> 🔥', go:'🔥 시작하기', inst:'📲 앱 다운받기' },
-    en:{ name:'English', lead:'Habits, <b>like a game</b> 🔥', go:'🔥 Get started', inst:'📲 Download app' }
+    en:{ name:'English', lead:'Habits, <b>like a game</b> 🔥', go:'🔥 Get started', inst:'📲 Download app' },
+    vi:{ name:'Tiếng Việt', lead:'Thói quen, <b>như trò chơi</b> 🔥', go:'🔥 Bắt đầu', inst:'📲 Tải ứng dụng' }
   };
   var LANG=(function(){ try{ var s=localStorage.getItem('ember_lang'); if(s&&T[s])return s; }catch(e){} return (navigator.language||'en').toLowerCase().indexOf('ko')===0?'ko':'en'; })();
   function $(id){ return document.getElementById(id); }

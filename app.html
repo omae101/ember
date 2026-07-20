@@ -10,6 +10,8 @@
 <meta name="apple-mobile-web-app-title" content="Ember">
 <link rel="icon" type="image/png" href="/icon-192.png">
 <link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap" rel="stylesheet">
 <style>
   :root{
     --ground:#E7EDE6; --ground2:#DCE6DC; --card:#FCFDFB; --ink:#20302A; --ink-soft:#7C8D84; --hair:#D8E1D8;
@@ -27,7 +29,7 @@
   body{ font-family:var(--font); color:var(--ink); background:radial-gradient(120% 46% at 50% -6%, var(--ground2), transparent 62%), var(--ground); -webkit-font-smoothing:antialiased; min-height:100dvh; }
   .wrap{ max-width:440px; margin:0 auto; padding:28px 22px calc(44px + env(safe-area-inset-bottom)); }
   .top{display:flex; align-items:center; justify-content:space-between; gap:8px;}
-  .wm{font-size:15px; font-weight:800; letter-spacing:-.02em;} .wm b{color:var(--coral);}
+  .wm{font-family:'Jua',var(--font); font-size:16px; font-weight:400; letter-spacing:0;} .wm b{color:var(--coral);}
   .topr{display:flex; align-items:center; gap:8px;}
   .langsel{border:1px solid var(--hair); background:var(--card); color:var(--ink-soft); font-family:inherit; font-size:12px; font-weight:700; padding:6px 8px; border-radius:999px; cursor:pointer;}
   .helpbtn{width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-radius:11px; border:none; background:transparent; color:var(--ink-soft); font-family:inherit; font-size:18px; line-height:1; cursor:pointer; flex:none; padding:0; transition:background .15s;}
@@ -118,8 +120,8 @@
   .splash.gone{ opacity:0; pointer-events:none; }
   .splash-flame{ width:150px; height:150px; animation:splbob 2.2s ease-in-out infinite; filter:drop-shadow(0 10px 30px rgba(255,120,60,.42)); }
   @keyframes splbob{ 0%,100%{transform:scale(1) translateY(0);} 50%{transform:scale(1.06) translateY(-6px);} }
-  .splash-brand{ font-size:34px; font-weight:900; letter-spacing:-.03em; color:var(--ink); margin-top:10px; animation:splfade .8s ease both .25s; } .splash-brand b{ color:var(--coral); }
-  .splash-tag{ font-size:14px; color:var(--ink-soft); font-weight:700; margin-top:6px; animation:splfade .8s ease both .45s; }
+  .splash-brand{ font-family:'Jua',var(--font); font-size:33px; font-weight:400; letter-spacing:0; color:var(--ink); margin-top:12px; animation:splfade .8s ease both .25s; display:flex; align-items:baseline; justify-content:center; gap:9px; flex-wrap:wrap; } .splash-brand b{ color:var(--coral); font-weight:400; }
+  .splash-brand #splashTag{ font-size:17px; color:var(--ink-soft); }
   @keyframes splfade{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;} }
   .intro{position:fixed; inset:0; z-index:200; background:radial-gradient(120% 60% at 50% 0%, var(--ground2), var(--ground)); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px 26px calc(30px + env(safe-area-inset-bottom)); text-align:center;}
   .intro.hide{display:none;}
@@ -246,8 +248,7 @@
     <circle cx="33.5" cy="63" r="3" fill="#FF7A5A" opacity=".45"/><circle cx="66.5" cy="63" r="3" fill="#FF7A5A" opacity=".45"/>
     <path d="M43 64 Q50 73 57 64 Z" fill="#7A2A18"/>
   </svg>
-  <div class="splash-brand"><b>Ember</b></div>
-  <div class="splash-tag" id="splashTag"></div>
+  <div class="splash-brand"><b>Ember</b> <span id="splashTag"></span></div>
 </div>
 <div class="celebrate" id="celebrate">
   <div class="cel-box">
@@ -490,6 +491,49 @@
       aboutC4t:'☁️ Backup', aboutC4d:'Back up with the ☁️ button so a phone change never wipes your progress.',
       didEx:['Drink 8 glasses of water','30 min workout','Climb stairs (HR 130+)','Wake up on time','Do homework / tasks','Read 10 pages','Meditate 10 min','Stretch 5 min','20 min walk','Take vitamins','Write a journal','10 new words'],
       dontEx:[{t:'No cake / late-night snack',u:'kcal',a:1500},{t:'No junk food',u:'money',a:4500},{t:'No food delivery',u:'money',a:12000},{t:'No lying around',u:'time',a:30},{t:'Under 30 min on phone',u:'time',a:30},{t:'No sleeping in',u:'time',a:30},{t:'No smoking',u:'money',a:4500},{t:'No drinking',u:'money',a:15000},{t:'No impulse buying',u:'money',a:10000},{t:'No sugary drinks',u:'kcal',a:200}]
+    },
+    vi:{ name:'Tiếng Việt', appsub:'Chiến thắng hôm nay',
+      didHdr:'Hôm nay', dontHdr:'Hôm nay', didTag:'Đã làm ✓', dontTag:'Đã nhịn 🛡',
+      addDid:'＋ Thêm việc cần làm', addDont:'＋ Thêm điều cần nhịn',
+      resistBtn:'Hôm nay đã nhịn ✓', resistDone:'Nhịn hôm nay 🎉',
+      keptDays:'{n} ngày kiên trì', perOnce:'mỗi lần',
+      savedTitle:'🐷 Tiết kiệm nhờ nhịn', savedNone:'Cứ nhịn là sẽ tích lũy ở đây',
+      savedSum:'~{n} đã tiết kiệm', goalTxt:'Phần thưởng kế tiếp {n}', gift:'🎁 Tự thưởng bằng số đã tiết kiệm',
+      rewardMsg:'🎉 Tiết kiệm {v}! Mở khóa phần thưởng 🏅', rewardLegend:'🏆 Huyền thoại! Tiền, thời gian & calo đều đủ — phần thưởng đặc biệt!', rewardsN:'🏅 {n} phần thưởng',
+      rest:'💧 Nghỉ một chút', restMsg:'💧 Nghỉ một chút nhé.\nNgọn lửa cũng cần nguội để cháy lâu. Đừng ép mình — giữ được một điều thôi hôm nay cũng đã thắng.',
+      foot:'Làm được là thắng, nhịn được cũng là thắng 🔥<br>Tự lưu mỗi ngày · Thêm vào Màn hình chính để dùng như ứng dụng',
+      week:['CN','T2','T3','T4','T5','T6','T7'], calTitle:'🗓️ Tháng này',
+      shareBtn:'🎉 Khoe chiến thắng', shareTag:'Làm & nhịn — đều là chiến thắng', shareText:'Hành trình thói quen của tôi với Ember 🔥 #Ember',
+      streak:'chuỗi {n} ngày', questNext:'Nhiệm vụ kế tiếp sau {n} ngày · {q}', questDone:'🏆 Đã thành thục!',
+      giftMsg:'🎁 Dùng số đã tiết kiệm để tự thưởng hôm nay!\nBạn xứng đáng mà 💛',
+      qClear:'🎉 Hoàn thành nhiệm vụ — tiến hóa thành [{name}]!', qMaster:'🏆 Thành thục! Mở khóa phần thưởng cao nhất!',
+      renameDid:'Sửa tên việc', renameDont:'Sửa tên điều nhịn',
+      askAmt:'"{t}" — mỗi lần bạn tiết kiệm bao nhiêu {lbl}?', lblMoney:'tiền', lblKcal:'kcal', lblMin:'phút',
+      delAsk:'Xóa "{t}"?',
+      sheetDid:'＋ Làm hôm nay', sheetDont:'＋ Nhịn hôm nay', phDid:'Tự viết (vd: 8 ly nước)', phDont:'Tự viết (vd: không ăn bánh)',
+      sheetAdd:'Thêm', sheetLbl:'💡 Chạm ví dụ để thêm nhanh (chạm nhiều cái!)', sheetDone:'Xong',
+      unitWon:'đ', unitKcal:'kcal', unitMin:'phút', unitHr:'giờ',
+      levels:['Đốm lửa','Ngọn lửa nhỏ','Lửa trại','Ngọn lửa lớn','Lửa Phượng hoàng'],
+      quests:['','3 tuần · Bắt đầu thói quen','~2 tháng · Thói quen ổn định','~8 tháng · Ngấm dần','~2 năm · Thành thục 🏆'],
+      intro:[['Làm được, và nhịn được —<br>đều là <b>chiến thắng hôm nay</b> 🔥','Cùng Ember, xây thói quen tốt và nhịn thói quen xấu. Cả hai đều là chiến thắng.'],
+             ['① Càng làm, <b>lửa càng lớn</b>','Mỗi lần hoàn thành một việc,<br>Ember lại lớn thêm một chút.'],
+             ['② Vượt <b>nhiệm vụ</b> & tiến hóa','3 tuần → 2 → 8 tháng → 2 năm,<br>từ đốm lửa thành <b>lửa phượng hoàng</b> 👑']],
+      introChk:'✓ Xong +10', iNext:'Tiếp', iStart:'Bắt đầu 🔥', iSkip:'Bỏ qua',
+      cloudTitle:'☁️ Sao lưu / Khôi phục', cloudDesc:'Sao lưu để lửa & tiến trình không mất khi đổi điện thoại.',
+      cloudBackup:'Sao lưu thiết bị này', cloudOr:'hoặc — điện thoại mới? khôi phục bằng mã', cloudCodePh:'Mã 8 ký tự', cloudRestore:'Khôi phục',
+      cloudDoneDesc:'Thiết bị này đã sao lưu ✓ Khôi phục trên điện thoại mới bằng mã dưới đây.', cloudCodeHint:'Nhập mã này trên điện thoại mới',
+      cloudCopy:'📋 Sao chép mã', cloudSync:'🔄 Lưu ngay', cloudUnlink:'Tắt sao lưu',
+      msgBackingup:'Đang sao lưu…', msgBackupOk:'✅ Đã sao lưu! Hãy lưu lại mã.', msgRestoring:'Đang khôi phục…', msgRestoreOk:'✅ Đã khôi phục! Đang tải lại.',
+      msgRestoreFail:'Mã sai hoặc đã hết hạn.', msgFail:'Thất bại: ', msgCopied:'📋 Đã sao chép!', msgSyncing:'Đang lưu…', msgSynced:'✅ Có cập nhật mới!', msgSyncClean:'✅ Đã mới nhất', unlinkAsk:'Tắt sao lưu?\n(Dữ liệu vẫn ở trên điện thoại này)',
+      galTitle:'🔥 Hành trình Ember', galHint:'Kiên trì và Ember sẽ tiến hóa như thế này. Sưu tầm hết nhé!', galDone:'✓ Đã mở', galLeft:'🔒 còn {n} ngày', galNow:'bạn ở đây', qfDays:['3 tuần','2 tháng','8 tháng','2 năm'], celClear:'🎉 Hoàn thành nhiệm vụ!', celMaster:'🏆 Đã thành thục!', celEvolved:'Đã tiến hóa! ✨', celTop:'Mở khóa phần thưởng cao nhất!', wardTitle:'🎩 Trang điểm Ember', wardHint:'Vật phẩm mới mở khi lên cấp. Chạm để đội!', wardLock:'Cấp {n}',
+      tabHome:'Trang chủ', tabCal:'Lịch', tabAbout:'Giới thiệu', calNote:'Ngày chiến thắng sẽ sáng lên 🔥 Kiên trì chính là kỹ năng!',
+      aboutTitle:'Làm & nhịn,<br>đều là <b>chiến thắng</b> 🔥', aboutLead:'Làm điều tốt, nhịn điều xấu. Nuôi lớn ngọn lửa mỗi ngày một chút.',
+      aboutC1t:'✅ Đã làm', aboutC1d:'Hoàn thành thói quen tốt để nhận điểm.',
+      aboutC2t:'🛡 Đã nhịn', aboutC2d:'Nhịn một ngày, tiền, thời gian & calo tiết kiệm sẽ tích lũy.',
+      aboutC3t:'🔥 Lửa lớn dần', aboutC3d:'Kiên trì và Ember tiến hóa thành phượng hoàng. Chạm huy hiệu cấp (🃏) để xem hành trình.',
+      aboutC4t:'☁️ Sao lưu', aboutC4d:'Sao lưu bằng nút ☁️ để đổi điện thoại không mất tiến trình.',
+      didEx:['Uống 8 ly nước','Tập thể dục 30 phút','Leo cầu thang (nhịp tim 130+)','Dậy đúng giờ','Làm bài tập / việc cần làm','Đọc 10 trang','Thiền 10 phút','Giãn cơ 5 phút','Đi bộ 20 phút','Uống vitamin','Viết nhật ký','10 từ mới'],
+      dontEx:[{t:'Không bánh / ăn khuya',u:'kcal',a:1500},{t:'Không đồ ăn vặt',u:'money',a:4500},{t:'Không đặt đồ ăn',u:'money',a:12000},{t:'Không nằm lười',u:'time',a:30},{t:'Điện thoại dưới 30 phút',u:'time',a:30},{t:'Không ngủ nướng',u:'time',a:30},{t:'Không hút thuốc',u:'money',a:4500},{t:'Không uống rượu',u:'money',a:15000},{t:'Không mua sắm bốc đồng',u:'money',a:10000},{t:'Không đồ uống ngọt',u:'kcal',a:200}]
     }
   };
   var LANG=(function(){ try{var s=localStorage.getItem('ember_lang'); if(s&&I18N[s])return s;}catch(e){} var n=(navigator.language||'en').toLowerCase(); return n.indexOf('ko')===0?'ko':'en'; })();
