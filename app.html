@@ -10,8 +10,6 @@
 <meta name="apple-mobile-web-app-title" content="Ember">
 <link rel="icon" type="image/png" href="/icon-192.png">
 <link rel="apple-touch-icon" href="/icon-192.png">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap" rel="stylesheet">
 <style>
   :root{
     --ground:#E7EDE6; --ground2:#DCE6DC; --card:#FCFDFB; --ink:#20302A; --ink-soft:#7C8D84; --hair:#D8E1D8;
@@ -29,7 +27,7 @@
   body{ font-family:var(--font); color:var(--ink); background:radial-gradient(120% 46% at 50% -6%, var(--ground2), transparent 62%), var(--ground); -webkit-font-smoothing:antialiased; min-height:100dvh; }
   .wrap{ max-width:440px; margin:0 auto; padding:28px 22px calc(44px + env(safe-area-inset-bottom)); }
   .top{display:flex; align-items:center; justify-content:space-between; gap:8px;}
-  .wm{font-family:'Jua',var(--font); font-size:16px; font-weight:400; letter-spacing:0;} .wm b{color:var(--coral);}
+  .wm{font-size:15px; font-weight:800; letter-spacing:-.02em;} .wm b{color:var(--coral);}
   .topr{display:flex; align-items:center; gap:8px;}
   .langsel{border:1px solid var(--hair); background:var(--card); color:var(--ink-soft); font-family:inherit; font-size:12px; font-weight:700; padding:6px 8px; border-radius:999px; cursor:pointer;}
   .helpbtn{width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-radius:11px; border:none; background:transparent; color:var(--ink-soft); font-family:inherit; font-size:18px; line-height:1; cursor:pointer; flex:none; padding:0; transition:background .15s;}
@@ -120,8 +118,7 @@
   .splash.gone{ opacity:0; pointer-events:none; }
   .splash-flame{ width:150px; height:150px; animation:splbob 2.2s ease-in-out infinite; filter:drop-shadow(0 10px 30px rgba(255,120,60,.42)); }
   @keyframes splbob{ 0%,100%{transform:scale(1) translateY(0);} 50%{transform:scale(1.06) translateY(-6px);} }
-  .splash-brand{ font-family:'Jua',var(--font); font-size:30px; font-weight:400; letter-spacing:0; color:var(--ink); margin-top:12px; animation:splfade .8s ease both .25s; display:flex; align-items:baseline; justify-content:center; gap:9px; flex-wrap:nowrap; white-space:nowrap; } .splash-brand b{ color:var(--coral); font-weight:400; flex:none; }
-  .splash-brand #splashTag{ font-size:16px; color:var(--ink-soft); flex:none; }
+  .splash-brand{ font-size:34px; font-weight:900; letter-spacing:-.03em; color:var(--ink); margin-top:10px; animation:splfade .8s ease both .25s; } .splash-brand b{ color:var(--coral); }
   @keyframes splfade{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;} }
   .intro{position:fixed; inset:0; z-index:200; background:radial-gradient(120% 60% at 50% 0%, var(--ground2), var(--ground)); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px 26px calc(30px + env(safe-area-inset-bottom)); text-align:center;}
   .intro.hide{display:none;}
@@ -248,7 +245,7 @@
     <circle cx="33.5" cy="63" r="3" fill="#FF7A5A" opacity=".45"/><circle cx="66.5" cy="63" r="3" fill="#FF7A5A" opacity=".45"/>
     <path d="M43 64 Q50 73 57 64 Z" fill="#7A2A18"/>
   </svg>
-  <div class="splash-brand"><b>Ember</b> <span id="splashTag"></span></div>
+  <div class="splash-brand"><b>Ember</b></div>
 </div>
 <div class="celebrate" id="celebrate">
   <div class="cel-box">
@@ -280,7 +277,7 @@
 
 <div class="wrap">
   <div class="top">
-    <div class="wm">Ember · <span id="appsub">Today's Wins</span></div>
+    <div class="wm"><b>Ember</b></div>
     <div class="topr">
       <button class="helpbtn" id="calBtn" type="button" title="달력 / Calendar">📅</button>
       <button class="helpbtn" id="wardBtn" type="button" title="꾸미기 / Dress up">🎩</button>
@@ -707,7 +704,7 @@
 
   /* 정적 문구 i18n 적용 */
   function applyStatic(){
-    document.getElementById('appsub').textContent=t('appsub');
+    var _sb=document.getElementById('shareBtn'); if(_sb) _sb.textContent=t('shareBtn');
     document.getElementById('didHdr').textContent=t('didHdr'); document.getElementById('dontHdr').textContent=t('dontHdr');
     document.getElementById('didTag').textContent=t('didTag'); document.getElementById('dontTag').textContent=t('dontTag');
     document.getElementById('addDid').textContent=t('addDid'); document.getElementById('addDont').textContent=t('addDont');
