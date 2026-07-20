@@ -548,18 +548,17 @@
     lvNum.textContent='Lv.'+L.lv; lvName.textContent=L.name; xpFill.style.width=L.pct+'%';
     xpTxt.textContent=L.hasNext? t('questNext',{n:L.toNext,q:L.nextQ}) : t('questDone');
     if(S.lastLevel!==L.lv){ if(typeof S.lastLevel==='number' && L.lv>S.lastLevel) celebrate(L.name,L.hasNext); S.lastLevel=L.lv; save(); } }
-  function celebrate(name,more){ pop(); flash('excited');
-    var el=document.getElementById('celebrate');
-    if(!el){ toast(more? t('qClear',{name:name}) : t('qMaster')); return; }
-    var L=levelInfo();
-    document.getElementById('celFlame').innerHTML = cardFlame(Math.max(0, L.lv-1));
+  function showCel(lv,more){
+    var el=document.getElementById('celebrate'); if(!el) return;
+    document.getElementById('celFlame').innerHTML = cardFlame(Math.max(0, lv-1));
     document.getElementById('celTitle').textContent = more? t('celClear') : t('celMaster');
-    document.getElementById('celName').textContent = name;
+    document.getElementById('celName').textContent = (tl('levels')[lv-1]||'');
     document.getElementById('celSub').textContent = more? t('celEvolved') : t('celTop');
     el.classList.remove('show'); void el.offsetWidth; el.classList.add('show');
     clearTimeout(el._t); el._t=setTimeout(function(){ el.classList.remove('show'); }, 3000);
     el.onclick=function(){ el.classList.remove('show'); clearTimeout(el._t); };
   }
+  function celebrate(name,more){ pop(); flash('excited'); if(!document.getElementById('celebrate')){ toast(more? t('qClear',{name:name}) : t('qMaster')); return; } showCel(levelInfo().lv, more); }
   function toast(msg){ var el=document.getElementById('__t'); if(!el){ el=document.createElement('div'); el.id='__t'; el.style.cssText='position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(10px);background:var(--coral);color:#fff;font-size:13.5px;font-weight:800;padding:11px 20px;border-radius:22px;box-shadow:0 12px 30px -8px rgba(240,73,42,.5);opacity:0;transition:opacity .28s,transform .28s;z-index:80;pointer-events:none;white-space:nowrap;'; document.body.appendChild(el);} el.textContent=msg; el.style.opacity='1'; el.style.transform='translateX(-50%) translateY(0)'; clearTimeout(el._t); el._t=setTimeout(function(){el.style.opacity='0';el.style.transform='translateX(-50%) translateY(10px)';},2200); }
   function pop(){ masc.classList.remove('pop'); void masc.offsetWidth; masc.classList.add('pop'); }
   function bumpStreak(){ var tday=today(); if(S.streakDate===tday) return; var y=new Date(); y.setDate(y.getDate()-1); y=ymd(y); S.streak=(S.streakDate===y)?S.streak+1:1; S.streakDate=tday; S.activeDays=(S.activeDays||0)+1; if(!S.winDates)S.winDates=[]; if(S.winDates.indexOf(tday)<0)S.winDates.push(tday); }
@@ -858,7 +857,8 @@
     setTimeout(hide, /[?&]intro/.test(location.search)?250:1600); sp.addEventListener('click',hide);
   })();
 
-  if(/[?&]cel/.test(location.search)) setTimeout(function(){ try{ celebrate(tl('levels')[1], true); }catch(e){} }, 1600);
+  var _celM=location.search.match(/[?&]cel(?:=(\d+))?/);
+  if(_celM){ var _clv=Math.min(5,Math.max(2,_celM[1]?parseInt(_celM[1],10):2)); setTimeout(function(){ try{ showCel(_clv, _clv<5); }catch(e){} }, 900); }
   if('serviceWorker' in navigator){ navigator.serviceWorker.register('/sw.js').catch(function(){}); }
 </script>
 <script src="/ember-sync.js"></script>
