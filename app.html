@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Ember · Today's Wins</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#E7EDE6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Ember">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<style>
+  :root{
+    --ground:#E7EDE6; --ground2:#DCE6DC; --card:#FCFDFB; --ink:#20302A; --ink-soft:#7C8D84; --hair:#D8E1D8;
+    --coral:#FF6A3D; --did:#0E9E63; --did-soft:#DCF1E6; --dont:#9A6B8F; --dont-soft:#F1E7EF; --gold:#C9902F; --gold-soft:#F4EAD6; --water:#4E97C4;
+    --font:"Apple SD Gothic Neo","Pretendard","Malgun Gothic",system-ui,sans-serif;
+    --num:"SF Pro Rounded","Segoe UI",var(--font);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{ --ground:#14201A; --ground2:#1B291F; --card:#1C2620; --ink:#E9F0EA; --ink-soft:#93A69A; --hair:#2C3A30;
+      --coral:#FF7A4D; --did:#39C489; --did-soft:#123020; --dont:#C08FB4; --dont-soft:#2E2230; --gold:#E4B45A; --gold-soft:#322813; --water:#6FB4DE; }
+  }
+  :root[data-theme="light"]{ --ground:#E7EDE6; --ground2:#DCE6DC; --card:#FCFDFB; --ink:#20302A; --ink-soft:#7C8D84; --hair:#D8E1D8; --coral:#FF6A3D; --did:#0E9E63; --did-soft:#DCF1E6; --dont:#9A6B8F; --dont-soft:#F1E7EF; --gold:#C9902F; --gold-soft:#F4EAD6; }
+  :root[data-theme="dark"]{ --ground:#14201A; --ground2:#1B291F; --card:#1C2620; --ink:#E9F0EA; --ink-soft:#93A69A; --hair:#2C3A30; --coral:#FF7A4D; --did:#39C489; --did-soft:#123020; --dont:#C08FB4; --dont-soft:#2E2230; --gold:#E4B45A; --gold-soft:#322813; }
+  *{box-sizing:border-box;} html,body{margin:0;}
+  body{ font-family:var(--font); color:var(--ink); background:radial-gradient(120% 46% at 50% -6%, var(--ground2), transparent 62%), var(--ground); -webkit-font-smoothing:antialiased; min-height:100dvh; }
+  .wrap{ max-width:440px; margin:0 auto; padding:28px 22px calc(44px + env(safe-area-inset-bottom)); }
+  .top{display:flex; align-items:center; justify-content:space-between; gap:8px;}
+  .wm{font-size:15px; font-weight:800; letter-spacing:-.02em;} .wm b{color:var(--coral);}
+  .topr{display:flex; align-items:center; gap:8px;}
+  .langsel{border:1px solid var(--hair); background:var(--card); color:var(--ink-soft); font-family:inherit; font-size:12px; font-weight:700; padding:6px 8px; border-radius:999px; cursor:pointer;}
+  .helpbtn{width:28px; height:28px; border-radius:999px; border:1px solid var(--hair); background:var(--card); color:var(--ink-soft); font-family:inherit; font-size:14px; font-weight:800; cursor:pointer; flex:none;}
+  .pts{display:flex; align-items:center; gap:6px; font-size:14px; font-weight:800; background:var(--card); border:1px solid var(--hair); padding:6px 13px; border-radius:999px;}
+  .pts .n{font-family:var(--num); font-variant-numeric:tabular-nums; color:var(--coral);}
+
+  .hero{margin-top:14px; text-align:center; padding-bottom:6px;}
+  .mascbox{height:128px; display:flex; align-items:flex-end; justify-content:center;}
+  #masc{width:120px; height:120px; display:block; transform-origin:50% 92%; transition:transform .45s cubic-bezier(.2,1.3,.4,1);}
+  #masc.pop{animation:pop .5s cubic-bezier(.2,1.5,.4,1);}
+  @keyframes pop{0%{}35%{transform:scale(var(--s,1)) translateY(-5px) rotate(-4deg);}70%{transform:scale(calc(var(--s,1)*.97)) rotate(2deg);}100%{}}
+  .lvrow{margin-top:8px; display:inline-flex; align-items:center; gap:6px;}
+  .lvnum{font-family:var(--num); font-size:11px; font-weight:900; letter-spacing:.03em; color:#fff; background:var(--coral); padding:2px 8px; border-radius:999px;}
+  .lvname{font-size:13px; font-weight:800; color:var(--ink); letter-spacing:-.01em;}
+  .xpwrap{margin:11px auto 0; max-width:230px;}
+  .xpbar{height:8px; border-radius:999px; background:var(--hair); overflow:hidden;}
+  .xpfill{height:100%; border-radius:999px; background:linear-gradient(90deg,#FFB24D,var(--coral)); width:0; transition:width .55s cubic-bezier(.2,.8,.2,1);}
+  .xptxt{margin-top:6px; font-size:11px; font-weight:600; color:var(--ink-soft);}
+  .streak2{margin-top:13px; font-size:13.5px; font-weight:800; color:var(--ink-soft);} .streak2 b{color:var(--coral); font-family:var(--num); font-variant-numeric:tabular-nums;}
+
+  .sec{margin-top:30px;}
+  .sec-h{display:flex; align-items:center; gap:8px; margin:0 4px 12px; font-size:14px; font-weight:800;}
+  .sec-h .tag{font-size:11px; font-weight:800; padding:2px 9px; border-radius:999px;}
+  .did .tag{color:var(--did); background:var(--did-soft);} .dont .tag{color:var(--dont); background:var(--dont-soft);}
+  .sec-h .cnt{margin-left:auto; font-size:12px; font-weight:700; color:var(--ink-soft); font-variant-numeric:tabular-nums;}
+
+  .item{display:flex; align-items:center; gap:14px; background:var(--card); border:1px solid var(--hair); border-radius:16px; padding:16px; margin-bottom:11px; transition:transform .12s, border-color .18s;}
+  .item .hit{display:flex; align-items:center; gap:14px; flex:1; min-width:0; cursor:pointer;}
+  .item:active{transform:scale(.99);}
+  .box{width:26px; height:26px; border-radius:9px; border:2px solid var(--hair); flex:none; display:flex; align-items:center; justify-content:center; color:#fff; transition:background .18s, border-color .18s;}
+  .box svg{width:15px; height:15px; opacity:0; transform:scale(.4); transition:opacity .15s, transform .2s cubic-bezier(.2,1.6,.4,1);}
+  .did .item.on .box{background:var(--did); border-color:var(--did);} .did .item.on{border-color:color-mix(in srgb,var(--did) 40%,var(--hair));}
+  .item.on .box svg{opacity:1; transform:none;}
+  .lab{flex:1; font-size:15px; font-weight:600; letter-spacing:-.01em; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;} .item.on .lab{color:var(--ink-soft); text-decoration:line-through; text-decoration-color:color-mix(in srgb,var(--ink-soft) 45%,transparent);}
+  .plus{font-size:12px; font-weight:800; color:var(--ink-soft);} .item.on .plus{color:var(--did);}
+  .edn{background:none; border:none; color:var(--ink-soft); font-size:14px; opacity:.5; cursor:pointer; padding:2px 4px; flex:none;}
+  .del{background:none; border:none; color:var(--ink-soft); font-size:16px; opacity:.4; cursor:pointer; padding:2px 4px; flex:none;}
+
+  .qcard{background:var(--card); border:1px solid var(--hair); border-radius:16px; padding:16px 16px 15px; margin-bottom:11px;}
+  .qtop{display:flex; align-items:baseline; gap:10px;}
+  .qname{font-size:15px; font-weight:700; letter-spacing:-.01em; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; cursor:pointer;}
+  .qmeta{font-size:12px; color:var(--ink-soft); white-space:nowrap;} .qmeta .d{font-family:var(--num); font-variant-numeric:tabular-nums; font-size:16px; font-weight:900; color:var(--dont);}
+  .qedit{margin-top:9px; font-size:12px; color:var(--ink-soft); display:flex; align-items:center; gap:6px;}
+  .qedit .ue{background:none; border:none; font-size:15px; cursor:pointer; padding:0; line-height:1;}
+  .qedit .edit,.qedit .qdel{background:none; border:none; color:var(--ink-soft); font-size:13px; cursor:pointer; padding:0 2px; opacity:.55;}
+  .qedit .qdel{margin-left:auto;}
+  .qbtn{margin-top:12px; width:100%; padding:12px; border-radius:12px; border:none; font-family:inherit; font-size:14px; font-weight:800; cursor:pointer; background:var(--dont-soft); color:var(--dont); transition:transform .12s, background .18s;}
+  .qbtn:active{transform:scale(.98);} .qbtn.done{background:var(--dont); color:#fff;}
+
+  .add{width:100%; padding:13px; border-radius:14px; border:1.5px dashed var(--hair); background:transparent; color:var(--ink-soft); font-family:inherit; font-size:13.5px; font-weight:700; cursor:pointer; margin-top:2px;}
+  .add:active{transform:scale(.99);}
+
+  .saved{background:linear-gradient(165deg, var(--gold-soft), var(--card) 74%); border:1px solid var(--hair); border-radius:18px; padding:17px 17px 16px; margin-top:14px;}
+  .saved .sh{font-size:13px; font-weight:800; color:var(--ink-soft);}
+  .saved .srow{margin-top:9px; display:flex; gap:16px; flex-wrap:wrap; font-size:15px; font-weight:800;} .saved .srow b{font-family:var(--num); font-variant-numeric:tabular-nums;}
+  .track{margin-top:13px; height:10px; border-radius:999px; background:var(--hair); overflow:hidden;} .fill{height:100%; border-radius:999px; background:linear-gradient(90deg,#E1B05A,var(--gold)); width:0; transition:width .5s cubic-bezier(.2,.8,.2,1);}
+  .goal{margin-top:8px; font-size:11.5px; color:var(--ink-soft); display:flex; justify-content:space-between;}
+  .gift{margin-top:12px; width:100%; padding:11px; border-radius:12px; border:none; font-family:inherit; font-size:14px; font-weight:800; background:var(--gold); color:#fff; cursor:pointer; display:none;} .gift.on{display:block;}
+
+  .cal{margin-top:14px; background:var(--card); border:1px solid var(--hair); border-radius:18px; padding:16px 16px 14px;}
+  .cal-h{font-size:13px; font-weight:800; color:var(--ink-soft); margin-bottom:12px;}
+  .cal-grid{display:grid; grid-template-columns:repeat(7,1fr); gap:6px; text-align:center;}
+  .cal-wd{font-size:10px; font-weight:700; color:var(--ink-soft); padding-bottom:2px;}
+  .cal-d{aspect-ratio:1; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; border-radius:9px; color:var(--ink-soft);}
+  .cal-d.on{background:var(--coral); color:#fff;}
+  .cal-d.today{box-shadow:inset 0 0 0 2px var(--coral); color:var(--coral);}
+  .cal-d.on.today{color:#fff; box-shadow:inset 0 0 0 2px rgba(255,255,255,.85);}
+  .rest{margin-top:14px; text-align:center;}
+  .restbtn{background:var(--card); border:1px solid var(--hair); border-radius:999px; padding:9px 16px; font-family:inherit; font-size:12.5px; font-weight:700; color:var(--water); cursor:pointer;}
+  .foot{margin-top:24px; text-align:center; font-size:12px; color:var(--ink-soft); line-height:1.7;}
+  .float{position:fixed; font-family:var(--num); font-weight:900; font-size:20px; pointer-events:none; z-index:60;}
+  @keyframes floatUp{0%{opacity:0; transform:translateY(0) scale(.7);}20%{opacity:1;}100%{opacity:0; transform:translateY(-46px) scale(1.1);}}
+  @media (prefers-reduced-motion:reduce){ *{animation:none !important; transition:none !important;} .float{display:none;} }
+
+  .splash{ position:fixed; inset:0; z-index:300; display:flex; align-items:center; justify-content:center; flex-direction:column; background:radial-gradient(120% 60% at 50% 32%, var(--ground2), var(--ground)); transition:opacity .55s ease; }
+  .splash.gone{ opacity:0; pointer-events:none; }
+  .splash-flame{ width:150px; height:150px; animation:splbob 2.2s ease-in-out infinite; filter:drop-shadow(0 10px 30px rgba(255,120,60,.42)); }
+  @keyframes splbob{ 0%,100%{transform:scale(1) translateY(0);} 50%{transform:scale(1.06) translateY(-6px);} }
+  .splash-brand{ font-size:34px; font-weight:900; letter-spacing:-.03em; color:var(--ink); margin-top:10px; animation:splfade .8s ease both .25s; } .splash-brand b{ color:var(--coral); }
+  .splash-tag{ font-size:14px; color:var(--ink-soft); font-weight:700; margin-top:6px; animation:splfade .8s ease both .45s; }
+  @keyframes splfade{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;} }
+  .intro{position:fixed; inset:0; z-index:200; background:radial-gradient(120% 60% at 50% 0%, var(--ground2), var(--ground)); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px 26px calc(30px + env(safe-area-inset-bottom)); text-align:center;}
+  .intro.hide{display:none;}
+  .islide{display:none; flex-direction:column; align-items:center; max-width:340px;}
+  .islide.on{display:flex; animation:islidein .45s ease both;}
+  @keyframes islidein{from{opacity:0; transform:translateY(12px);}to{opacity:1; transform:none;}}
+  .idemo{width:200px; height:190px; position:relative; display:flex; align-items:center; justify-content:center; margin:0 auto;}
+  .dflame{width:118px; height:118px; transform-origin:50% 82%;}
+  .ititle{font-size:21px; font-weight:900; letter-spacing:-.03em; margin-top:12px; text-wrap:balance;} .ititle b{color:var(--coral);}
+  .idesc{font-size:14px; color:var(--ink-soft); line-height:1.65; margin-top:11px;}
+  .idots{display:flex; gap:7px; margin-top:28px;}
+  .idots i{width:7px; height:7px; border-radius:50%; background:var(--hair); transition:width .25s, background .25s;} .idots i.on{background:var(--coral); width:20px; border-radius:999px;}
+  .ibtn{margin-top:22px; border:none; background:var(--coral); color:#fff; font-family:inherit; font-size:15px; font-weight:800; padding:14px 42px; border-radius:16px; cursor:pointer; box-shadow:0 14px 28px -12px var(--coral);}
+  .iskip{margin-top:12px; background:none; border:none; color:var(--ink-soft); font-size:12.5px; font-weight:600; cursor:pointer;}
+  .chk{position:absolute; left:50%; bottom:6px; transform:translateX(-50%); font-size:13px; font-weight:800; color:var(--did); background:var(--did-soft); padding:4px 12px; border-radius:999px; animation:ochk 3.2s ease-in-out infinite; white-space:nowrap;}
+  .g1{animation:ogrow1 3.2s ease-in-out infinite;}
+  @keyframes ogrow1{0%{transform:scale(.62)}25%{transform:scale(.8)}52%{transform:scale(.98)}76%{transform:scale(1.2)}82%{transform:scale(1.1)}100%{transform:scale(.62)}}
+  @keyframes ochk{0%,12%{opacity:0; transform:translateX(-50%) translateY(6px)}22%{opacity:1; transform:translateX(-50%)}72%{opacity:1}86%,100%{opacity:0}}
+  .ixp{width:180px; height:12px; border-radius:999px; background:var(--hair); overflow:hidden; margin:12px auto 0;}
+  .ixp i{display:block; height:100%; border-radius:999px; background:linear-gradient(90deg,#FFB24D,var(--coral)); animation:ofill 3.8s ease-in-out infinite;}
+  @keyframes ofill{0%{width:0}52%{width:100%}100%{width:100%}}
+  .g2{animation:ogrow2 3.8s ease-in-out infinite;}
+  @keyframes ogrow2{0%,52%{transform:scale(.82)}66%{transform:scale(1.2)}74%{transform:scale(1.08)}100%{transform:scale(1.08)}}
+  .hat{position:absolute; top:6px; left:50%; font-size:36px; opacity:0; animation:ohat 3.8s ease-in-out infinite;}
+  @keyframes ohat{0%,58%{opacity:0; transform:translate(-50%,-18px) rotate(-12deg)}72%{opacity:1; transform:translate(-50%,-2px) rotate(0)}100%{opacity:1; transform:translate(-50%,-2px)}}
+
+  .sheet{position:fixed; inset:0; z-index:150; background:rgba(20,30,25,.42); display:none; align-items:flex-end; justify-content:center;}
+  .sheet.on{display:flex;}
+  .sheetbox{background:var(--card); width:100%; max-width:440px; border-radius:22px 22px 0 0; padding:20px 20px calc(24px + env(safe-area-inset-bottom)); animation:sheetup .3s ease;}
+  @keyframes sheetup{from{transform:translateY(30px); opacity:.6;}to{transform:none; opacity:1;}}
+  .sheet-h{font-size:16px; font-weight:800; margin-bottom:14px;}
+  .sheet-in{display:flex; gap:8px;}
+  .sheet-in input{flex:1; min-width:0; padding:12px 13px; border:1px solid var(--hair); border-radius:12px; font-family:inherit; font-size:14px; background:var(--ground); color:var(--ink); outline:none;}
+  .sheet-in input:focus{border-color:var(--coral);}
+  .sheet-in button{border:none; background:var(--coral); color:#fff; font-family:inherit; font-weight:800; font-size:14px; padding:0 18px; border-radius:12px; cursor:pointer;}
+  .sheet-lbl{font-size:11.5px; color:var(--ink-soft); font-weight:700; margin:16px 0 9px;}
+  .sheet-ex{display:flex; flex-wrap:wrap; gap:8px; max-height:180px; overflow-y:auto;}
+  .exchip{background:var(--ground); border:1px solid var(--hair); border-radius:999px; padding:8px 13px; font-family:inherit; font-size:13px; font-weight:600; color:var(--ink); cursor:pointer; transition:transform .1s;}
+  .exchip:active{transform:scale(.95);} .exchip.added{background:var(--did); border-color:var(--did); color:#fff;}
+  .sheet-x{margin-top:18px; width:100%; padding:12px; border:none; background:var(--ground); color:var(--ink-soft); border-radius:12px; font-family:inherit; font-weight:700; font-size:14px; cursor:pointer;}
+  .cloud-desc{ font-size:13px; color:var(--ink-soft); line-height:1.6; margin-bottom:16px; }
+  .cbtn{ width:100%; padding:14px; border-radius:13px; border:none; font-family:inherit; font-size:14.5px; font-weight:800; cursor:pointer; background:var(--coral); color:#fff; margin-bottom:9px; }
+  .cbtn:active{ transform:scale(.99); }
+  .cbtn.ghost{ background:var(--ground); color:var(--ink); }
+  .cbtn.warn{ background:transparent; color:var(--dont); font-size:13px; font-weight:700; margin-top:2px; }
+  .cor{ text-align:center; color:var(--ink-soft); font-size:12px; margin:16px 0 10px; }
+  .codebox{ text-align:center; background:var(--ground); border:1.5px dashed var(--coral); border-radius:14px; padding:18px; margin:2px 0 14px; }
+  .codebox .c{ font-size:30px; font-weight:900; letter-spacing:6px; color:var(--coral); font-family:var(--num); }
+  .codebox .t{ font-size:12px; color:var(--ink-soft); margin-top:8px; font-weight:700; line-height:1.5; }
+  .cloudmsg{ font-size:13px; font-weight:700; margin-top:6px; min-height:18px; text-align:center; }
+  .cloudmsg.ok{ color:var(--did); } .cloudmsg.err{ color:var(--dont); }
+  .lvrow{ cursor:pointer; } .lvcards{ font-size:12px; opacity:.55; margin-left:2px; }
+  .galhint{ font-size:13px; color:var(--ink-soft); line-height:1.6; margin-bottom:14px; }
+  .gallery{ display:flex; gap:13px; overflow-x:auto; padding:6px 2px 12px; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; }
+  .gallery::-webkit-scrollbar{ height:0; }
+  .tcard{ flex:none; width:146px; scroll-snap-align:center; border-radius:16px; padding:13px 11px 15px; text-align:center; position:relative; background:linear-gradient(165deg,#2b2444,#1a1530); color:#F3E9D8; border:2px solid #C9A24B; box-shadow:0 10px 24px -12px rgba(0,0,0,.55); }
+  .tcard .num{ font-family:Georgia,'Times New Roman',serif; font-size:13px; letter-spacing:3px; color:#E9C877; font-weight:800; }
+  .tcard .fw{ height:104px; display:flex; align-items:center; justify-content:center; position:relative; margin:4px 0 6px; }
+  .tcard .fw svg{ width:82px; height:82px; }
+  .tcard .nm{ font-size:14.5px; font-weight:800; letter-spacing:-.01em; }
+  .tcard .req{ font-size:11px; opacity:.82; margin-top:4px; min-height:15px; }
+  .tcard.locked{ filter:grayscale(.75) brightness(.72); }
+  .tcard.cur{ border-color:#FFD86B; box-shadow:0 0 0 2px #FFD86B, 0 12px 30px -8px rgba(255,180,60,.5); }
+  .tcard .badge{ position:absolute; top:8px; right:9px; font-size:10.5px; font-weight:800; background:#C9A24B; color:#1a1530; padding:2px 7px; border-radius:999px; }
+  .tcard.locked .badge{ background:rgba(255,255,255,.16); color:#F3E9D8; }
+  .tcard .nowtag{ position:absolute; top:-9px; left:50%; transform:translateX(-50%); font-size:10px; font-weight:800; background:#FFD86B; color:#3a2a10; padding:2px 9px; border-radius:999px; white-space:nowrap; }
+  .tacc{ position:absolute; left:50%; pointer-events:none; z-index:2; }
+  .tacc.crown{ top:0; transform:translateX(-50%); font-size:30px; }
+  .tacc.hat{ top:4px; transform:translateX(-50%); font-size:27px; }
+  .tacc.bow{ top:6px; transform:translateX(-50%); font-size:22px; }
+  .tacc.spark{ left:auto; right:20px; top:10px; font-size:18px; }
+  .tacc.spark2{ left:20px; right:auto; top:22px; font-size:15px; }
+  .view{ display:none; } .view.on{ display:block; animation:viewin .3s ease both; }
+  @keyframes viewin{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;} }
+  .tabbar{ position:fixed; left:0; right:0; bottom:0; z-index:90; display:flex; max-width:440px; margin:0 auto; background:color-mix(in srgb, var(--card) 92%, transparent); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border-top:1px solid var(--hair); padding:6px 8px calc(6px + env(safe-area-inset-bottom)); }
+  .tab{ flex:1; background:none; border:none; font-family:inherit; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:2px; padding:6px 0; color:var(--ink-soft); }
+  .tab .ti{ font-size:20px; line-height:1; filter:grayscale(.35) opacity(.8); }
+  .tab .tl{ font-size:11px; font-weight:700; }
+  .tab.on{ color:var(--coral); } .tab.on .ti{ filter:none; transform:translateY(-1px); }
+  .cal-page{ margin-top:6px; }
+  .cal-note{ font-size:12px; color:var(--ink-soft); text-align:center; margin-top:16px; line-height:1.6; }
+  .about-hero{ text-align:center; padding:14px 0 6px; }
+  .about-flame{ width:96px; height:96px; }
+  .about-hero h2{ font-size:20px; font-weight:900; letter-spacing:-.02em; margin-top:8px; line-height:1.35; } .about-hero h2 b{ color:var(--coral); }
+  .about-hero p{ font-size:13.5px; color:var(--ink-soft); line-height:1.6; margin-top:9px; }
+  .about-card{ display:flex; gap:12px; align-items:flex-start; background:var(--card); border:1px solid var(--hair); border-radius:15px; padding:14px; margin-top:11px; }
+  .about-card>span{ font-size:22px; flex:none; line-height:1.2; }
+  .about-card b{ font-size:14.5px; } .about-card p{ font-size:12.5px; color:var(--ink-soft); line-height:1.55; margin-top:3px; }
+  @keyframes qfin{ from{opacity:0; transform:translateY(10px) scale(.92);} to{opacity:1; transform:none;} }
+  #qflow.qgrid{ display:grid; grid-template-columns:1fr 1fr; gap:13px; width:100%; max-width:362px; margin:10px auto 2px; }
+  .qtc{ border-radius:20px; padding:13px 10px 15px; text-align:center; position:relative; overflow:hidden; background:var(--card); color:var(--ink); border:1px solid var(--hair); box-shadow:0 12px 28px -14px rgba(240,106,61,.5); opacity:0; animation:qfin .5s ease forwards; }
+  .qtc .num{ font-family:Georgia,'Times New Roman',serif; font-size:13px; letter-spacing:2px; color:var(--coral); font-weight:800; }
+  .qtc .fw{ height:114px; display:flex; align-items:center; justify-content:center; position:relative; margin:4px 0 5px; }
+  .qtc .fw::before{ content:''; position:absolute; width:104px; height:104px; border-radius:50%; background:radial-gradient(circle, rgba(255,150,70,.34), transparent 64%); z-index:0; }
+  .qtc .fw svg{ width:94px; height:94px; position:relative; z-index:1; filter:drop-shadow(0 6px 14px rgba(255,120,60,.34)); }
+  .qtc .dy{ font-size:12.5px; margin-top:2px; font-weight:800; color:var(--ink-soft); }
+  .qtc .tacc.crown{ font-size:34px; top:-7px; z-index:2; } .qtc .tacc.hat{ font-size:30px; top:-3px; z-index:2; } .qtc .tacc.bow{ font-size:25px; top:-1px; z-index:2; } .qtc .tacc.spark{ font-size:19px; right:12px; top:5px; z-index:2; } .qtc .tacc.spark2{ font-size:16px; left:12px; top:18px; z-index:2; }
+</style>
+</head>
+<body>
+<div class="splash" id="splash">
+  <svg class="splash-flame" viewBox="0 0 100 100" aria-label="Ember">
+    <defs><radialGradient id="sfg" cx="50%" cy="72%" r="70%"><stop offset="0" stop-color="#FFDF6B"/><stop offset="45%" stop-color="#FF9A3C"/><stop offset="100%" stop-color="#F0492A"/></radialGradient></defs>
+    <path d="M50 12 C62 26 78 34 78 56 A28 22 0 0 1 22 56 C22 36 36 30 41 20 C45 30 43 40 50 40 C57 40 55 24 50 12 Z" fill="url(#sfg)"/>
+    <ellipse cx="42" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><ellipse cx="58" cy="57" rx="4.8" ry="6" fill="#2E1A12"/>
+    <circle cx="44" cy="54" r="2" fill="#fff"/><circle cx="60" cy="54" r="2" fill="#fff"/>
+    <circle cx="33.5" cy="63" r="3" fill="#FF7A5A" opacity=".45"/><circle cx="66.5" cy="63" r="3" fill="#FF7A5A" opacity=".45"/>
+    <path d="M43 64 Q50 73 57 64 Z" fill="#7A2A18"/>
+  </svg>
+  <div class="splash-brand"><b>Ember</b></div>
+  <div class="splash-tag" id="splashTag"></div>
+</div>
+<div class="intro hide" id="intro">
+  <div class="islide on" data-i="0">
+    <div class="idemo"><svg class="dflame" viewBox="0 0 100 100" style="animation:ogrow2 4s ease-in-out infinite"><path d="M50 12 C62 26 78 34 78 56 A28 22 0 0 1 22 56 C22 36 36 30 41 20 C45 30 43 40 50 40 C57 40 55 24 50 12 Z" fill="url(#fg)"/><ellipse cx="42" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><ellipse cx="58" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><circle cx="44" cy="54" r="2" fill="#fff"/><circle cx="60" cy="54" r="2" fill="#fff"/><circle cx="33.5" cy="63" r="3" fill="#FF7A5A" opacity=".45"/><circle cx="66.5" cy="63" r="3" fill="#FF7A5A" opacity=".45"/><path d="M43 65 Q50 71 57 65" stroke="#7A2A18" stroke-width="2.6" fill="none" stroke-linecap="round"/></svg></div>
+    <div class="ititle" id="it0"></div><div class="idesc" id="id0"></div>
+  </div>
+  <div class="islide" data-i="1">
+    <div class="idemo"><svg class="dflame g1" viewBox="0 0 100 100"><path d="M50 12 C62 26 78 34 78 56 A28 22 0 0 1 22 56 C22 36 36 30 41 20 C45 30 43 40 50 40 C57 40 55 24 50 12 Z" fill="url(#fg)"/><ellipse cx="42" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><ellipse cx="58" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><circle cx="44" cy="54" r="2" fill="#fff"/><circle cx="60" cy="54" r="2" fill="#fff"/><circle cx="33.5" cy="63" r="3" fill="#FF7A5A" opacity=".45"/><circle cx="66.5" cy="63" r="3" fill="#FF7A5A" opacity=".45"/><path d="M43 65 Q50 71 57 65" stroke="#7A2A18" stroke-width="2.6" fill="none" stroke-linecap="round"/></svg><span class="chk" id="ichk"></span></div>
+    <div class="ititle" id="it1"></div><div class="idesc" id="id1"></div>
+  </div>
+  <div class="islide" data-i="2">
+    <div class="qflow" id="qflow"></div>
+    <div class="ititle" id="it2"></div><div class="idesc" id="id2"></div>
+  </div>
+  <div class="idots" id="idots"><i class="on"></i><i></i><i></i></div>
+  <button class="ibtn" id="ibtn" type="button">Next</button>
+  <button class="iskip" id="iskip" type="button">Skip</button>
+</div>
+
+<div class="wrap">
+  <div class="top">
+    <div class="wm">Ember · <span id="appsub">Today's Wins</span></div>
+    <div class="topr">
+      <button class="helpbtn" id="calBtn" type="button" title="달력 / Calendar">📅</button>
+      <button class="helpbtn" id="helpBtn" type="button" title="소개 / About">ℹ️</button>
+      <button class="helpbtn" id="cloudBtn" type="button" title="백업 / Backup">☁️</button>
+      <select class="langsel" id="langSel"></select>
+      <div class="pts">⭐ <span class="n" id="ptsN">0</span> P</div>
+    </div>
+  </div>
+
+  <!-- 🏠 홈 -->
+  <div class="view on" id="viewHome">
+    <div class="hero">
+      <div class="mascbox">
+        <svg id="masc" viewBox="0 0 100 100" aria-label="Ember">
+          <defs><radialGradient id="fg" cx="50%" cy="72%" r="70%"><stop offset="0" stop-color="#FFDF6B"/><stop offset="45%" stop-color="#FF9A3C"/><stop offset="100%" stop-color="#F0492A"/></radialGradient></defs>
+          <path d="M50 12 C62 26 78 34 78 56 A28 22 0 0 1 22 56 C22 36 36 30 41 20 C45 30 43 40 50 40 C57 40 55 24 50 12 Z" fill="url(#fg)"/>
+          <g id="face"></g>
+        </svg>
+      </div>
+      <div class="lvrow" id="lvrow" title="불꽃이 여정 보기"><span class="lvnum" id="lvNum">Lv.1</span><span class="lvname" id="lvName"></span><span class="lvcards">🃏</span></div>
+      <div class="xpwrap"><div class="xpbar"><div class="xpfill" id="xpFill"></div></div><div class="xptxt" id="xpTxt"></div></div>
+      <div class="streak2" id="streakBox">🔥 <b id="streakN">0</b></div>
+    </div>
+
+    <div class="sec did">
+      <div class="sec-h"><span id="didHdr"></span> <span class="tag" id="didTag"></span><span class="cnt" id="didCnt">0/0</span></div>
+      <div id="didList"></div>
+      <button class="add" id="addDid" type="button"></button>
+    </div>
+
+    <div class="sec dont">
+      <div class="sec-h"><span id="dontHdr"></span> <span class="tag" id="dontTag"></span></div>
+      <div id="dontList"></div>
+      <button class="add" id="addDont" type="button"></button>
+
+      <div class="saved" id="savedBox">
+        <div class="sh" id="savedTitle"></div>
+        <div class="srow" id="srow"></div>
+        <div class="track"><div class="fill" id="pigFill"></div></div>
+        <div class="goal"><span id="pigNow"></span><span id="pigGoal"></span></div>
+        <button class="gift" id="gift" type="button"></button>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;"><button class="sharebtn" id="shareBtn" type="button"></button></div>
+    <div class="rest"><button class="restbtn" id="restBtn" type="button"></button></div>
+  </div>
+
+  <!-- 📅 달력 -->
+  <div class="view" id="viewCal">
+    <div class="cal cal-page">
+      <div class="cal-h" id="calH"></div>
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
+    <p class="cal-note" id="calNote"></p>
+  </div>
+
+  <!-- ℹ️ 소개 -->
+  <div class="view" id="viewAbout">
+    <div class="about-hero">
+      <svg class="about-flame" viewBox="0 0 100 100"><path d="M50 12 C62 26 78 34 78 56 A28 22 0 0 1 22 56 C22 36 36 30 41 20 C45 30 43 40 50 40 C57 40 55 24 50 12 Z" fill="url(#fg)"/><ellipse cx="42" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><ellipse cx="58" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><circle cx="44" cy="54" r="2" fill="#fff"/><circle cx="60" cy="54" r="2" fill="#fff"/><path d="M43 64 Q50 73 57 64 Z" fill="#7A2A18"/></svg>
+      <h2 id="aboutTitle"></h2>
+      <p id="aboutLead"></p>
+    </div>
+    <div class="about-card"><span>✅</span><div><b id="aboutC1t"></b><p id="aboutC1d"></p></div></div>
+    <div class="about-card"><span>🛡</span><div><b id="aboutC2t"></b><p id="aboutC2d"></p></div></div>
+    <div class="about-card"><span>🔥</span><div><b id="aboutC3t"></b><p id="aboutC3d"></p></div></div>
+    <div class="about-card"><span>☁️</span><div><b id="aboutC4t"></b><p id="aboutC4d"></p></div></div>
+    <div class="foot" id="footTxt"></div>
+  </div>
+</div>
+
+<div class="sheet" id="sheet">
+  <div class="sheetbox">
+    <div class="sheet-h" id="sheetTitle"></div>
+    <div class="sheet-in"><input id="sheetInput"><button id="sheetAddBtn" type="button"></button></div>
+    <div class="sheet-lbl" id="sheetLbl"></div>
+    <div class="sheet-ex" id="sheetEx"></div>
+    <button class="sheet-x" id="sheetCloseBtn" type="button"></button>
+  </div>
+</div>
+
+<div class="sheet" id="cloudSheet">
+  <div class="sheetbox">
+    <div class="sheet-h" id="cloudTitle"></div>
+    <p class="cloud-desc" id="cloudDesc"></p>
+    <div id="cloudNew">
+      <button class="cbtn" id="cloudBackupBtn" type="button"></button>
+      <div class="cor" id="cloudOr"></div>
+      <div class="sheet-in"><input id="cloudCodeIn" maxlength="8" autocomplete="off" style="text-transform:uppercase;letter-spacing:3px;text-align:center;font-weight:800;"><button id="cloudRestoreBtn" type="button"></button></div>
+    </div>
+    <div id="cloudDone" style="display:none;">
+      <div class="codebox"><div class="c" id="cloudCode">········</div><div class="t" id="cloudCodeHint"></div></div>
+      <button class="cbtn ghost" id="cloudCopyBtn" type="button"></button>
+      <button class="cbtn ghost" id="cloudSyncBtn" type="button"></button>
+      <button class="cbtn warn" id="cloudUnlinkBtn" type="button"></button>
+    </div>
+    <div class="cloudmsg" id="cloudMsg"></div>
+    <button class="sheet-x" id="cloudCloseBtn" type="button"></button>
+  </div>
+</div>
+
+<div class="sheet" id="gallerySheet">
+  <div class="sheetbox">
+    <div class="sheet-h" id="galTitle"></div>
+    <p class="galhint" id="galHint"></p>
+    <div class="gallery" id="galleryBox"></div>
+    <button class="sheet-x" id="galleryClose" type="button"></button>
+  </div>
+</div>
+
+<script>
+  /* ================= i18n ================= */
+  var I18N={
+    ko:{ name:'한국어', appsub:'오늘의 승리',
+      didHdr:'오늘', dontHdr:'오늘', didTag:'해냈다 ✓', dontTag:'참았다 🛡',
+      addDid:'＋ 할 일 추가', addDont:'＋ 참을 것 추가',
+      resistBtn:'오늘도 참았어요 ✓', resistDone:'오늘 참음 🎉',
+      keptDays:'참은 지 {n}일', perOnce:'한 번에',
+      savedTitle:'🐷 참아서 아낀 것', savedNone:'참기를 지키면 여기에 쌓여요',
+      savedSum:'약 {n}원 모음', goalTxt:'다음 보상 {n}원', gift:'🎁 아낀 걸로 나에게 선물하기',
+      rewardMsg:'🎉 {v} 아꼈어요! 보상 획득 🏅', rewardLegend:'🏆 레전드! 돈·시간·칼로리 다 모았어요 — 특별 보상 해금!', rewardsN:'🏅 보상 {n}개',
+      rest:'💧 잠깐 쉬어가기', restMsg:'💧 잠깐 쉬어가요.\n불꽃도 가끔 식혀야 오래 타요. 무리하지 말고, 하나만 지켜도 오늘은 이긴 날이에요.',
+      foot:'해낸 것도 승리, 참아낸 것도 승리 🔥<br>매일 자동 저장돼요 · 홈 화면에 추가해 앱처럼 쓰세요',
+      week:['일','월','화','수','목','금','토'], calTitle:'🗓️ 이번 달',
+      shareBtn:'🎉 오늘의 승리 자랑하기', shareTag:'해낸 것도 참아낸 것도 승리', shareText:'나의 습관 여정 🔥 #Ember #오늘의승리',
+      streak:'{n}일 연속', questNext:'다음 퀘스트까지 {n}일 · {q}', questDone:'🏆 완전 체화 달성!',
+      giftMsg:'🎁 참아서 모은 돈으로 오늘은 나에게 작은 선물을!\n당신은 그럴 자격이 있어요 💛',
+      qClear:'🎉 퀘스트 클리어 — [{name}] 진화!', qMaster:'🏆 완전 체화! 최고 보상 획득!',
+      renameDid:'할 일 이름 수정', renameDont:'참을 것 이름 수정',
+      askAmt:'"{t}" — 한 번에 보통 {lbl} 아껴요?', lblMoney:'얼마(원)', lblKcal:'몇 kcal', lblMin:'몇 분',
+      delAsk:'"{t}" 삭제할까요?',
+      sheetDid:'＋ 오늘 해낼 것', sheetDont:'＋ 오늘 참을 것', phDid:'직접 쓰기 (예: 물 8잔)', phDont:'직접 쓰기 (예: 케이크 참기)',
+      sheetAdd:'추가', sheetLbl:'💡 예시를 눌러 빠르게 담기 (여러 개 탭!)', sheetDone:'완료',
+      unitWon:'원', unitKcal:'kcal', unitMin:'분', unitHr:'시간',
+      levels:['불씨','작은 불꽃','모닥불','큰 불꽃','봉황불'],
+      quests:['','3주 · 습관의 시작','약 2개월 · 습관 정착','약 8개월 · 몸에 배는 중','약 2년 · 완전 체화 🏆'],
+      intro:[['해낸 것도, 참아낸 것도<br><b>오늘의 승리</b> 🔥','불꽃이와 함께 좋은 습관은 해내고,<br>나쁜 습관은 참아요. 둘 다 승리예요.'],
+             ['① 해낼수록 <b>불씨가 커져요</b>','할 일을 하나씩 완료할 때마다<br>불꽃이가 쑥쑥 자라요.'],
+             ['② <b>퀘스트</b> 깨며 진화해요','3주 → 2개월 → 8개월 → 2년,<br>불씨가 <b>봉황불</b>까지 자라요 👑']],
+      introChk:'✓ 완료 +10', iNext:'다음', iStart:'시작하기 🔥', iSkip:'건너뛰기',
+      cloudTitle:'☁️ 백업 / 복원', cloudDesc:'폰을 바꿔도 불꽃이와 기록이 사라지지 않게 백업해요.',
+      cloudBackup:'이 기기 백업하기', cloudOr:'또는 — 새 폰이라면 코드로 복원', cloudCodePh:'8자리 코드', cloudRestore:'복원',
+      cloudDoneDesc:'이 기기는 백업 중이에요 ✓ 새 폰에서 아래 코드로 복원하세요.', cloudCodeHint:'새 폰 백업 화면에 이 코드를 입력',
+      cloudCopy:'📋 코드 복사', cloudSync:'🔄 지금 저장', cloudUnlink:'백업 해제',
+      msgBackingup:'백업 만드는 중…', msgBackupOk:'✅ 백업 완료! 코드를 꼭 적어두세요.', msgRestoring:'복원 중…', msgRestoreOk:'✅ 복원 완료! 새로고침할게요.',
+      msgRestoreFail:'코드가 틀렸거나 만료됐어요.', msgFail:'실패: ', msgCopied:'📋 복사됨!', msgSyncing:'저장 중…', msgSynced:'✅ 새 내용 받아왔어요!', msgSyncClean:'✅ 이미 최신이에요', unlinkAsk:'백업을 해제할까요?\n(기록은 이 폰에 그대로 남아요)',
+      galTitle:'🔥 불꽃이 여정', galHint:'꾸준히 실천하면 불꽃이가 이렇게 진화해요. 카드를 모아보세요!', galDone:'✓ 달성', galLeft:'🔒 {n}일 남음', galNow:'지금 여기', qfDays:['3주','2개월','8개월','2년'],
+      tabHome:'홈', tabCal:'달력', tabAbout:'소개', calNote:'승리한 날에 불이 켜져요 🔥 꾸준함이 곧 실력!',
+      aboutTitle:'해냈다 + 참았다,<br>둘 다 <b>승리</b>예요 🔥', aboutLead:'좋은 습관은 해내고, 나쁜 습관은 참아요. 불꽃이를 키우며 매일 조금씩.',
+      aboutC1t:'✅ 해냈다', aboutC1d:'하고 싶은 좋은 습관을 완료하면 포인트가 쌓여요.',
+      aboutC2t:'🛡 참았다', aboutC2d:'참을 것을 하루 참으면 아낀 돈·시간·칼로리가 저금통에 모여요.',
+      aboutC3t:'🔥 불꽃이 성장', aboutC3d:'꾸준히 할수록 불씨가 봉황불로 진화해요. 레벨 배지(🃏)를 눌러 여정을 봐요.',
+      aboutC4t:'☁️ 백업', aboutC4d:'폰을 바꿔도 기록이 안 사라지게, 위쪽 ☁️ 버튼으로 백업하세요.',
+      didEx:['물 8잔 마시기','30분 운동하기','계단 오르기 (심박 130+)','정해진 시간에 일어나기','숙제·할 일 하기','책 10쪽 읽기','명상 10분','스트레칭 5분','산책 20분','비타민 챙기기','일기 쓰기','영어 단어 10개'],
+      dontEx:[{t:'케이크·야식 참기',u:'kcal',a:1500},{t:'군것질 참기',u:'money',a:4500},{t:'배달음식 참기',u:'money',a:12000},{t:'누워있기 참기',u:'time',a:30},{t:'폰 오래 보기 참기',u:'time',a:30},{t:'늦잠 참기',u:'time',a:30},{t:'담배 참기',u:'money',a:4500},{t:'술 참기',u:'money',a:15000},{t:'충동구매 참기',u:'money',a:10000},{t:'단 음료 참기',u:'kcal',a:200}]
+    },
+    en:{ name:'English', appsub:"Today's Wins",
+      didHdr:'Today', dontHdr:'Today', didTag:'Did it ✓', dontTag:'Resisted 🛡',
+      addDid:'＋ Add a to-do', addDont:'＋ Add something to resist',
+      resistBtn:'Resisted today ✓', resistDone:'Done today 🎉',
+      keptDays:'{n} days strong', perOnce:'each time',
+      savedTitle:'🐷 Saved by resisting', savedNone:'Keep resisting and it piles up here',
+      savedSum:'~{n} saved', goalTxt:'Next reward {n}', gift:'🎁 Treat yourself with what you saved',
+      rewardMsg:'🎉 Saved {v}! Reward unlocked 🏅', rewardLegend:'🏆 Legend! Money, time & calories all saved — special reward unlocked!', rewardsN:'🏅 {n} rewards',
+      rest:'💧 Take a breather', restMsg:"💧 Take a little break.\nEven a flame needs to cool to burn long. Don't push it — keeping just one is already a win today.",
+      foot:'Doing is a win, resisting is a win 🔥<br>Auto-saved daily · Add to Home Screen to use as an app',
+      week:['S','M','T','W','T','F','S'], calTitle:'🗓️ This month',
+      shareBtn:'🎉 Share my wins', shareTag:'Doing & resisting — both are wins', shareText:'My habit journey with Ember 🔥 #Ember',
+      streak:'{n}-day streak', questNext:'Next quest in {n} days · {q}', questDone:'🏆 Fully mastered!',
+      giftMsg:'🎁 Use what you saved to treat yourself today!\nYou deserve it 💛',
+      qClear:'🎉 Quest cleared — evolved to [{name}]!', qMaster:'🏆 Fully mastered! Top reward unlocked!',
+      renameDid:'Edit to-do name', renameDont:'Edit resist name',
+      askAmt:'"{t}" — how much {lbl} do you save each time?', lblMoney:'money', lblKcal:'kcal', lblMin:'minutes',
+      delAsk:'Delete "{t}"?',
+      sheetDid:'＋ Do today', sheetDont:'＋ Resist today', phDid:'Write your own (e.g. 8 glasses of water)', phDont:'Write your own (e.g. no cake)',
+      sheetAdd:'Add', sheetLbl:'💡 Tap examples to add fast (tap several!)', sheetDone:'Done',
+      unitWon:'', unitKcal:'kcal', unitMin:'min', unitHr:'hr',
+      levels:['Ember','Small Flame','Campfire','Big Flame','Phoenix Fire'],
+      quests:['','3 weeks · Habit forming','~2 months · Habit set','~8 months · Sinking in','~2 years · Fully mastered 🏆'],
+      intro:[['Doing it, and resisting it —<br>both are <b>today\'s wins</b> 🔥','With Ember, build good habits and resist the bad ones. Both count as wins.'],
+             ['① The more you do, <b>the bigger it grows</b>','Every time you finish a task,<br>your Ember grows a little more.'],
+             ['② Clear <b>quests</b> & evolve','3 weeks → 2 → 8 months → 2 years,<br>from ember to <b>phoenix fire</b> 👑']],
+      introChk:'✓ Done +10', iNext:'Next', iStart:'Get started 🔥', iSkip:'Skip',
+      cloudTitle:'☁️ Backup / Restore', cloudDesc:'Back up so your flame & progress survive a phone change.',
+      cloudBackup:'Back up this device', cloudOr:'or — new phone? restore with a code', cloudCodePh:'8-char code', cloudRestore:'Restore',
+      cloudDoneDesc:'This device is backed up ✓ Restore on a new phone with the code below.', cloudCodeHint:'Enter this code on your new phone',
+      cloudCopy:'📋 Copy code', cloudSync:'🔄 Save now', cloudUnlink:'Turn off backup',
+      msgBackingup:'Backing up…', msgBackupOk:'✅ Backed up! Be sure to save your code.', msgRestoring:'Restoring…', msgRestoreOk:'✅ Restored! Reloading.',
+      msgRestoreFail:'Wrong or expired code.', msgFail:'Failed: ', msgCopied:'📋 Copied!', msgSyncing:'Saving…', msgSynced:'✅ Got new updates!', msgSyncClean:'✅ Already up to date', unlinkAsk:'Turn off backup?\n(Your data stays on this phone)',
+      galTitle:"🔥 Ember's Journey", galHint:'Keep going and your Ember evolves like this. Collect them all!', galDone:'✓ Unlocked', galLeft:'🔒 {n} days left', galNow:'you are here', qfDays:['3wk','2mo','8mo','2yr'],
+      tabHome:'Home', tabCal:'Calendar', tabAbout:'About', calNote:'Winning days light up 🔥 Consistency is the skill!',
+      aboutTitle:'Doing & resisting,<br>both are <b>wins</b> 🔥', aboutLead:'Do the good, resist the bad. Grow your flame a little every day.',
+      aboutC1t:'✅ Did it', aboutC1d:'Complete a good habit to earn points.',
+      aboutC2t:'🛡 Resisted', aboutC2d:'Resist for a day and the money, time & calories you saved pile up.',
+      aboutC3t:'🔥 Flame grows', aboutC3d:'Keep going and your ember evolves to a phoenix. Tap the level badge (🃏) for the journey.',
+      aboutC4t:'☁️ Backup', aboutC4d:'Back up with the ☁️ button so a phone change never wipes your progress.',
+      didEx:['Drink 8 glasses of water','30 min workout','Climb stairs (HR 130+)','Wake up on time','Do homework / tasks','Read 10 pages','Meditate 10 min','Stretch 5 min','20 min walk','Take vitamins','Write a journal','10 new words'],
+      dontEx:[{t:'No cake / late-night snack',u:'kcal',a:1500},{t:'No junk food',u:'money',a:4500},{t:'No food delivery',u:'money',a:12000},{t:'No lying around',u:'time',a:30},{t:'Under 30 min on phone',u:'time',a:30},{t:'No sleeping in',u:'time',a:30},{t:'No smoking',u:'money',a:4500},{t:'No drinking',u:'money',a:15000},{t:'No impulse buying',u:'money',a:10000},{t:'No sugary drinks',u:'kcal',a:200}]
+    }
+  };
+  var LANG=(function(){ try{var s=localStorage.getItem('ember_lang'); if(s&&I18N[s])return s;}catch(e){} var n=(navigator.language||'en').toLowerCase(); return n.indexOf('ko')===0?'ko':'en'; })();
+  function t(k,o){ var v=(I18N[LANG]&&I18N[LANG][k]); if(v==null)v=I18N.en[k]; if(v==null)v=k; if(o&&typeof v==='string') v=v.replace(/\{(\w+)\}/g,function(m,p){return o[p]!=null?o[p]:m;}); return v; }
+  function tl(k){ return (I18N[LANG]&&I18N[LANG][k])||I18N.en[k]; }
+  document.documentElement.lang=LANG;
+
+  /* ================= 저장 ================= */
+  var K='ember_v1';
+  function today(){ var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+  function ymd(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+  function loadS(){ try{ var v=JSON.parse(localStorage.getItem(K)); if(v&&v.did) return v; }catch(e){} return null; }
+  function save(){ try{ localStorage.setItem(K, JSON.stringify(S)); }catch(e){} }
+
+  var S = loadS() || {
+    did: tl('didEx').slice(0,4).map(function(t,i){return {id:'d'+i,t:t};}),
+    dont: tl('dontEx').slice(0,3).map(function(e,i){return {id:'n'+i,t:e.t,unit:e.u,amt:e.a,days:0,last:''};}),
+    doneDate:'', doneIds:[], pts:0, streak:0, streakDate:'', activeDays:0, goal:50000, seedLang:LANG, rewards:[], winDates:[]
+  };
+  var MILE={money:[10000,50000,100000,500000,1000000], time:[600,3000,6000,18000], kcal:[5000,20000,50000,100000]};
+  // 기본 예시 항목이 '어느 언어'의 몇 번째 예시인지 찾기(모든 언어 대조) — 없으면 -1(=직접 쓴 항목)
+  function exIdxDid(txt){ for(var lg in I18N){ var a=I18N[lg].didEx; if(a){ var i=a.indexOf(txt); if(i>=0) return i; } } return -1; }
+  function exIdxDont(txt){ for(var lg in I18N){ var a=I18N[lg].dontEx; if(a){ for(var i=0;i<a.length;i++){ if(a[i].t===txt) return i; } } } return -1; }
+  (function(){
+    var tday=today(); if(S.doneDate!==tday){ S.doneDate=tday; S.doneIds=[]; }
+    if(!S.rewards){ S.rewards=[]; var s0={money:0,time:0,kcal:0}; S.dont.forEach(function(it){s0[it.unit]+=it.days*it.amt;}); ['money','time','kcal'].forEach(function(u){ MILE[u].forEach(function(m){ if(s0[u]>=m) S.rewards.push(u+'_'+m); }); }); }
+    // 기본 예시 항목은 담긴 언어와 무관하게 '현재 앱 언어'로 맞춰 보여준다(직접 쓴 항목은 그대로).
+    var nD=tl('didEx');
+    S.did.forEach(function(it){ var i=exIdxDid(it.t); if(i>=0 && nD[i]) it.t=nD[i]; });
+    var nN=tl('dontEx');
+    S.dont.forEach(function(it){ var i=exIdxDont(it.t); if(i>=0 && nN[i]) it.t=nN[i].t; });
+    S.seedLang=LANG; save();
+  })();
+
+  /* ================= 불꽃이 표정 ================= */
+  function eyes(rx,ry){ return '<ellipse cx="42" cy="57" rx="'+rx+'" ry="'+ry+'" fill="#2E1A12"/><ellipse cx="58" cy="57" rx="'+rx+'" ry="'+ry+'" fill="#2E1A12"/><circle cx="44" cy="54" r="2" fill="#fff"/><circle cx="60" cy="54" r="2" fill="#fff"/><circle cx="40.4" cy="59.4" r="1.1" fill="#fff" opacity=".55"/><circle cx="56.4" cy="59.4" r="1.1" fill="#fff" opacity=".55"/>'; }
+  var cheek='<circle cx="33.5" cy="63" r="3" fill="#FF7A5A" opacity=".45"/><circle cx="66.5" cy="63" r="3" fill="#FF7A5A" opacity=".45"/>';
+  var FACE={
+    content:function(){return eyes(4.8,6)+cheek+'<path d="M43 65 Q50 71 57 65" stroke="#7A2A18" stroke-width="2.6" fill="none" stroke-linecap="round"/>';},
+    happy:function(){return eyes(4.8,6)+cheek+'<path d="M42 65 Q50 73 58 65 Z" fill="#7A2A18"/><path d="M45.5 68.5 Q50 71.5 54.5 68.5" stroke="#FFB59C" stroke-width="1.6" fill="none" stroke-linecap="round"/>';},
+    excited:function(){return eyes(5.4,6.6)+cheek+'<path d="M41 64 Q50 75 59 64 Z" fill="#7A2A18"/>';},
+    sad:function(){return '<ellipse cx="42" cy="58.5" rx="4.6" ry="4.6" fill="#2E1A12"/><ellipse cx="58" cy="58.5" rx="4.6" ry="4.6" fill="#2E1A12"/><circle cx="43.6" cy="57" r="1.5" fill="#fff"/><circle cx="59.6" cy="57" r="1.5" fill="#fff"/><path d="M37 54 Q42 51.5 47 55" stroke="#F0492A" stroke-width="2.1" fill="none" stroke-linecap="round"/><path d="M53 55 Q58 51.5 63 54" stroke="#F0492A" stroke-width="2.1" fill="none" stroke-linecap="round"/><path d="M45 70 Q50 66 55 70" stroke="#7A2A18" stroke-width="2.3" fill="none" stroke-linecap="round"/>';}
+  };
+  var faceEl=document.getElementById('face'), faceT;
+  function setFace(m){ faceEl.innerHTML=(FACE[m]||FACE.content)(); }
+  function winsToday(){ var w=S.doneIds.length, tday=today(); S.dont.forEach(function(x){ if(x.last===tday) w++; }); return w; }
+  function moodByLevel(){ var w=winsToday(); return w>=6?'excited':w>=2?'happy':'content'; }
+  function flash(m){ setFace(m); clearTimeout(faceT); faceT=setTimeout(function(){ setFace(moodByLevel()); },850); }
+
+  var QUESTS=[{d:0,s:.78},{d:21,s:.90},{d:66,s:1.02},{d:240,s:1.16},{d:730,s:1.32}];
+  function levelInfo(){ var d=S.activeDays||0, i=0; for(var k=0;k<QUESTS.length;k++){ if(d>=QUESTS[k].d) i=k; } var cur=QUESTS[i], nx=QUESTS[i+1];
+    return {lv:i+1, name:tl('levels')[i], s:cur.s, pct: nx? Math.max(0,Math.min(100,Math.round((d-cur.d)/(nx.d-cur.d)*100))):100, toNext: nx? nx.d-d:0, nextQ: nx?tl('quests')[i+1]:'', hasNext:!!nx}; }
+  var masc=document.getElementById('masc'), ptsN=document.getElementById('ptsN'), streakN=document.getElementById('streakN'), streakBox=document.getElementById('streakBox');
+  var lvNum=document.getElementById('lvNum'), lvName=document.getElementById('lvName'), xpFill=document.getElementById('xpFill'), xpTxt=document.getElementById('xpTxt');
+  function grow(){ var L=levelInfo(); var w=winsToday(); var s=L.s + Math.min(w,8)*0.07; masc.style.setProperty('--s',s); masc.style.transform='scale('+s+')';
+    lvNum.textContent='Lv.'+L.lv; lvName.textContent=L.name; xpFill.style.width=L.pct+'%';
+    xpTxt.textContent=L.hasNext? t('questNext',{n:L.toNext,q:L.nextQ}) : t('questDone');
+    if(S.lastLevel!==L.lv){ if(typeof S.lastLevel==='number' && L.lv>S.lastLevel) celebrate(L.name,L.hasNext); S.lastLevel=L.lv; save(); } }
+  function celebrate(name,more){ pop(); flash('excited'); toast(more? t('qClear',{name:name}) : t('qMaster')); }
+  function toast(msg){ var el=document.getElementById('__t'); if(!el){ el=document.createElement('div'); el.id='__t'; el.style.cssText='position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(10px);background:var(--coral);color:#fff;font-size:13.5px;font-weight:800;padding:11px 20px;border-radius:22px;box-shadow:0 12px 30px -8px rgba(240,73,42,.5);opacity:0;transition:opacity .28s,transform .28s;z-index:80;pointer-events:none;white-space:nowrap;'; document.body.appendChild(el);} el.textContent=msg; el.style.opacity='1'; el.style.transform='translateX(-50%) translateY(0)'; clearTimeout(el._t); el._t=setTimeout(function(){el.style.opacity='0';el.style.transform='translateX(-50%) translateY(10px)';},2200); }
+  function pop(){ masc.classList.remove('pop'); void masc.offsetWidth; masc.classList.add('pop'); }
+  function bumpStreak(){ var tday=today(); if(S.streakDate===tday) return; var y=new Date(); y.setDate(y.getDate()-1); y=ymd(y); S.streak=(S.streakDate===y)?S.streak+1:1; S.streakDate=tday; S.activeDays=(S.activeDays||0)+1; if(!S.winDates)S.winDates=[]; if(S.winDates.indexOf(tday)<0)S.winDates.push(tday); }
+  function award(e,color,p){ S.pts+=p; if(p>0){ pop(); flash('excited'); floatPts(e,color,p); bumpStreak(); } else flash('sad'); }
+  function floatPts(e,color,p){ var f=document.createElement('div'); f.className='float'; f.textContent=(p>0?'+':'')+p; f.style.color=color; var x=(e&&e.clientX)||innerWidth/2, y=(e&&e.clientY)||150; f.style.left=(x-10)+'px'; f.style.top=(y-14)+'px'; document.body.appendChild(f); f.style.animation='floatUp .9s ease forwards'; setTimeout(function(){f.remove();},950); }
+
+  /* ================= 렌더 ================= */
+  var CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>';
+  var UNITS=['money','time','kcal'], UEMOJI={money:'💰',time:'⏰',kcal:'🔥'};
+  function per(u,n){ return u==='money'? n.toLocaleString()+t('unitWon') : u==='kcal'? n.toLocaleString()+t('unitKcal') : n+t('unitMin'); }
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  var didList=document.getElementById('didList'), dontList=document.getElementById('dontList'), didCnt=document.getElementById('didCnt');
+  var srow=document.getElementById('srow'), pigFill=document.getElementById('pigFill'), pigNow=document.getElementById('pigNow'), pigGoal=document.getElementById('pigGoal'), gift=document.getElementById('gift');
+
+  function renderDid(){
+    didList.innerHTML='';
+    S.did.forEach(function(it){
+      var on=S.doneIds.indexOf(it.id)>=0;
+      var row=document.createElement('div'); row.className='item'+(on?' on':'');
+      row.innerHTML='<div class="hit"><div class="box">'+CHECK+'</div><div class="lab">'+esc(it.t)+'</div></div><div class="plus">+10</div><button class="edn" title="edit">✎</button><button class="del" title="delete">✕</button>';
+      row.querySelector('.edn').addEventListener('click',function(){ var v=prompt(t('renameDid'), it.t); if(v===null)return; v=v.trim(); if(!v)return; it.t=v; save(); renderDid(); });
+      row.querySelector('.hit').addEventListener('click',function(e){ var idx=S.doneIds.indexOf(it.id); if(idx>=0){ S.doneIds.splice(idx,1); award(e,'var(--did)',-10); } else { S.doneIds.push(it.id); award(e,'var(--did)',10); } save(); renderDid(); refreshAll(); });
+      row.querySelector('.del').addEventListener('click',function(){ if(confirm(t('delAsk',{t:it.t}))){ S.did=S.did.filter(function(x){return x.id!==it.id;}); var i=S.doneIds.indexOf(it.id); if(i>=0)S.doneIds.splice(i,1); save(); renderDid(); refreshAll(); } });
+      didList.appendChild(row);
+    });
+    didCnt.textContent=S.doneIds.length+'/'+S.did.length;
+  }
+  function renderDont(){
+    dontList.innerHTML='';
+    var tday=today();
+    S.dont.forEach(function(it){
+      var kept=it.last===tday;
+      var c=document.createElement('div'); c.className='qcard';
+      c.innerHTML='<div class="qtop"><div class="qname" title="edit">'+esc(it.t)+' <span style="opacity:.35;font-size:12px">✎</span></div><div class="qmeta">'+t('keptDays',{n:'<span class="d">'+it.days+'</span>'})+'</div></div>'
+        +'<div class="qedit"><button class="ue" title="unit">'+UEMOJI[it.unit]+'</button> '+t('perOnce')+' <span class="per">'+per(it.unit,it.amt)+'</span> <button class="edit" title="amount">✎</button><button class="qdel" title="delete">✕</button></div>'
+        +'<button class="qbtn'+(kept?' done':'')+'">'+(kept?t('resistDone'):t('resistBtn'))+'</button>';
+      var btn=c.querySelector('.qbtn'), dEl=c.querySelector('.d'), ue=c.querySelector('.ue'), perEl=c.querySelector('.per');
+      c.querySelector('.qname').addEventListener('click',function(){ var v=prompt(t('renameDont'), it.t); if(v===null)return; v=v.trim(); if(!v)return; it.t=v; save(); renderDont(); refreshAll(); });
+      ue.addEventListener('click',function(){ it.unit=UNITS[(UNITS.indexOf(it.unit)+1)%3]; if(it.unit==='time'&&it.amt>600)it.amt=30; save(); renderDont(); refreshAll(); });
+      c.querySelector('.edit').addEventListener('click',function(){ var lbl=it.unit==='money'?t('lblMoney'):it.unit==='kcal'?t('lblKcal'):t('lblMin'); var v=prompt(t('askAmt',{t:it.t,lbl:lbl}), it.amt); if(v===null)return; var n=parseInt(String(v).replace(/[^0-9]/g,''),10); if(isNaN(n)||n<0)return; it.amt=n; save(); renderDont(); refreshAll(); });
+      c.querySelector('.qdel').addEventListener('click',function(){ if(confirm(t('delAsk',{t:it.t}))){ S.dont=S.dont.filter(function(x){return x.id!==it.id;}); save(); renderDont(); refreshAll(); } });
+      btn.addEventListener('click',function(e){ if(it.last===tday){ it.last=''; it.days=Math.max(0,it.days-1); award(e,'var(--dont)',-15); } else { it.last=tday; it.days++; award(e,'var(--dont)',15); } dEl.textContent=it.days; btn.classList.toggle('done',it.last===tday); btn.textContent=it.last===tday?t('resistDone'):t('resistBtn'); save(); renderDont(); refreshAll(); });
+      dontList.appendChild(c);
+    });
+  }
+  function refreshAll(){
+    ptsN.textContent=S.pts; streakBox.innerHTML='🔥 '+t('streak',{n:'<b>'+S.streak+'</b>'});
+    var s={money:0,time:0,kcal:0}; S.dont.forEach(function(it){ s[it.unit]+=it.days*it.amt; });
+    var parts=[];
+    if(s.money>0) parts.push('💰 <b style="color:var(--gold)">'+s.money.toLocaleString()+t('unitWon')+'</b>');
+    if(s.time>0){ var h=Math.floor(s.time/60),m=s.time%60; parts.push('⏰ <b style="color:var(--dont)">'+(h?h+t('unitHr')+(m?' '+m+t('unitMin'):''):m+t('unitMin'))+'</b>'); }
+    if(s.kcal>0) parts.push('🔥 <b style="color:var(--coral)">'+s.kcal.toLocaleString()+t('unitKcal')+'</b>');
+    srow.innerHTML = parts.length? parts.join(' &nbsp; ') : '<span style="color:var(--ink-soft);font-weight:600">'+t('savedNone')+'</span>';
+    var nextGoal = MILE.money.filter(function(m){return s.money<m;})[0] || MILE.money[MILE.money.length-1];
+    var pct=Math.min(100,Math.round(s.money/nextGoal*100)); pigFill.style.width=pct+'%';
+    pigNow.textContent=t('savedSum',{n:s.money.toLocaleString()}); pigGoal.textContent=t('goalTxt',{n:nextGoal.toLocaleString()});
+    gift.classList.toggle('on', s.money>=MILE.money[0]);
+    document.getElementById('savedTitle').textContent = t('savedTitle') + ((S.rewards&&S.rewards.length)? '  ·  '+t('rewardsN',{n:S.rewards.length}) : '');
+    checkRewards(s); renderCalendar();
+    grow(); setFace(moodByLevel());
+  }
+  function fmtUnit(u,n){ if(u==='money') return n.toLocaleString()+t('unitWon'); if(u==='kcal') return n.toLocaleString()+t('unitKcal'); var h=Math.floor(n/60),m=n%60; return h?h+t('unitHr')+(m?' '+m+t('unitMin'):''):m+t('unitMin'); }
+  function checkRewards(s){ if(!S.rewards)S.rewards=[]; var got=false;
+    ['money','time','kcal'].forEach(function(u){ MILE[u].forEach(function(m){ var key=u+'_'+m; if(s[u]>=m && S.rewards.indexOf(key)<0){ S.rewards.push(key); got=true; toast(t('rewardMsg',{v:fmtUnit(u,m)})); } }); });
+    if(s.money>=100000 && s.time>=6000 && s.kcal>=50000 && S.rewards.indexOf('legend')<0){ S.rewards.push('legend'); got=true; toast(t('rewardLegend')); }
+    if(got) save();
+  }
+  function renderCalendar(){
+    var calH=document.getElementById('calH'), calGrid=document.getElementById('calGrid'); if(!calGrid) return;
+    calH.textContent=t('calTitle');
+    var d=new Date(), y=d.getFullYear(), mo=d.getMonth();
+    var startDow=new Date(y,mo,1).getDay(), days=new Date(y,mo+1,0).getDate(), todayStr=today(), wins=S.winDates||[];
+    var html=''; tl('week').forEach(function(w){ html+='<div class="cal-wd">'+w+'</div>'; });
+    for(var i=0;i<startDow;i++) html+='<div></div>';
+    for(var dn=1;dn<=days;dn++){ var ds=y+'-'+String(mo+1).padStart(2,'0')+'-'+String(dn).padStart(2,'0'); var on=wins.indexOf(ds)>=0, isT=ds===todayStr; html+='<div class="cal-d'+(on?' on':'')+(isT?' today':'')+'">'+dn+'</div>'; }
+    calGrid.innerHTML=html;
+  }
+
+  /* 항목 추가 시트 */
+  var uid=1; function nid(p){ return p+Date.now()+(uid++); }
+  var sheet=document.getElementById('sheet'), sheetTitle=document.getElementById('sheetTitle'), sheetInput=document.getElementById('sheetInput'), sheetEx=document.getElementById('sheetEx'), sheetMode='did';
+  function openSheet(mode){ sheetMode=mode; sheetTitle.textContent=mode==='did'?t('sheetDid'):t('sheetDont'); sheetInput.value=''; sheetInput.placeholder=mode==='did'?t('phDid'):t('phDont');
+    sheetEx.innerHTML='';
+    (mode==='did'?tl('didEx'):tl('dontEx')).forEach(function(ex){ var b=document.createElement('button'); b.className='exchip'; b.type='button'; var label=mode==='did'?ex:ex.t; b.textContent=label;
+      b.addEventListener('click',function(){ if(b.classList.contains('added'))return; if(mode==='did'){ S.did.push({id:nid('d'),t:ex}); renderDid(); } else { S.dont.push({id:nid('n'),t:ex.t,unit:ex.u,amt:ex.a,days:0,last:''}); renderDont(); refreshAll(); } save(); b.classList.add('added'); b.textContent='✓ '+label; }); sheetEx.appendChild(b); });
+    sheet.classList.add('on'); }
+  function addCustom(){ var v=sheetInput.value.trim(); if(!v)return; if(sheetMode==='did'){ S.did.push({id:nid('d'),t:v}); renderDid(); } else { S.dont.push({id:nid('n'),t:v,unit:'money',amt:3000,days:0,last:''}); renderDont(); refreshAll(); } save(); sheetInput.value=''; sheetInput.focus(); }
+  document.getElementById('addDid').addEventListener('click',function(){ openSheet('did'); });
+  document.getElementById('addDont').addEventListener('click',function(){ openSheet('dont'); });
+  document.getElementById('sheetAddBtn').addEventListener('click',addCustom);
+  sheetInput.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); addCustom(); } });
+  document.getElementById('sheetCloseBtn').addEventListener('click',function(){ sheet.classList.remove('on'); });
+  sheet.addEventListener('click',function(e){ if(e.target===sheet) sheet.classList.remove('on'); });
+  gift.addEventListener('click',function(){ alert(t('giftMsg')); });
+  document.getElementById('restBtn').addEventListener('click',function(){ alert(t('restMsg')); });
+
+  /* 정적 문구 i18n 적용 */
+  function applyStatic(){
+    document.getElementById('appsub').textContent=t('appsub');
+    document.getElementById('didHdr').textContent=t('didHdr'); document.getElementById('dontHdr').textContent=t('dontHdr');
+    document.getElementById('didTag').textContent=t('didTag'); document.getElementById('dontTag').textContent=t('dontTag');
+    document.getElementById('addDid').textContent=t('addDid'); document.getElementById('addDont').textContent=t('addDont');
+    document.getElementById('savedTitle').textContent=t('savedTitle'); document.getElementById('gift').textContent=t('gift');
+    document.getElementById('restBtn').textContent=t('rest'); document.getElementById('footTxt').innerHTML=t('foot');
+    document.getElementById('sheetAddBtn').textContent=t('sheetAdd'); document.getElementById('sheetLbl').textContent=t('sheetLbl'); document.getElementById('sheetCloseBtn').textContent=t('sheetDone');
+    document.getElementById('calNote').textContent=t('calNote');
+    document.getElementById('aboutTitle').innerHTML=t('aboutTitle'); document.getElementById('aboutLead').textContent=t('aboutLead');
+    ['1','2','3','4'].forEach(function(n){ document.getElementById('aboutC'+n+'t').textContent=t('aboutC'+n+'t'); document.getElementById('aboutC'+n+'d').textContent=t('aboutC'+n+'d'); });
+    // 언어 선택
+    var sel=document.getElementById('langSel'); sel.innerHTML='';
+    Object.keys(I18N).forEach(function(code){ var o=document.createElement('option'); o.value=code; o.textContent=I18N[code].name; if(code===LANG)o.selected=true; sel.appendChild(o); });
+    sel.addEventListener('change',function(){ try{localStorage.setItem('ember_lang',sel.value);}catch(e){} location.reload(); });
+    // 온보딩
+    var intro=tl('intro');
+    for(var i=0;i<3;i++){ document.getElementById('it'+i).innerHTML=intro[i][0]; document.getElementById('id'+i).innerHTML=intro[i][1]; }
+    document.getElementById('ichk').textContent=t('introChk');
+    document.getElementById('iskip').textContent=t('iSkip');
+  }
+
+  /* 온보딩 (첫 실행 + ? 버튼 다시보기) */
+  function startIntro(){
+    var intro=document.getElementById('intro'); intro.classList.remove('hide');
+    renderQuestFlow();
+    var ci=0, slides=intro.querySelectorAll('.islide'), dots=document.getElementById('idots').children, ibtn=document.getElementById('ibtn');
+    function show(i){ ci=i; for(var k=0;k<slides.length;k++){ slides[k].classList.toggle('on',k===i); dots[k].classList.toggle('on',k===i);} ibtn.textContent=(i===slides.length-1)?t('iStart'):t('iNext'); }
+    function finish(){ try{localStorage.setItem('ember_onboarded','1');}catch(e){} intro.classList.add('hide'); }
+    ibtn.onclick=function(){ if(ci<slides.length-1) show(ci+1); else finish(); };
+    document.getElementById('iskip').onclick=finish;
+    show(0);
+  }
+  if(!localStorage.getItem('ember_onboarded')) startIntro(); else document.getElementById('intro').classList.add('hide');
+  document.getElementById('helpBtn').addEventListener('click', startIntro);
+
+  /* ☁️ 백업/복원 */
+  (function(){
+    var sheet=document.getElementById('cloudSheet');
+    function cmsg(cls,txt){ var e=document.getElementById('cloudMsg'); e.className='cloudmsg'+(cls?' '+cls:''); e.textContent=txt; }
+    function renderCloud(){
+      var backed=window.EmberSync&&EmberSync.isBackedUp();
+      document.getElementById('cloudTitle').textContent=t('cloudTitle');
+      document.getElementById('cloudDesc').textContent=backed?t('cloudDoneDesc'):t('cloudDesc');
+      document.getElementById('cloudNew').style.display=backed?'none':'block';
+      document.getElementById('cloudDone').style.display=backed?'block':'none';
+      document.getElementById('cloudCloseBtn').textContent=t('sheetDone');
+      cmsg('','');
+      if(backed){
+        document.getElementById('cloudCode').textContent=(EmberSync.code()||'········');
+        document.getElementById('cloudCodeHint').textContent=t('cloudCodeHint');
+        document.getElementById('cloudCopyBtn').textContent=t('cloudCopy');
+        document.getElementById('cloudSyncBtn').textContent=t('cloudSync');
+        document.getElementById('cloudUnlinkBtn').textContent=t('cloudUnlink');
+      } else {
+        document.getElementById('cloudBackupBtn').textContent=t('cloudBackup');
+        document.getElementById('cloudOr').textContent=t('cloudOr');
+        document.getElementById('cloudCodeIn').placeholder=t('cloudCodePh');
+        document.getElementById('cloudRestoreBtn').textContent=t('cloudRestore');
+      }
+    }
+    document.getElementById('cloudBtn').addEventListener('click',function(){ renderCloud(); sheet.classList.add('on'); });
+    document.getElementById('cloudCloseBtn').addEventListener('click',function(){ sheet.classList.remove('on'); });
+    sheet.addEventListener('click',function(e){ if(e.target===sheet) sheet.classList.remove('on'); });
+    document.getElementById('cloudBackupBtn').addEventListener('click',function(){
+      if(!window.EmberSync)return; var b=this; b.disabled=true; cmsg('',t('msgBackingup'));
+      EmberSync.backup(function(err,code){ b.disabled=false; if(err){ cmsg('err',t('msgFail')+(err.message||'')); return; } renderCloud(); cmsg('ok',t('msgBackupOk')); });
+    });
+    document.getElementById('cloudRestoreBtn').addEventListener('click',function(){
+      if(!window.EmberSync)return; var code=(document.getElementById('cloudCodeIn').value||'').trim().toUpperCase();
+      if(code.length<6){ cmsg('err',t('cloudCodePh')); return; }
+      var b=this; b.disabled=true; cmsg('',t('msgRestoring'));
+      EmberSync.restore(code,function(err){ if(err){ b.disabled=false; var m=err.message||''; cmsg('err', /invalid|expired/i.test(m)?t('msgRestoreFail'):(t('msgFail')+m)); return; } cmsg('ok',t('msgRestoreOk')); setTimeout(function(){ location.reload(); },900); });
+    });
+    document.getElementById('cloudCopyBtn').addEventListener('click',function(){
+      var c=(window.EmberSync&&EmberSync.code())||''; if(navigator.clipboard&&c) navigator.clipboard.writeText(c).then(function(){ cmsg('ok',t('msgCopied')); },function(){}); });
+    document.getElementById('cloudSyncBtn').addEventListener('click',function(){
+      if(!window.EmberSync)return; var b=this; b.disabled=true; cmsg('',t('msgSyncing'));
+      EmberSync.syncNow(function(err,changed){ b.disabled=false; if(err){ cmsg('err',t('msgFail')+(err.message||'')); return; } cmsg('ok',changed?t('msgSynced'):t('msgSyncClean')); }); });
+    document.getElementById('cloudUnlinkBtn').addEventListener('click',function(){
+      if(!window.EmberSync)return; if(!confirm(t('unlinkAsk')))return; EmberSync.unlink(); renderCloud(); });
+  })();
+
+  /* 🎴 불꽃이 여정 (타로카드 진화 미리보기) */
+  function cardFlame(stage){
+    var acc='';
+    if(stage>=1) acc+='<span class="tacc spark">✨</span>';
+    if(stage===2) acc+='<span class="tacc bow">🎀</span>';
+    if(stage===3) acc+='<span class="tacc hat">🎩</span>';
+    if(stage>=4) acc+='<span class="tacc crown">👑</span><span class="tacc spark2">✨</span>';
+    var sc=[0.66,0.82,0.94,1.0,1.06][stage]||1;
+    return '<div class="fw">'+acc+'<svg viewBox="0 0 100 100" style="transform:scale('+sc+')"><path d="M50 12 C62 26 78 34 78 56 A28 22 0 0 1 22 56 C22 36 36 30 41 20 C45 30 43 40 50 40 C57 40 55 24 50 12 Z" fill="url(#fg)"/><ellipse cx="42" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><ellipse cx="58" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><circle cx="44" cy="54" r="2" fill="#fff"/><circle cx="60" cy="54" r="2" fill="#fff"/><path d="M43 64 Q50 72 57 64 Z" fill="#7A2A18"/></svg></div>';
+  }
+  function questFlameMini(stage){
+    var acc = stage===1?'⭐':stage===2?'🎀':stage===3?'🎩':stage===4?'👑':'';
+    var sc=[0,0.78,0.9,1.02,1.12][stage]||1;
+    return '<div class="qfflame">'+(acc?'<span class="qfacc">'+acc+'</span>':'')+'<svg viewBox="0 0 100 100" style="transform:scale('+sc+')"><path d="M50 12 C62 26 78 34 78 56 A28 22 0 0 1 22 56 C22 36 36 30 41 20 C45 30 43 40 50 40 C57 40 55 24 50 12 Z" fill="url(#fg)"/><ellipse cx="42" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><ellipse cx="58" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><path d="M44 64 Q50 70 56 64 Z" fill="#7A2A18"/></svg></div>';
+  }
+  function renderQuestFlow(){
+    var box=document.getElementById('qflow'); if(!box) return;
+    box.className='qgrid';
+    var days=tl('qfDays')||['3주','2개월','8개월','2년'], levels=tl('levels'), ROMAN=['I','II','III','IV','V'];
+    box.innerHTML='';
+    [1,2,3,4].forEach(function(stage,i){
+      var c=document.createElement('div'); c.className='qtc'; c.style.animationDelay=(i*0.22)+'s';
+      c.innerHTML='<div class="num">'+ROMAN[stage]+'</div>'+cardFlame(stage)+'<div class="dy">'+days[i]+'</div>';
+      box.appendChild(c);
+    });
+  }
+  function renderGallery(){
+    var box=document.getElementById('galleryBox'); if(!box)return;
+    document.getElementById('galTitle').textContent=t('galTitle');
+    document.getElementById('galHint').textContent=t('galHint');
+    document.getElementById('galleryClose').textContent=t('sheetDone');
+    var d=S.activeDays||0, levels=tl('levels'), ROMAN=['I','II','III','IV','V'], curi=0;
+    for(var k=0;k<QUESTS.length;k++){ if(d>=QUESTS[k].d) curi=k; }
+    box.innerHTML='';
+    QUESTS.forEach(function(q,i){
+      var unlocked=d>=q.d, isCur=(i===curi);
+      var card=document.createElement('div');
+      card.className='tcard'+(unlocked?'':' locked')+(isCur?' cur':'');
+      var status= unlocked? t('galDone') : t('galLeft',{n:(q.d-d)});
+      card.innerHTML=(isCur?'<div class="nowtag">'+t('galNow')+'</div>':'')
+        +'<div class="num">'+ROMAN[i]+'</div>'+cardFlame(i)
+        +'<div class="nm">'+levels[i]+'</div><div class="req">'+status+'</div>'
+        +'<div class="badge">'+(unlocked?'✓':'🔒')+'</div>';
+      box.appendChild(card);
+    });
+    var cur=box.querySelector('.tcard.cur'); if(cur){ try{ box.scrollLeft=cur.offsetLeft-(box.clientWidth-cur.clientWidth)/2; }catch(e){} }
+  }
+  (function(){
+    var gs=document.getElementById('gallerySheet'), lv=document.getElementById('lvrow');
+    if(lv) lv.addEventListener('click',function(){ renderGallery(); gs.classList.add('on'); });
+    document.getElementById('galleryClose').addEventListener('click',function(){ gs.classList.remove('on'); });
+    gs.addEventListener('click',function(e){ if(e.target===gs) gs.classList.remove('on'); });
+  })();
+
+  /* 상단 📅 달력 아이콘 (홈 ↔ 달력 전환) */
+  (function(){
+    var calBtn=document.getElementById('calBtn'), home=document.getElementById('viewHome'), cal=document.getElementById('viewCal');
+    if(calBtn) calBtn.addEventListener('click',function(){
+      var onCal=cal.classList.contains('on');
+      cal.classList.toggle('on', !onCal); home.classList.toggle('on', onCal);
+      calBtn.style.color = !onCal ? 'var(--coral)' : '';
+      try{ window.scrollTo(0,0); }catch(e){}
+    });
+  })();
+
+  applyStatic(); renderDid(); renderDont(); refreshAll(); save();
+
+  /* 스플래시(맨 앞 인트로 화면) */
+  (function(){
+    var sp=document.getElementById('splash'); if(!sp) return;
+    try{ document.getElementById('splashTag').textContent=t('appsub'); }catch(e){}
+    function hide(){ sp.classList.add('gone'); setTimeout(function(){ sp.style.display='none'; },600); }
+    setTimeout(hide,1600); sp.addEventListener('click',hide);
+  })();
+
+  if('serviceWorker' in navigator){ navigator.serviceWorker.register('/sw.js').catch(function(){}); }
+</script>
+<script src="/ember-sync.js"></script>
+</body>
+</html>

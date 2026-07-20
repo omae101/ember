@@ -198,7 +198,7 @@
   function renderCta(){ $('cta').textContent = (cur===last)? T[LANG].start : T[LANG].next; $('skip').textContent=T[LANG].skip; }
   var deferredPrompt=null;
   window.addEventListener('beforeinstallprompt',function(e){ e.preventDefault(); deferredPrompt=e; });
-  function finish(){ location.replace('/'); }
+  function finish(){ location.replace('/app.html'); }
   $('cta').addEventListener('click',function(){
     if(cur!==last){ go(cur+1); return; }
     if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt.userChoice.finally(function(){ deferredPrompt=null; finish(); }); }
@@ -218,7 +218,7 @@
     var isIOS=/iPhone|iPad|iPod/i.test(ua);
     var isAndroid=/Android/i.test(ua);
     var standalone=window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone===true;
-    if(standalone){ location.replace('/'); return; }
+    if(standalone){ location.replace('/app.html'); return; }
     function show(id){ var e=$(id); if(e)e.classList.remove('hide'); }
     if(isInApp) show('insInapp');
     else if(isIOS) show('insIos');
