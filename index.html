@@ -11,57 +11,31 @@
 <link rel="icon" type="image/png" href="/icon-192.png">
 <link rel="apple-touch-icon" href="/icon-192.png">
 <style>
-  :root{ --ground:#E7EDE6; --ground2:#DCE6DC; --card:#FCFDFB; --ink:#20302A; --ink-soft:#7C8D84; --hair:#D8E1D8;
-    --coral:#FF6A3D; --did:#0E9E63; --did-soft:#DCF1E6; --dont:#9A6B8F; --dont-soft:#F1E7EF; --gold:#C9902F;
+  :root{ --ground:#E7EDE6; --ground2:#DCE6DC; --card:#FCFDFB; --ink:#20302A; --ink-soft:#7C8D84; --hair:#D8E1D8; --coral:#FF6A3D;
     --font:"Apple SD Gothic Neo","Pretendard","Malgun Gothic",system-ui,sans-serif; }
   @media (prefers-color-scheme:dark){
-    :root{ --ground:#14201A; --ground2:#1B291F; --card:#1C2620; --ink:#E9F0EA; --ink-soft:#93A69A; --hair:#2C3A30;
-      --coral:#FF7A4D; --did:#39C489; --did-soft:#123020; --dont:#C08FB4; --dont-soft:#2E2230; --gold:#E4B45A; } }
+    :root{ --ground:#14201A; --ground2:#1B291F; --card:#1C2620; --ink:#E9F0EA; --ink-soft:#93A69A; --hair:#2C3A30; --coral:#FF7A4D; } }
   *{ box-sizing:border-box; margin:0; padding:0; font-family:var(--font); -webkit-tap-highlight-color:transparent; }
-  body{ background:radial-gradient(130% 50% at 50% -8%, var(--ground2), transparent 60%), var(--ground); color:var(--ink); min-height:100dvh; -webkit-font-smoothing:antialiased; }
-  .wrap{ max-width:460px; margin:0 auto; padding:18px 22px calc(40px + env(safe-area-inset-bottom)); }
-  .topr{ display:flex; justify-content:flex-end; }
+  body{ background:radial-gradient(130% 55% at 50% 22%, var(--ground2), transparent 62%), var(--ground); color:var(--ink); min-height:100dvh; -webkit-font-smoothing:antialiased;
+    display:flex; flex-direction:column; }
+  .topr{ display:flex; justify-content:flex-end; padding:14px 18px 0; }
   .langsel{ border:1px solid var(--hair); background:var(--card); color:var(--ink-soft); font-family:inherit; font-size:12px; font-weight:700; padding:6px 10px; border-radius:999px; cursor:pointer; }
-
-  .hero{ text-align:center; padding:14px 0 6px; }
-  .hero .flame{ width:132px; height:132px; animation:bob 3s ease-in-out infinite; filter:drop-shadow(0 12px 30px rgba(255,120,60,.4)); }
-  @keyframes bob{ 0%,100%{transform:scale(1) translateY(0) rotate(-1deg);} 50%{transform:scale(1.05) translateY(-6px) rotate(1.5deg);} }
-  .brand{ font-size:38px; font-weight:900; letter-spacing:-.03em; margin-top:6px; } .brand b{ color:var(--coral); }
-  .lead{ font-size:19px; font-weight:800; letter-spacing:-.02em; margin-top:12px; line-height:1.4; text-wrap:balance; } .lead b{ color:var(--coral); }
-  .sub{ font-size:14px; color:var(--ink-soft); line-height:1.65; margin-top:12px; text-wrap:balance; }
-  .cta{ margin-top:24px; display:flex; flex-direction:column; gap:10px; }
-  .btn{ display:block; width:100%; text-align:center; text-decoration:none; border:none; border-radius:16px; padding:16px; font-family:inherit; font-size:16px; font-weight:800; cursor:pointer; }
-  .btn.go{ background:var(--coral); color:#fff; box-shadow:0 14px 30px -12px var(--coral); }
+  .wrap{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px 26px calc(40px + env(safe-area-inset-bottom)); max-width:440px; margin:0 auto; width:100%; }
+  .flame{ width:170px; height:170px; animation:bob 3s ease-in-out infinite; filter:drop-shadow(0 16px 34px rgba(255,120,60,.42)); }
+  @keyframes bob{ 0%,100%{transform:scale(1) translateY(0) rotate(-1deg);} 50%{transform:scale(1.05) translateY(-7px) rotate(1.5deg);} }
+  .brand{ font-size:42px; font-weight:900; letter-spacing:-.03em; margin-top:8px; } .brand b{ color:var(--coral); }
+  .lead{ font-size:18px; font-weight:800; letter-spacing:-.02em; margin-top:14px; line-height:1.45; color:var(--ink-soft); text-wrap:balance; } .lead b{ color:var(--coral); }
+  .cta{ margin-top:34px; display:flex; flex-direction:column; gap:11px; width:100%; max-width:320px; }
+  .btn{ display:block; width:100%; text-align:center; text-decoration:none; border:none; border-radius:16px; padding:17px; font-family:inherit; font-size:16px; font-weight:800; cursor:pointer; }
+  .btn.go{ background:var(--coral); color:#fff; box-shadow:0 16px 32px -12px var(--coral); }
   .btn.go:active{ transform:translateY(1px); }
   .btn.inst{ background:var(--card); color:var(--coral); border:1.5px solid var(--coral); }
-  .free{ font-size:12.5px; color:var(--ink-soft); font-weight:700; margin-top:12px; }
-
-  .sec{ margin-top:40px; }
-  .sec-h{ font-size:13px; font-weight:800; color:var(--ink-soft); text-align:center; letter-spacing:.02em; margin-bottom:14px; }
-  .feat{ display:flex; flex-direction:column; gap:11px; }
-  .fcard{ display:flex; gap:13px; align-items:flex-start; background:var(--card); border:1px solid var(--hair); border-radius:16px; padding:15px; }
-  .fcard .fic{ font-size:24px; flex:none; line-height:1.1; }
-  .fcard b{ font-size:15px; } .fcard p{ font-size:12.5px; color:var(--ink-soft); line-height:1.55; margin-top:3px; }
-
-  .journey{ margin-top:40px; }
-  .jrow{ display:flex; align-items:center; justify-content:center; gap:2px; margin-top:12px; }
-  .jc{ flex:1; text-align:center; max-width:74px; }
-  .jf{ position:relative; height:56px; display:flex; align-items:flex-end; justify-content:center; }
-  .jf svg{ width:46px; height:46px; }
-  .jf .a{ position:absolute; top:-4px; left:50%; transform:translateX(-50%); font-size:18px; }
-  .jd{ font-size:10.5px; font-weight:800; color:var(--ink-soft); margin-top:3px; }
-  .jarr{ color:var(--coral); font-weight:900; font-size:13px; padding-bottom:16px; }
-
-  .foot{ margin-top:40px; text-align:center; font-size:12.5px; color:var(--ink-soft); line-height:1.7; }
-  .foot a{ color:var(--coral); text-decoration:none; font-weight:700; }
   @media (prefers-reduced-motion:reduce){ *{animation:none !important;} }
 </style>
 </head>
 <body>
-<div class="wrap">
   <div class="topr"><select class="langsel" id="langSel"></select></div>
-
-  <div class="hero">
+  <div class="wrap">
     <svg class="flame" viewBox="0 0 100 100" aria-label="Ember">
       <defs><radialGradient id="fg" cx="50%" cy="72%" r="70%"><stop offset="0" stop-color="#FFDF6B"/><stop offset="45%" stop-color="#FF9A3C"/><stop offset="100%" stop-color="#F0492A"/></radialGradient></defs>
       <path d="M50 12 C62 26 78 34 78 56 A28 22 0 0 1 22 56 C22 36 36 30 41 20 C45 30 43 40 50 40 C57 40 55 24 50 12 Z" fill="url(#fg)"/>
@@ -72,90 +46,26 @@
     </svg>
     <div class="brand"><b>Ember</b></div>
     <div class="lead" id="lead"></div>
-    <div class="sub" id="sub"></div>
     <div class="cta">
       <a class="btn go" id="btnGo" href="/app.html"></a>
       <a class="btn inst" id="btnInst" href="/install.html"></a>
     </div>
-    <div class="free" id="free"></div>
   </div>
-
-  <div class="sec">
-    <div class="sec-h" id="featH"></div>
-    <div class="feat">
-      <div class="fcard"><span class="fic">✅🛡</span><div><b id="f1t"></b><p id="f1d"></p></div></div>
-      <div class="fcard"><span class="fic">🔥</span><div><b id="f2t"></b><p id="f2d"></p></div></div>
-      <div class="fcard"><span class="fic">🎩</span><div><b id="f3t"></b><p id="f3d"></p></div></div>
-    </div>
-  </div>
-
-  <div class="journey">
-    <div class="sec-h" id="jH"></div>
-    <div class="jrow" id="jrow"></div>
-  </div>
-
-  <div class="foot">
-    <div id="footNote"></div>
-  </div>
-</div>
 
 <script>
   var T={
-    ko:{ name:'한국어',
-      lead:'습관을 <b>게임처럼</b> 🔥', sub:'좋은 습관은 해내고, 나쁜 습관은 참아요.<br>불꽃이를 키우고 꾸미며 매일 조금씩.',
-      go:'🔥 시작하기', inst:'📲 앱으로 설치', free:'가입도 돈도 없이 무료',
-      featH:'이런 앱이에요',
-      f1t:'✅ 해냈다 + 🛡 참았다', f1d:'좋은 습관은 완료로, 나쁜 습관은 참아서 — 둘 다 보상받아요.',
-      f2t:'🔥 불꽃이 키우기', f2d:'실천할수록 불씨가 봉황불까지 진화해요. 레벨·퀘스트로 동기부여.',
-      f3t:'🎩 꾸미기·수집', f3d:'모자·왕관으로 나만의 불꽃이를 완성해요.',
-      jH:'불씨 → 봉황불, 이렇게 자라요', jd:['3주','2개월','8개월','2년'],
-      footGo:'🔥 지금 시작하기', footNote:'해낸 것도, 참아낸 것도 승리 · 무료' },
-    en:{ name:'English',
-      lead:'Habits, <b>like a game</b> 🔥', sub:'Do the good, resist the bad.<br>Grow and dress up your flame, a little every day.',
-      go:'🔥 Get started', inst:'📲 Install app', free:'Free — no sign-up, no payment',
-      featH:'What is Ember?',
-      f1t:'✅ Did it + 🛡 Resisted', f1d:'Finish good habits, resist bad ones — both are rewarded.',
-      f2t:'🔥 Grow your flame', f2d:'Practice and your ember evolves to a phoenix. Levels & quests keep you going.',
-      f3t:'🎩 Dress up & collect', f3d:'Complete your own Ember with hats & crowns.',
-      jH:'From ember to phoenix fire', jd:['3wk','2mo','8mo','2yr'],
-      footGo:'🔥 Start now', footNote:'Doing & resisting — both are wins · Free' }
+    ko:{ name:'한국어', lead:'습관을 <b>게임처럼</b> 🔥', go:'🔥 시작하기', inst:'📲 앱 다운받기' },
+    en:{ name:'English', lead:'Habits, <b>like a game</b> 🔥', go:'🔥 Get started', inst:'📲 Download app' }
   };
   var LANG=(function(){ try{ var s=localStorage.getItem('ember_lang'); if(s&&T[s])return s; }catch(e){} return (navigator.language||'en').toLowerCase().indexOf('ko')===0?'ko':'en'; })();
   function $(id){ return document.getElementById(id); }
-
-  function jFlame(stage){
-    var a=stage===1?'⭐':stage===2?'🎀':stage===3?'🎩':stage===4?'👑':'';
-    var sc=[0,0.8,0.92,1.02,1.12][stage]||1;
-    return '<div class="jf">'+(a?'<span class="a">'+a+'</span>':'')+'<svg viewBox="0 0 100 100" style="transform:scale('+sc+')"><path d="M50 12 C62 26 78 34 78 56 A28 22 0 0 1 22 56 C22 36 36 30 41 20 C45 30 43 40 50 40 C57 40 55 24 50 12 Z" fill="url(#fg)"/><ellipse cx="42" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><ellipse cx="58" cy="57" rx="4.8" ry="6" fill="#2E1A12"/><path d="M44 64 Q50 70 56 64 Z" fill="#7A2A18"/></svg></div>';
-  }
-  function renderJourney(){
-    var box=$('jrow'), days=T[LANG].jd; box.innerHTML='';
-    [1,2,3,4].forEach(function(stage,i){
-      var c=document.createElement('div'); c.className='jc';
-      c.innerHTML=jFlame(stage)+'<div class="jd">'+days[i]+'</div>';
-      box.appendChild(c);
-      if(i<3){ var a=document.createElement('div'); a.className='jarr'; a.textContent='›'; box.appendChild(a); }
-    });
-  }
-  function apply(){
-    var d=T[LANG]; document.documentElement.lang=LANG;
-    $('lead').innerHTML=d.lead; $('sub').innerHTML=d.sub;
-    $('btnGo').textContent=d.go; $('btnInst').textContent=d.inst; $('free').textContent=d.free;
-    $('featH').textContent=d.featH;
-    $('f1t').textContent=d.f1t; $('f1d').textContent=d.f1d;
-    $('f2t').textContent=d.f2t; $('f2d').textContent=d.f2d;
-    $('f3t').textContent=d.f3t; $('f3d').textContent=d.f3d;
-    $('jH').textContent=d.jH; $('footNote').textContent=d.footNote;
-    renderJourney();
-  }
+  function apply(){ var d=T[LANG]; document.documentElement.lang=LANG; $('lead').innerHTML=d.lead; $('btnGo').textContent=d.go; $('btnInst').textContent=d.inst; }
   (function(){
     var sel=$('langSel');
     for(var k in T){ var o=document.createElement('option'); o.value=k; o.textContent=T[k].name; if(k===LANG)o.selected=true; sel.appendChild(o); }
     sel.addEventListener('change',function(){ LANG=sel.value; try{localStorage.setItem('ember_lang',LANG);}catch(e){} apply(); });
     apply();
   })();
-
-  // 앱으로 열어도 시작페이지(랜딩)부터 보여줌 → [시작하기]로 메인 진입
   if('serviceWorker' in navigator){ navigator.serviceWorker.register('/sw.js').catch(function(){}); }
 </script>
 </body>
