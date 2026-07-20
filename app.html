@@ -710,13 +710,15 @@
     {k:'grad',e:'🎓',lv:3,n:{ko:'학사모',en:'Grad cap'}},
     {k:'crown',e:'👑',lv:5,n:{ko:'왕관',en:'Crown'}}
   ];
+  // 미리보기: ?unlock 또는 ?lv=N 이면 그 레벨까지 옷장 열림(임시, 사장님 확인용)
+  var PREVIEW_LV=(function(){ var m=location.search.match(/[?&](?:unlock|lv)(?:=(\d+))?/); return m?(m[1]?parseInt(m[1],10):9):0; })();
   function applyEquip(){ var el=document.getElementById('mascHat'); if(!el)return; var f=WITEMS.filter(function(x){return x.k===(S.equipped||'');})[0]; el.textContent=f?f.e:''; }
   function renderWardrobe(){
     var box=document.getElementById('wardGrid'); if(!box)return;
     document.getElementById('wardTitle').textContent=t('wardTitle');
     document.getElementById('wardHint').textContent=t('wardHint');
     document.getElementById('wardClose').textContent=t('sheetDone');
-    var lv=levelInfo().lv; box.innerHTML='';
+    var lv=Math.max(levelInfo().lv, PREVIEW_LV); box.innerHTML='';
     WITEMS.forEach(function(it){
       var unlocked=lv>=it.lv, eq=(S.equipped||'')===it.k;
       var c=document.createElement('div'); c.className='witem'+(eq?' eq':'')+(unlocked?'':' lock');
