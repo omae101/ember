@@ -155,8 +155,7 @@
     apply();
   })();
 
-  // 이미 설치해 앱으로 실행 중이면 랜딩 건너뛰고 바로 앱
-  if(window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone===true){ location.replace('/app.html'); }
+  // 앱으로 열어도 시작페이지(랜딩)부터 보여줌 → [시작하기]로 메인 진입
   if('serviceWorker' in navigator){ navigator.serviceWorker.register('/sw.js').catch(function(){}); }
 </script>
 </body>

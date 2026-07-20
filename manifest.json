@@ -6,7 +6,7 @@
   "lang": "ko",
   "dir": "ltr",
   "categories": ["lifestyle", "productivity", "health"],
-  "start_url": "/app.html",
+  "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
