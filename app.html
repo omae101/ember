@@ -29,7 +29,9 @@
   .wm{font-size:15px; font-weight:800; letter-spacing:-.02em;} .wm b{color:var(--coral);}
   .topr{display:flex; align-items:center; gap:8px;}
   .langsel{border:1px solid var(--hair); background:var(--card); color:var(--ink-soft); font-family:inherit; font-size:12px; font-weight:700; padding:6px 8px; border-radius:999px; cursor:pointer;}
-  .helpbtn{width:28px; height:28px; border-radius:999px; border:1px solid var(--hair); background:var(--card); color:var(--ink-soft); font-family:inherit; font-size:14px; font-weight:800; cursor:pointer; flex:none;}
+  .helpbtn{width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-radius:11px; border:none; background:transparent; color:var(--ink-soft); font-family:inherit; font-size:18px; line-height:1; cursor:pointer; flex:none; padding:0; transition:background .15s;}
+  .helpbtn:active{background:var(--ground2);}
+  .helpbtn.on{background:var(--ground2);}
   .pts{display:flex; align-items:center; gap:6px; font-size:14px; font-weight:800; background:var(--card); border:1px solid var(--hair); padding:6px 13px; border-radius:999px;}
   .pts .n{font-family:var(--num); font-variant-numeric:tabular-nums; color:var(--coral);}
 
@@ -783,7 +785,7 @@
     if(calBtn) calBtn.addEventListener('click',function(){
       var onCal=cal.classList.contains('on');
       cal.classList.toggle('on', !onCal); home.classList.toggle('on', onCal);
-      calBtn.style.color = !onCal ? 'var(--coral)' : '';
+      calBtn.classList.toggle('on', !onCal);
       try{ window.scrollTo(0,0); }catch(e){}
     });
   })();
