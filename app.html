@@ -90,10 +90,11 @@
   .cal-h{font-size:13px; font-weight:800; color:var(--ink-soft); margin-bottom:12px;}
   .cal-grid{display:grid; grid-template-columns:repeat(7,1fr); gap:6px; text-align:center;}
   .cal-wd{font-size:10px; font-weight:700; color:var(--ink-soft); padding-bottom:2px;}
-  .cal-d{aspect-ratio:1; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; border-radius:9px; color:var(--ink-soft);}
-  .cal-d.on{background:var(--coral); color:#fff;}
+  .cal-d{aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px; font-size:11px; font-weight:700; border-radius:9px; color:var(--ink-soft);}
+  .cal-d .cdn{font-size:10px; line-height:1;}
+  .cal-d.won .cdn{color:var(--coral); font-weight:800;}
+  .cal-d .cf{display:block; filter:drop-shadow(0 1px 2px rgba(255,120,60,.35));}
   .cal-d.today{box-shadow:inset 0 0 0 2px var(--coral); color:var(--coral);}
-  .cal-d.on.today{color:#fff; box-shadow:inset 0 0 0 2px rgba(255,255,255,.85);}
   .rest{margin-top:14px; text-align:center;}
   .restbtn{background:var(--card); border:1px solid var(--hair); border-radius:999px; padding:9px 16px; font-family:inherit; font-size:12.5px; font-weight:700; color:var(--water); cursor:pointer;}
   .foot{margin-top:24px; text-align:center; font-size:12px; color:var(--ink-soft); line-height:1.7;}
@@ -456,7 +457,7 @@
   var S = loadS() || {
     did: tl('didEx').slice(0,4).map(function(t,i){return {id:'d'+i,t:t};}),
     dont: tl('dontEx').slice(0,3).map(function(e,i){return {id:'n'+i,t:e.t,unit:e.u,amt:e.a,days:0,last:''};}),
-    doneDate:'', doneIds:[], pts:0, streak:0, streakDate:'', activeDays:0, goal:50000, seedLang:LANG, rewards:[], winDates:[]
+    doneDate:'', doneIds:[], pts:0, streak:0, streakDate:'', activeDays:0, goal:50000, seedLang:LANG, rewards:[], winDates:[], winCounts:{}
   };
   var MILE={money:[10000,50000,100000,500000,1000000], time:[600,3000,6000,18000], kcal:[5000,20000,50000,100000]};
   // 기본 예시 항목이 '어느 언어'의 몇 번째 예시인지 찾기(모든 언어 대조) — 없으면 -1(=직접 쓴 항목)
@@ -556,6 +557,7 @@
     pigNow.textContent=t('savedSum',{n:s.money.toLocaleString()}); pigGoal.textContent=t('goalTxt',{n:nextGoal.toLocaleString()});
     gift.classList.toggle('on', s.money>=MILE.money[0]);
     document.getElementById('savedTitle').textContent = t('savedTitle') + ((S.rewards&&S.rewards.length)? '  ·  '+t('rewardsN',{n:S.rewards.length}) : '');
+    var _td=today(); if(!S.winCounts)S.winCounts={}; if(S.winCounts[_td]!==winsToday()){ S.winCounts[_td]=winsToday(); save(); }
     checkRewards(s); renderCalendar();
     grow(); setFace(moodByLevel());
   }
@@ -572,7 +574,12 @@
     var startDow=new Date(y,mo,1).getDay(), days=new Date(y,mo+1,0).getDate(), todayStr=today(), wins=S.winDates||[];
     var html=''; tl('week').forEach(function(w){ html+='<div class="cal-wd">'+w+'</div>'; });
     for(var i=0;i<startDow;i++) html+='<div></div>';
-    for(var dn=1;dn<=days;dn++){ var ds=y+'-'+String(mo+1).padStart(2,'0')+'-'+String(dn).padStart(2,'0'); var on=wins.indexOf(ds)>=0, isT=ds===todayStr; html+='<div class="cal-d'+(on?' on':'')+(isT?' today':'')+'">'+dn+'</div>'; }
+    var wc=S.winCounts||{};
+    for(var dn=1;dn<=days;dn++){ var ds=y+'-'+String(mo+1).padStart(2,'0')+'-'+String(dn).padStart(2,'0');
+      var cnt=wc[ds]||(wins.indexOf(ds)>=0?1:0), isT=ds===todayStr;
+      var fz=(12+Math.min(cnt,8)*1.7);
+      var fl=cnt>0?'<svg class="cf" viewBox="0 0 100 100" style="width:'+fz+'px;height:'+fz+'px"><path d="M50 12 C62 26 78 34 78 56 A28 22 0 0 1 22 56 C22 36 36 30 41 20 C45 30 43 40 50 40 C57 40 55 24 50 12 Z" fill="url(#fg)"/></svg>':'';
+      html+='<div class="cal-d'+(cnt>0?' won':'')+(isT?' today':'')+'"><span class="cdn">'+dn+'</span>'+fl+'</div>'; }
     calGrid.innerHTML=html;
   }
 
