@@ -36,7 +36,16 @@
   .pts .n{font-family:var(--num); font-variant-numeric:tabular-nums; color:var(--coral);}
 
   .hero{margin-top:14px; text-align:center; padding-bottom:6px;}
-  .mascbox{height:128px; display:flex; align-items:flex-end; justify-content:center;}
+  .mascbox{height:128px; display:flex; align-items:flex-end; justify-content:center; position:relative; cursor:pointer;}
+  .masc-hat{ position:absolute; left:50%; top:0; transform:translateX(-50%); font-size:46px; z-index:2; pointer-events:none; }
+  .wgrid{ display:grid; grid-template-columns:repeat(3,1fr); gap:11px; margin-top:6px; }
+  .witem{ position:relative; border-radius:14px; border:1.5px solid var(--hair); background:var(--card); padding:12px 6px 11px; text-align:center; cursor:pointer; }
+  .witem .we{ font-size:32px; line-height:1; height:40px; display:flex; align-items:center; justify-content:center; }
+  .witem .wn{ font-size:11.5px; font-weight:700; color:var(--ink-soft); margin-top:6px; }
+  .witem.eq{ border-color:var(--coral); box-shadow:0 0 0 1.5px var(--coral); } .witem.eq .wn{ color:var(--coral); }
+  .witem.lock{ opacity:.55; } .witem.lock .we{ filter:grayscale(1); }
+  .witem .wlk{ font-size:10.5px; font-weight:800; color:var(--ink-soft); margin-top:5px; }
+  .witem .wtick{ position:absolute; top:6px; right:8px; font-size:12px; color:var(--coral); font-weight:900; }
   #masc{width:120px; height:120px; display:block; transform-origin:50% 92%; transition:transform .45s cubic-bezier(.2,1.3,.4,1);}
   #masc.pop{animation:pop .5s cubic-bezier(.2,1.5,.4,1);}
   @keyframes pop{0%{}35%{transform:scale(var(--s,1)) translateY(-5px) rotate(-4deg);}70%{transform:scale(calc(var(--s,1)*.97)) rotate(2deg);}100%{}}
@@ -282,7 +291,8 @@
   <!-- 🏠 홈 -->
   <div class="view on" id="viewHome">
     <div class="hero">
-      <div class="mascbox">
+      <div class="mascbox" id="mascbox" title="꾸미기">
+        <span class="masc-hat" id="mascHat"></span>
         <svg id="masc" viewBox="0 0 100 100" aria-label="Ember">
           <defs><radialGradient id="fg" cx="50%" cy="72%" r="70%"><stop offset="0" stop-color="#FFDF6B"/><stop offset="45%" stop-color="#FF9A3C"/><stop offset="100%" stop-color="#F0492A"/></radialGradient></defs>
           <path d="M50 12 C62 26 78 34 78 56 A28 22 0 0 1 22 56 C22 36 36 30 41 20 C45 30 43 40 50 40 C57 40 55 24 50 12 Z" fill="url(#fg)"/>
@@ -381,6 +391,15 @@
   </div>
 </div>
 
+<div class="sheet" id="wardSheet">
+  <div class="sheetbox">
+    <div class="sheet-h" id="wardTitle"></div>
+    <p class="galhint" id="wardHint"></p>
+    <div class="wgrid" id="wardGrid"></div>
+    <button class="sheet-x" id="wardClose" type="button"></button>
+  </div>
+</div>
+
 <script>
   /* ================= i18n ================= */
   var I18N={
@@ -417,7 +436,7 @@
       cloudCopy:'📋 코드 복사', cloudSync:'🔄 지금 저장', cloudUnlink:'백업 해제',
       msgBackingup:'백업 만드는 중…', msgBackupOk:'✅ 백업 완료! 코드를 꼭 적어두세요.', msgRestoring:'복원 중…', msgRestoreOk:'✅ 복원 완료! 새로고침할게요.',
       msgRestoreFail:'코드가 틀렸거나 만료됐어요.', msgFail:'실패: ', msgCopied:'📋 복사됨!', msgSyncing:'저장 중…', msgSynced:'✅ 새 내용 받아왔어요!', msgSyncClean:'✅ 이미 최신이에요', unlinkAsk:'백업을 해제할까요?\n(기록은 이 폰에 그대로 남아요)',
-      galTitle:'🔥 불꽃이 여정', galHint:'꾸준히 실천하면 불꽃이가 이렇게 진화해요. 카드를 모아보세요!', galDone:'✓ 달성', galLeft:'🔒 {n}일 남음', galNow:'지금 여기', qfDays:['3주','2개월','8개월','2년'], celClear:'🎉 퀘스트 클리어!', celMaster:'🏆 완전 체화!', celEvolved:'진화했어요! ✨', celTop:'최고 보상 획득!',
+      galTitle:'🔥 불꽃이 여정', galHint:'꾸준히 실천하면 불꽃이가 이렇게 진화해요. 카드를 모아보세요!', galDone:'✓ 달성', galLeft:'🔒 {n}일 남음', galNow:'지금 여기', qfDays:['3주','2개월','8개월','2년'], celClear:'🎉 퀘스트 클리어!', celMaster:'🏆 완전 체화!', celEvolved:'진화했어요! ✨', celTop:'최고 보상 획득!', wardTitle:'🎩 불꽃이 꾸미기', wardHint:'레벨이 오르면 새 아이템이 열려요. 탭해서 씌워보세요!', wardLock:'Lv.{n}',
       tabHome:'홈', tabCal:'달력', tabAbout:'소개', calNote:'승리한 날에 불이 켜져요 🔥 꾸준함이 곧 실력!',
       aboutTitle:'해냈다 + 참았다,<br>둘 다 <b>승리</b>예요 🔥', aboutLead:'좋은 습관은 해내고, 나쁜 습관은 참아요. 불꽃이를 키우며 매일 조금씩.',
       aboutC1t:'✅ 해냈다', aboutC1d:'하고 싶은 좋은 습관을 완료하면 포인트가 쌓여요.',
@@ -460,7 +479,7 @@
       cloudCopy:'📋 Copy code', cloudSync:'🔄 Save now', cloudUnlink:'Turn off backup',
       msgBackingup:'Backing up…', msgBackupOk:'✅ Backed up! Be sure to save your code.', msgRestoring:'Restoring…', msgRestoreOk:'✅ Restored! Reloading.',
       msgRestoreFail:'Wrong or expired code.', msgFail:'Failed: ', msgCopied:'📋 Copied!', msgSyncing:'Saving…', msgSynced:'✅ Got new updates!', msgSyncClean:'✅ Already up to date', unlinkAsk:'Turn off backup?\n(Your data stays on this phone)',
-      galTitle:"🔥 Ember's Journey", galHint:'Keep going and your Ember evolves like this. Collect them all!', galDone:'✓ Unlocked', galLeft:'🔒 {n} days left', galNow:'you are here', qfDays:['3wk','2mo','8mo','2yr'], celClear:'🎉 Quest cleared!', celMaster:'🏆 Fully mastered!', celEvolved:'Evolved! ✨', celTop:'Top reward unlocked!',
+      galTitle:"🔥 Ember's Journey", galHint:'Keep going and your Ember evolves like this. Collect them all!', galDone:'✓ Unlocked', galLeft:'🔒 {n} days left', galNow:'you are here', qfDays:['3wk','2mo','8mo','2yr'], celClear:'🎉 Quest cleared!', celMaster:'🏆 Fully mastered!', celEvolved:'Evolved! ✨', celTop:'Top reward unlocked!', wardTitle:'🎩 Dress up Ember', wardHint:'New items unlock as you level up. Tap to wear!', wardLock:'Lv.{n}',
       tabHome:'Home', tabCal:'Calendar', tabAbout:'About', calNote:'Winning days light up 🔥 Consistency is the skill!',
       aboutTitle:'Doing & resisting,<br>both are <b>wins</b> 🔥', aboutLead:'Do the good, resist the bad. Grow your flame a little every day.',
       aboutC1t:'✅ Did it', aboutC1d:'Complete a good habit to earn points.',
@@ -486,7 +505,7 @@
   var S = loadS() || {
     did: tl('didEx').slice(0,4).map(function(t,i){return {id:'d'+i,t:t};}),
     dont: tl('dontEx').slice(0,3).map(function(e,i){return {id:'n'+i,t:e.t,unit:e.u,amt:e.a,days:0,last:''};}),
-    doneDate:'', doneIds:[], pts:0, streak:0, streakDate:'', activeDays:0, goal:50000, seedLang:LANG, rewards:[], winDates:[], winCounts:{}
+    doneDate:'', doneIds:[], pts:0, streak:0, streakDate:'', activeDays:0, goal:50000, seedLang:LANG, rewards:[], winDates:[], winCounts:{}, equipped:''
   };
   var MILE={money:[10000,50000,100000,500000,1000000], time:[600,3000,6000,18000], kcal:[5000,20000,50000,100000]};
   // 기본 예시 항목이 '어느 언어'의 몇 번째 예시인지 찾기(모든 언어 대조) — 없으면 -1(=직접 쓴 항목)
@@ -678,6 +697,39 @@
   if(!localStorage.getItem('ember_onboarded')) startIntro(); else document.getElementById('intro').classList.add('hide');
   document.getElementById('helpBtn').addEventListener('click', startIntro);
 
+  /* 🎩 옷방(꾸미기) */
+  var WITEMS=[
+    {k:'',e:'',lv:0,n:{ko:'없음',en:'None'}},
+    {k:'star',e:'⭐',lv:1,n:{ko:'별',en:'Star'}},
+    {k:'bow',e:'🎀',lv:1,n:{ko:'리본',en:'Bow'}},
+    {k:'flower',e:'🌸',lv:2,n:{ko:'꽃',en:'Flower'}},
+    {k:'cap',e:'🧢',lv:2,n:{ko:'모자',en:'Cap'}},
+    {k:'tophat',e:'🎩',lv:3,n:{ko:'중절모',en:'Top hat'}},
+    {k:'grad',e:'🎓',lv:3,n:{ko:'학사모',en:'Grad cap'}},
+    {k:'crown',e:'👑',lv:5,n:{ko:'왕관',en:'Crown'}}
+  ];
+  function applyEquip(){ var el=document.getElementById('mascHat'); if(!el)return; var f=WITEMS.filter(function(x){return x.k===(S.equipped||'');})[0]; el.textContent=f?f.e:''; }
+  function renderWardrobe(){
+    var box=document.getElementById('wardGrid'); if(!box)return;
+    document.getElementById('wardTitle').textContent=t('wardTitle');
+    document.getElementById('wardHint').textContent=t('wardHint');
+    document.getElementById('wardClose').textContent=t('sheetDone');
+    var lv=levelInfo().lv; box.innerHTML='';
+    WITEMS.forEach(function(it){
+      var unlocked=lv>=it.lv, eq=(S.equipped||'')===it.k;
+      var c=document.createElement('div'); c.className='witem'+(eq?' eq':'')+(unlocked?'':' lock');
+      c.innerHTML=(eq?'<span class="wtick">✓</span>':'')+'<div class="we">'+(it.e||'🚫')+'</div><div class="wn">'+it.n[LANG]+'</div>'+(!unlocked?'<div class="wlk">🔒 '+t('wardLock',{n:it.lv})+'</div>':'');
+      if(unlocked) c.addEventListener('click',function(){ S.equipped=it.k; save(); applyEquip(); renderWardrobe(); });
+      box.appendChild(c);
+    });
+  }
+  (function(){
+    var mb=document.getElementById('mascbox'), ws=document.getElementById('wardSheet');
+    if(mb) mb.addEventListener('click',function(){ renderWardrobe(); ws.classList.add('on'); });
+    document.getElementById('wardClose').addEventListener('click',function(){ ws.classList.remove('on'); });
+    ws.addEventListener('click',function(e){ if(e.target===ws) ws.classList.remove('on'); });
+  })();
+
   /* ☁️ 백업/복원 */
   (function(){
     var sheet=document.getElementById('cloudSheet');
@@ -790,7 +842,7 @@
     });
   })();
 
-  applyStatic(); renderDid(); renderDont(); refreshAll(); save();
+  applyStatic(); renderDid(); renderDont(); refreshAll(); applyEquip(); save();
 
   /* 스플래시(맨 앞 인트로 화면) */
   (function(){

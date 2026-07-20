@@ -1,5 +1,5 @@
 // Ember PWA service worker (네트워크 우선, 실패 시 캐시)
-const CACHE = 'ember-v17';
+const CACHE = 'ember-v18';
 const CORE = ['/', '/index.html', '/app.html', '/install.html', '/ember-sync.js', '/manifest.json', '/icon-192.png', '/icon-512.png'];
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE)).catch(() => {}).then(() => self.skipWaiting()));
