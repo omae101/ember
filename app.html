@@ -205,6 +205,23 @@
   .qtc .fw svg{ width:94px; height:94px; position:relative; z-index:1; filter:drop-shadow(0 6px 14px rgba(255,120,60,.34)); }
   .qtc .dy{ font-size:12.5px; margin-top:2px; font-weight:800; color:var(--ink-soft); }
   .qtc .tacc.crown{ font-size:34px; top:-7px; z-index:2; } .qtc .tacc.hat{ font-size:30px; top:-3px; z-index:2; } .qtc .tacc.bow{ font-size:25px; top:-1px; z-index:2; } .qtc .tacc.spark{ font-size:19px; right:12px; top:5px; z-index:2; } .qtc .tacc.spark2{ font-size:16px; left:12px; top:18px; z-index:2; }
+  .celebrate{ position:fixed; inset:0; z-index:250; display:none; align-items:center; justify-content:center; background:rgba(20,30,25,.55); }
+  .celebrate.show{ display:flex; animation:celbg .35s ease; }
+  @keyframes celbg{ from{opacity:0;} to{opacity:1;} }
+  .cel-box{ text-align:center; position:relative; padding:20px; animation:celpop .6s cubic-bezier(.2,1.5,.4,1) both; }
+  @keyframes celpop{ 0%{transform:scale(.5); opacity:0;} 60%{transform:scale(1.08);} 100%{transform:scale(1); opacity:1;} }
+  .cel-burst{ position:absolute; left:50%; top:64px; width:220px; height:220px; margin-left:-110px; margin-top:-110px; border-radius:50%; background:radial-gradient(circle, rgba(255,190,90,.5), transparent 62%); animation:celray 2.4s ease-in-out infinite; z-index:0; }
+  @keyframes celray{ 0%,100%{opacity:.45; transform:scale(.9) rotate(0);} 50%{opacity:.85; transform:scale(1.12) rotate(20deg);} }
+  .cel-flame{ width:150px; height:150px; margin:0 auto; position:relative; z-index:1; }
+  .cel-flame .fw{ height:150px; }
+  .cel-flame .fw svg{ width:132px; height:132px; filter:drop-shadow(0 10px 26px rgba(255,120,60,.6)); }
+  .cel-flame .tacc.crown{ font-size:52px; top:-8px; } .cel-flame .tacc.hat{ font-size:46px; top:-2px; } .cel-flame .tacc.bow{ font-size:38px; } .cel-flame .tacc.spark{ font-size:26px; right:16px; top:12px; } .cel-flame .tacc.spark2{ font-size:22px; left:16px; top:28px; }
+  .cel-title{ font-size:24px; font-weight:900; color:#FFD86B; margin-top:8px; letter-spacing:-.02em; position:relative; z-index:1; }
+  .cel-name{ font-size:21px; font-weight:900; color:#fff; margin-top:4px; position:relative; z-index:1; }
+  .cel-sub{ font-size:14px; color:#F3E9D8; margin-top:8px; opacity:.92; font-weight:700; position:relative; z-index:1; }
+  .cel-spark{ position:absolute; font-size:24px; z-index:2; animation:celsp 1.6s ease-in-out infinite; }
+  .cel-spark.s1{ top:0; left:20px; } .cel-spark.s2{ top:20px; right:16px; animation-delay:.3s; } .cel-spark.s3{ top:120px; left:8px; animation-delay:.6s; } .cel-spark.s4{ top:110px; right:10px; animation-delay:.9s; }
+  @keyframes celsp{ 0%,100%{opacity:0; transform:scale(.5);} 40%{opacity:1; transform:scale(1.2);} }
 </style>
 </head>
 <body>
@@ -219,6 +236,16 @@
   </svg>
   <div class="splash-brand"><b>Ember</b></div>
   <div class="splash-tag" id="splashTag"></div>
+</div>
+<div class="celebrate" id="celebrate">
+  <div class="cel-box">
+    <span class="cel-spark s1">✨</span><span class="cel-spark s2">⭐</span><span class="cel-spark s3">✨</span><span class="cel-spark s4">🎉</span>
+    <div class="cel-burst"></div>
+    <div class="cel-flame" id="celFlame"></div>
+    <div class="cel-title" id="celTitle"></div>
+    <div class="cel-name" id="celName"></div>
+    <div class="cel-sub" id="celSub"></div>
+  </div>
 </div>
 <div class="intro hide" id="intro">
   <div class="islide on" data-i="0">
@@ -388,7 +415,7 @@
       cloudCopy:'📋 코드 복사', cloudSync:'🔄 지금 저장', cloudUnlink:'백업 해제',
       msgBackingup:'백업 만드는 중…', msgBackupOk:'✅ 백업 완료! 코드를 꼭 적어두세요.', msgRestoring:'복원 중…', msgRestoreOk:'✅ 복원 완료! 새로고침할게요.',
       msgRestoreFail:'코드가 틀렸거나 만료됐어요.', msgFail:'실패: ', msgCopied:'📋 복사됨!', msgSyncing:'저장 중…', msgSynced:'✅ 새 내용 받아왔어요!', msgSyncClean:'✅ 이미 최신이에요', unlinkAsk:'백업을 해제할까요?\n(기록은 이 폰에 그대로 남아요)',
-      galTitle:'🔥 불꽃이 여정', galHint:'꾸준히 실천하면 불꽃이가 이렇게 진화해요. 카드를 모아보세요!', galDone:'✓ 달성', galLeft:'🔒 {n}일 남음', galNow:'지금 여기', qfDays:['3주','2개월','8개월','2년'],
+      galTitle:'🔥 불꽃이 여정', galHint:'꾸준히 실천하면 불꽃이가 이렇게 진화해요. 카드를 모아보세요!', galDone:'✓ 달성', galLeft:'🔒 {n}일 남음', galNow:'지금 여기', qfDays:['3주','2개월','8개월','2년'], celClear:'🎉 퀘스트 클리어!', celMaster:'🏆 완전 체화!', celEvolved:'진화했어요! ✨', celTop:'최고 보상 획득!',
       tabHome:'홈', tabCal:'달력', tabAbout:'소개', calNote:'승리한 날에 불이 켜져요 🔥 꾸준함이 곧 실력!',
       aboutTitle:'해냈다 + 참았다,<br>둘 다 <b>승리</b>예요 🔥', aboutLead:'좋은 습관은 해내고, 나쁜 습관은 참아요. 불꽃이를 키우며 매일 조금씩.',
       aboutC1t:'✅ 해냈다', aboutC1d:'하고 싶은 좋은 습관을 완료하면 포인트가 쌓여요.',
@@ -431,7 +458,7 @@
       cloudCopy:'📋 Copy code', cloudSync:'🔄 Save now', cloudUnlink:'Turn off backup',
       msgBackingup:'Backing up…', msgBackupOk:'✅ Backed up! Be sure to save your code.', msgRestoring:'Restoring…', msgRestoreOk:'✅ Restored! Reloading.',
       msgRestoreFail:'Wrong or expired code.', msgFail:'Failed: ', msgCopied:'📋 Copied!', msgSyncing:'Saving…', msgSynced:'✅ Got new updates!', msgSyncClean:'✅ Already up to date', unlinkAsk:'Turn off backup?\n(Your data stays on this phone)',
-      galTitle:"🔥 Ember's Journey", galHint:'Keep going and your Ember evolves like this. Collect them all!', galDone:'✓ Unlocked', galLeft:'🔒 {n} days left', galNow:'you are here', qfDays:['3wk','2mo','8mo','2yr'],
+      galTitle:"🔥 Ember's Journey", galHint:'Keep going and your Ember evolves like this. Collect them all!', galDone:'✓ Unlocked', galLeft:'🔒 {n} days left', galNow:'you are here', qfDays:['3wk','2mo','8mo','2yr'], celClear:'🎉 Quest cleared!', celMaster:'🏆 Fully mastered!', celEvolved:'Evolved! ✨', celTop:'Top reward unlocked!',
       tabHome:'Home', tabCal:'Calendar', tabAbout:'About', calNote:'Winning days light up 🔥 Consistency is the skill!',
       aboutTitle:'Doing & resisting,<br>both are <b>wins</b> 🔥', aboutLead:'Do the good, resist the bad. Grow your flame a little every day.',
       aboutC1t:'✅ Did it', aboutC1d:'Complete a good habit to earn points.',
@@ -498,7 +525,18 @@
     lvNum.textContent='Lv.'+L.lv; lvName.textContent=L.name; xpFill.style.width=L.pct+'%';
     xpTxt.textContent=L.hasNext? t('questNext',{n:L.toNext,q:L.nextQ}) : t('questDone');
     if(S.lastLevel!==L.lv){ if(typeof S.lastLevel==='number' && L.lv>S.lastLevel) celebrate(L.name,L.hasNext); S.lastLevel=L.lv; save(); } }
-  function celebrate(name,more){ pop(); flash('excited'); toast(more? t('qClear',{name:name}) : t('qMaster')); }
+  function celebrate(name,more){ pop(); flash('excited');
+    var el=document.getElementById('celebrate');
+    if(!el){ toast(more? t('qClear',{name:name}) : t('qMaster')); return; }
+    var L=levelInfo();
+    document.getElementById('celFlame').innerHTML = cardFlame(Math.max(0, L.lv-1));
+    document.getElementById('celTitle').textContent = more? t('celClear') : t('celMaster');
+    document.getElementById('celName').textContent = name;
+    document.getElementById('celSub').textContent = more? t('celEvolved') : t('celTop');
+    el.classList.remove('show'); void el.offsetWidth; el.classList.add('show');
+    clearTimeout(el._t); el._t=setTimeout(function(){ el.classList.remove('show'); }, 3000);
+    el.onclick=function(){ el.classList.remove('show'); clearTimeout(el._t); };
+  }
   function toast(msg){ var el=document.getElementById('__t'); if(!el){ el=document.createElement('div'); el.id='__t'; el.style.cssText='position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(10px);background:var(--coral);color:#fff;font-size:13.5px;font-weight:800;padding:11px 20px;border-radius:22px;box-shadow:0 12px 30px -8px rgba(240,73,42,.5);opacity:0;transition:opacity .28s,transform .28s;z-index:80;pointer-events:none;white-space:nowrap;'; document.body.appendChild(el);} el.textContent=msg; el.style.opacity='1'; el.style.transform='translateX(-50%) translateY(0)'; clearTimeout(el._t); el._t=setTimeout(function(){el.style.opacity='0';el.style.transform='translateX(-50%) translateY(10px)';},2200); }
   function pop(){ masc.classList.remove('pop'); void masc.offsetWidth; masc.classList.add('pop'); }
   function bumpStreak(){ var tday=today(); if(S.streakDate===tday) return; var y=new Date(); y.setDate(y.getDate()-1); y=ymd(y); S.streak=(S.streakDate===y)?S.streak+1:1; S.streakDate=tday; S.activeDays=(S.activeDays||0)+1; if(!S.winDates)S.winDates=[]; if(S.winDates.indexOf(tday)<0)S.winDates.push(tday); }
@@ -760,6 +798,7 @@
     setTimeout(hide,1600); sp.addEventListener('click',hide);
   })();
 
+  if(/[?&]cel/.test(location.search)) setTimeout(function(){ try{ celebrate(tl('levels')[1], true); }catch(e){} }, 1600);
   if('serviceWorker' in navigator){ navigator.serviceWorker.register('/sw.js').catch(function(){}); }
 </script>
 <script src="/ember-sync.js"></script>
